@@ -73,7 +73,7 @@ namespace HumanFactory.Controller
                 case GridType.Empty:
                     break;
                 case GridType.Pad:
-                    currentDir = (currentDir + 1) % 4;
+                    grid.GetPadParameter(out currentDir);
                     break;
             }
 
