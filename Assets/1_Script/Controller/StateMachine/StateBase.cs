@@ -4,6 +4,7 @@ namespace HumanFactory.StateMachine
 {
     public class StateBase
     {
+
         protected HumanController controller;
         protected HumanStateMachine stateMachine;
 

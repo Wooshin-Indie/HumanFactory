@@ -1,5 +1,4 @@
 
-
 namespace HumanFactory.StateMachine
 {
     public class HumanStateMachine

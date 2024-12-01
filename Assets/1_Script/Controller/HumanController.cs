@@ -15,8 +15,7 @@ namespace HumanFactory.Controller
         [SerializeField] private int currentDir;        // 이동할 방향
 
 
-        // TODO - Apply State machine needed.
-        // Codes below this comment should be changed. ALL HACKED
+
         //private void Start()
         //{
         //    statemachine = new playerstatemachine();
@@ -64,6 +63,7 @@ namespace HumanFactory.Controller
 
             if (eulerDistance > Mathf.Epsilon) return;
 
+            // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
             currentPos = targetPos;
 
@@ -78,12 +78,19 @@ namespace HumanFactory.Controller
             }
 
             targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
-            if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1))
+            if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1)
+                || targetPos.x < 0 || targetPos.y < 0)
             {
                 // TODO - Disappear. It could cause err
                 Destroy(gameObject);
             }
         }
+
+        // 해야할 일
+        // 1. 기획을 탄탄하게 - 다양한 퍼즐이 가능하게 구상. 어셈블리어 -> branch jump -> 이걸 어떻게 시각적으로 나타내지?
+        // 어떤 애들이 있어야 재밌을지 ( Jump, Branch, for, ... )
+        // 2. StateMachine - Finite Statemachine 이라고 구글에 치면 나오고... -> 애니메이션 관리 편함 -> 이거로 바꾸기
+        // 3. 디자인 결정 - 컨셉과 스프라이트를 구해야됨
     }
 }
 
