@@ -44,8 +44,6 @@ namespace HumanFactory.Managers
                 return;
             }
 
-            s_instance._resource.Init();
-            s_instance._data.Init();
         }
 
 
