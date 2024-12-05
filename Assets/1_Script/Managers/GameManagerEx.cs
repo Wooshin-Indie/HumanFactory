@@ -44,6 +44,12 @@ namespace HumanFactory
             ShootRayCast();
         }
 
+        /// <summary>
+        /// 게임씬을 출력하는 카메라를 변경합니다.
+        /// CCTV를 구현하기 위한 RenderTexture를 끊고
+        /// Tag를 mainCamera로 변경해야합니다.
+        /// </summary>
+        /// <param name="type"></param>
         public void ChangeRenderCamera(CameraType type)
         {
             switch (type) {
