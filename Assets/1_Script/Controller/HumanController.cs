@@ -16,14 +16,13 @@ namespace HumanFactory.Controller
         [SerializeField] private int currentDir;        // 이동할 방향
         [SerializeField] private HumanOperandType operandType;
 
-        public Vector2Int CurrentPos { get => currentPos; }
+        public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
         public Vector2Int TargetPos { get => targetPos; }
 
         public void UpdateCurpos()
         {
             currentPos = targetPos;
         }
-
 
         private int operandsResult = 0;
         public void SetAsOperand1() {
@@ -60,6 +59,7 @@ namespace HumanFactory.Controller
 
         public void OnFinPerCycle()
         {
+            UpdateTargetPos();
             UnsetOperand();
         }
 
@@ -85,6 +85,7 @@ namespace HumanFactory.Controller
 
         private void Awake()
         {
+
             // HACK - must set appropriate pos after instantiate
             currentPos = new Vector2Int(0, -1);
             targetPos = new Vector2Int(0, 0);
@@ -98,7 +99,7 @@ namespace HumanFactory.Controller
                 new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z),
                 moveSpeed * Time.deltaTime);
 
-            UpdateTargetPos();
+            //UpdateTargetPos();
         }
 
         /// <summary>
@@ -110,19 +111,16 @@ namespace HumanFactory.Controller
 
             if (eulerDistance > Mathf.Epsilon) return;
 
+            Debug.Log("UPDATE TARGET POSITION");
+
             // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
             currentPos = targetPos;
 
             MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 
-            switch (grid.Type) {
-                case GridType.Empty:
-                    break;
-                case GridType.Pad:
-                    grid.GetPadParameter(out currentDir);
-                    break;
-            }
+            //
+            grid.GetPadParameter(out currentDir);
 
             targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
             if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1)
@@ -131,6 +129,9 @@ namespace HumanFactory.Controller
                 // TODO - Disappear. It could cause err
                 Destroy(gameObject);
             }
+
+            Debug.Log("TARGET POS : " + TargetPos);
+
         }
     }
 }

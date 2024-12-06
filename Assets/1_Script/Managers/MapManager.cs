@@ -3,22 +3,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Rendering.Universal;
-using UnityEditor.ShaderGraph.Internal;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace HumanFactory.Managers
 {
 
     public class MapGrid
     {
-        private GridType type = 0;
-        private PadType padType = 0;
+        private int posX, posY;
+        private SpriteRenderer arrowSprite;
+        private PadType padType = PadType.DirNone;
         private BuildingType buildingType = 0;
         private ButtonInfos buttonInfo = new ButtonInfos(null);
 
-        public GridType Type {  get => type; set => type = value; }
         public PadType PadType { get => padType; set => padType = value; }
         public BuildingType BuildingType { get => buildingType; set => buildingType = value; }
         public ButtonInfos ButtonInfo { get=>buttonInfo; }
@@ -32,15 +31,40 @@ namespace HumanFactory.Managers
 
         private PadType originPadType = 0;
 
-        public MapGrid()
+        public MapGrid(int posX, int posY, SpriteRenderer arrow)
         {
-            type = GridType.Empty;
+            this.posX = posX;
+            this.posY = posY;
+            arrowSprite = arrow; 
+            padType = PadType.DirNone;
+            arrow.color = Constants.COLOR_TRANS;
         }
 
         public void GetPadParameter(out int dir)
         {
             dir = (int)padType;
         }
+
+        public void OnClickRotate()
+        {
+            padType = (PadType)(((int)padType + 1) % Enum.GetValues(typeof(PadType)).Length);
+
+            switch (padType)
+            {
+                case PadType.DirLeft:
+                case PadType.DirRight:
+                case PadType.DirUp:
+                case PadType.DirDown:
+                    arrowSprite.color = Constants.COLOR_ARROW;
+                    arrowSprite.transform.rotation = Quaternion.Euler(0f, 0f, -90f * (int)padType);
+                    break;
+                case PadType.DirNone:
+                    arrowSprite.color = Constants.COLOR_TRANS;
+                    break;
+            }
+        }
+
+
 
         public void OnRelease()
         {
@@ -59,6 +83,7 @@ namespace HumanFactory.Managers
             isPressed = true;
         }
 
+
         public void OnButtonRotate(PadType type)
         {
             // 버튼 누르면 바닥 회전
@@ -66,16 +91,16 @@ namespace HumanFactory.Managers
             padType = type;
         }
 
-        public void OnButtonStop()
-        {
-            padType = originPadType;
-        }
-
         public void OffButtonRotate()
         {
-            isBlocked = false;
+            padType = originPadType;
             // TODO - 이게 버튼이면 연결된 애들도 original로 변경해야됨
         }
+        public void OnButtonStop()
+        {
+            isBlocked = false;
+        }
+
 
         public void OffButtonStop()
         {
@@ -113,6 +138,9 @@ namespace HumanFactory.Managers
         public MapGrid[,] ProgramMap { get => programMap; }
 
         [SerializeField] private Vector2Int mapSize;
+        [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private GameObject humanPrefab;
+
 
         private void Start()
         {
@@ -121,30 +149,20 @@ namespace HumanFactory.Managers
             {
                 for (int j = 0; j < mapSize.y; j++)
                 {
-                    programMap[i, j] = new MapGrid();
+                    programMap[i, j] = new MapGrid(i, j, 
+                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity)
+                        .GetComponent<SpriteRenderer>());
                 }
             }
 
-            // HACK - Temproary testing Pad (direction change)
-            programMap[2, 0].Type = GridType.Pad;
-            programMap[2, 0].PadType = PadType.DirRight;
-            programMap[4, 0].Type = GridType.Pad;
-            programMap[4, 0].PadType = PadType.DirLeft;
-            programMap[0, 1].Type = GridType.Pad;
-            programMap[0, 1].PadType = PadType.DirRight;
-            programMap[4, 1].Type = GridType.Pad;
-            programMap[4, 1].PadType = PadType.DirUp;
-            programMap[2, 2].Type = GridType.Pad;
-            programMap[2, 2].PadType = PadType.DirDown;
-            programMap[4, 2].Type = GridType.Pad;
-            programMap[4, 2].PadType = PadType.DirLeft;
-            programMap[0, 4].Type = GridType.Pad;
-            programMap[4, 4].Type = GridType.Pad;
 
 
             secFuncs.Add(instance.ExecuteAtOneThird);
             secFuncs.Add(instance.ExecuteAtHalfTime);
             secFuncs.Add(instance.ExecuteAtTwoThirds);
+
+            humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+                .GetComponent<HumanController>());
         }
 
         private bool isCycleRunning = false;
@@ -154,9 +172,20 @@ namespace HumanFactory.Managers
                 StartCoroutine(ProgramCycleCoroutine());
         }
 
+        private bool CheckBoundary(int x, int y)
+        {
+            return (x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y);
+        }
+        public void OnClickMapGrid(int x, int y)
+        {
+            if (!CheckBoundary(x, y)) return;
+            programMap[x, y].OnClickRotate();
+        }
+
         [Header("Game Cycle")]
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
         
+        // TODO - Destory하고 null값 남아있음 처리 필요.
         private List<HumanController> humanControllers = new List<HumanController>();
 
         private List<bool> flags = new List<bool> { false, false, false };
@@ -203,6 +232,8 @@ namespace HumanFactory.Managers
             {
                 if (flags[i] || !(cycleElapsedTime > cycleTime * timeSections[i])) continue;
                 flags[i] = secFuncs[i].Invoke();
+                // Action에 대해서 이친구는 리턴값이 없는 함수를 저장하는 자료형
+                // bool return 을 해야해 -> Func<T1, T2, T3> 
             }
 
             foreach(var controller in humanControllers)
@@ -239,7 +270,7 @@ namespace HumanFactory.Managers
         /// </summary>
         private bool ExecuteAtHalfTime()
         {
-
+            targetPosSet.Clear();
             Debug.Log("싸이클 0.5");
             // Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
             foreach (var controller in humanControllers)
@@ -294,6 +325,7 @@ namespace HumanFactory.Managers
             foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
+                // TODO - 맵과 상호작용하여 연산해야됨
                 controller.OnFinPerCycle();
             }
 

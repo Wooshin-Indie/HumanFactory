@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace HumanFactory.Managers
@@ -18,38 +20,36 @@ namespace HumanFactory.Managers
         /** Managers **/
         private ResourceManager _resource = new ResourceManager();
         private DataManager _data = new DataManager();
-
+        private InputManager _input  = new InputManager();
+        
         /** Properties **/
         public static ResourceManager Resource { get { return Instance._resource; } }
         public static DataManager Data { get { return Instance._data; } }
+        public static InputManager Input { get { return Instance._input; } }
 
         public void Init()
         {
             if (s_instance == null)
             {
-                GameObject go = GameObject.Find("@Managers");
-                if (go == null)
-                {
-                    go = new GameObject { name = "@Managers" };
-                    go.AddComponent<Managers>();
-                }
-
-                DontDestroyOnLoad(go);
-                s_instance = go.GetComponent<Managers>();
-
+                s_instance = this;
+                DontDestroyOnLoad(this.gameObject);
             }
             else
             {
                 Destroy(this.gameObject);
                 return;
             }
-
         }
 
 
         void Awake()
         {
             Init();
+        }
+
+        private void Update()
+        {
+            _input.OnUpdate();
         }
 
     }

@@ -14,6 +14,7 @@ namespace HumanFactory
         DirRight    = 1,
         DirDown     = 2,
         DirLeft     = 3,
+        DirNone     = 4,
     }
 
     public enum BuildingType
