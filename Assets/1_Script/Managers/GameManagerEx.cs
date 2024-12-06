@@ -1,3 +1,4 @@
+using HumanFactory.Effects;
 using HumanFactory.Props;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,10 +43,21 @@ namespace HumanFactory
         private void Update()
         {
             ShootRayCast();
+
         }
 
+        private CameraType currentCamType = CameraType.Main;
+        public CameraType CurrentCamType { get => currentCamType; }
+
+        /// <summary>
+        /// 게임씬을 출력하는 카메라를 변경합니다.
+        /// CCTV를 구현하기 위한 RenderTexture를 끊고
+        /// Tag를 mainCamera로 변경해야합니다.
+        /// </summary>
+        /// <param name="type"></param>
         public void ChangeRenderCamera(CameraType type)
         {
+            currentCamType = type;
             switch (type) {
                 case CameraType.Main:
                     cameras[0].gameObject.SetActive(true);
@@ -96,6 +108,10 @@ namespace HumanFactory
                 {
                     lockRayCast = true;
                     prevScreen?.OnPointerClick();
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    prevScreen?.GetComponent<TVNoiseEffect>().MakeNoise();
                 }
             }
             else

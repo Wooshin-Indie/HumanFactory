@@ -1,7 +1,29 @@
+using HumanFactory.Managers;
 using System;
 
 namespace HumanFactory
 {
+
+    #region MapInfos
+
+    public class ButtonInfos
+    {
+        public MapGrid linkedGrid;
+        public ButtonType buttonType;
+        public PadType dirType;
+
+        public ButtonInfos(MapGrid linkedGrid,
+            ButtonType buttonType = ButtonType.NewInput, 
+            PadType dirType = PadType.DirUp)
+        {
+            this.linkedGrid = linkedGrid;
+            this.buttonType = buttonType;
+            this.dirType = dirType;
+        }
+    }
+
+    #endregion
+
     #region ResourceManager Containers
     [Serializable]
     public class StageInfos

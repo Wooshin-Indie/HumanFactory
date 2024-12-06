@@ -1,4 +1,5 @@
 using HumanFactory.Managers;
+using System.Collections;
 using UnityEngine;
 
 namespace HumanFactory.Controller
@@ -13,8 +14,54 @@ namespace HumanFactory.Controller
         [SerializeField] private Vector2Int currentPos; // 현재 그리드 위치
         [SerializeField] private Vector2Int targetPos;  // 이동할 그리드 위치
         [SerializeField] private int currentDir;        // 이동할 방향
+        [SerializeField] private HumanOperandType operandType;
 
+        public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
+        public Vector2Int TargetPos { get => targetPos; }
 
+        public void UpdateCurpos()
+        {
+            currentPos = targetPos;
+        }
+
+        private int operandsResult = 0;
+        public void SetAsOperand1() {
+            operandType = HumanOperandType.Operand1;
+            operandsResult = 0;    // TODO - 내가 들고있는 값으로 바꿔야함
+        }
+
+        public void SetOperands(int number) {
+            operandsResult += number;
+        }
+
+        public int SetAsOperand2() {
+            // TODO - 내가 들고있는 값 리턴해야됨
+            // 애니메이션 필요하면 애니메이션 추가해야됨
+            operandType = HumanOperandType.Operand2;
+            return -1;
+        }
+
+        public void ExecuteOperand()
+        {
+            switch (operandType) {
+                case HumanOperandType.Operand1:
+                    // TODO - 현재 들고있는 값을 operandResult 값으로 바꾸기
+                    break;
+                case HumanOperandType.Operand2:
+                    Destroy(this.gameObject);       //HACK - Destory가 아니라 좀 더 일찍 스르륵 사라지게 할 수도
+                    break;
+            }
+        }
+
+        private void UnsetOperand() { 
+            operandType = HumanOperandType.None;
+        }
+
+        public void OnFinPerCycle()
+        {
+            UpdateTargetPos();
+            UnsetOperand();
+        }
 
         //private void Start()
         //{
@@ -38,6 +85,7 @@ namespace HumanFactory.Controller
 
         private void Awake()
         {
+
             // HACK - must set appropriate pos after instantiate
             currentPos = new Vector2Int(0, -1);
             targetPos = new Vector2Int(0, 0);
@@ -51,7 +99,7 @@ namespace HumanFactory.Controller
                 new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z),
                 moveSpeed * Time.deltaTime);
 
-            UpdateTargetPos();
+            //UpdateTargetPos();
         }
 
         /// <summary>
@@ -63,19 +111,16 @@ namespace HumanFactory.Controller
 
             if (eulerDistance > Mathf.Epsilon) return;
 
+            Debug.Log("UPDATE TARGET POSITION");
+
             // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
             currentPos = targetPos;
 
             MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 
-            switch (grid.Type) {
-                case GridType.Empty:
-                    break;
-                case GridType.Pad:
-                    grid.GetPadParameter(out currentDir);
-                    break;
-            }
+            //
+            grid.GetPadParameter(out currentDir);
 
             targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
             if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1)
@@ -84,14 +129,9 @@ namespace HumanFactory.Controller
                 // TODO - Disappear. It could cause err
                 Destroy(gameObject);
             }
-        }
 
-        // 해야할 일
-        // 1. 기획을 탄탄하게 - 다양한 퍼즐이 가능하게 구상. 어셈블리어 -> branch jump -> 이걸 어떻게 시각적으로 나타내지?
-        // 어떤 애들이 있어야 재밌을지 ( Jump, Branch, for, ... )
-        // 2. StateMachine - Finite Statemachine 이라고 구글에 치면 나오고... -> 애니메이션 관리 편함 -> 이거로 바꾸기
-        // 3. 디자인 결정 - 컨셉과 스프라이트를 구해야됨
+            Debug.Log("TARGET POS : " + TargetPos);
+
+        }
     }
 }
-
-// 한글 주석 테스트 입니다.

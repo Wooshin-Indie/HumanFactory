@@ -14,6 +14,7 @@ namespace HumanFactory
         DirRight    = 1,
         DirDown     = 2,
         DirLeft     = 3,
+        DirNone     = 4,
     }
 
     public enum BuildingType
@@ -28,4 +29,17 @@ namespace HumanFactory
         Game = 2
     }
 
+    public enum ButtonType
+    {
+        NewInput    = 0,
+        Rotate      = 1,
+        Stop        = 2,
+    }
+
+    public enum HumanOperandType
+    {
+        None = 0,
+        Operand1 = 1,
+        Operand2 = 2,
+    }
 }
