@@ -35,6 +35,8 @@ namespace HumanFactory
         [SerializeField] private List<Camera> cameras;
         [SerializeField] private List<RenderTexture> renderTextures;
 
+        public List<Camera> Cameras { get { return cameras; } }
+
         private void Start()
         {
             
@@ -43,6 +45,12 @@ namespace HumanFactory
         private void Update()
         {
             ShootRayCast();
+
+            // HACK - TEST camera backward
+            if (Input.GetMouseButtonDown(1))
+            {
+                Camera.main.GetComponent<CameraBase>().LerpToOrigin();
+            }
 
         }
 
@@ -109,10 +117,7 @@ namespace HumanFactory
                     lockRayCast = true;
                     prevScreen?.OnPointerClick();
                 }
-                if (Input.GetMouseButtonDown(1))
-                {
-                    prevScreen?.GetComponent<TVNoiseEffect>().MakeNoise();
-                }
+
             }
             else
             {

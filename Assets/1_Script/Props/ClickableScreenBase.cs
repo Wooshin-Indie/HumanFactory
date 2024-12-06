@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 
 namespace HumanFactory.Props
 {
@@ -7,9 +6,7 @@ namespace HumanFactory.Props
     {
         [SerializeField] protected Vector2 zoomInPosition;
         [SerializeField] protected float zoomInCameraSize;
-        [SerializeField] private float zoomInDuration;
         [SerializeField] private GameObject outline;
-        [SerializeField] private CameraType destination;
 
         private void Start()
         {
@@ -30,15 +27,9 @@ namespace HumanFactory.Props
         {
             OnPointerExit();
             Camera.main.GetComponent<CameraBase>().LerpToScreen(zoomInPosition,
-                zoomInCameraSize,
-                zoomInDuration,
-                AfterZoomIn);
+                zoomInCameraSize);
         }
 
-        private void AfterZoomIn()
-        {
-            GameManagerEx.Instance.ChangeRenderCamera(destination);
-        }
 
     }
 }
