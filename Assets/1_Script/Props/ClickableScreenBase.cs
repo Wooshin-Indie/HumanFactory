@@ -4,7 +4,6 @@ namespace HumanFactory.Props
 {
     public class ClickableScreenBase : MonoBehaviour
     {
-        [SerializeField] protected Vector2 zoomInPosition;
         [SerializeField] protected float zoomInCameraSize;
         [SerializeField] private GameObject outline;
 
@@ -26,7 +25,7 @@ namespace HumanFactory.Props
         public void OnPointerClick()
         {
             OnPointerExit();
-            Camera.main.GetComponent<CameraBase>().LerpToScreen(zoomInPosition,
+            Camera.main.GetComponent<CameraBase>().LerpToScreen(transform.localPosition,
                 zoomInCameraSize);
         }
 

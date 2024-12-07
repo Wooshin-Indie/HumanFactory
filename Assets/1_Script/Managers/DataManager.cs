@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.IO;
 
-namespace HumanFactory.Managers
+namespace HumanFactory.Manager
 {
     /*
      * persistentDataPath : C:/Users/[UserName]/AppData/LocalLow/DefaultCompany/[ProjectName]

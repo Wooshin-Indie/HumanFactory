@@ -1,4 +1,4 @@
-using HumanFactory.Managers;
+using HumanFactory.Manager;
 using System.Collections;
 using UnityEngine;
 

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-namespace HumanFactory.Managers
+namespace HumanFactory.Manager
 {
     /*
      * Manager 들을 관리하는 Manager입니다.
@@ -21,11 +19,13 @@ namespace HumanFactory.Managers
         private ResourceManager _resource = new ResourceManager();
         private DataManager _data = new DataManager();
         private InputManager _input  = new InputManager();
+        private SoundManager _sound = new SoundManager();
         
         /** Properties **/
         public static ResourceManager Resource { get { return Instance._resource; } }
         public static DataManager Data { get { return Instance._data; } }
         public static InputManager Input { get { return Instance._input; } }
+        public static SoundManager Sound { get { return Instance._sound; } }
 
         public void Init()
         {
@@ -39,6 +39,9 @@ namespace HumanFactory.Managers
                 Destroy(this.gameObject);
                 return;
             }
+
+            s_instance._resource.Init();
+            s_instance._sound.init();
         }
 
 

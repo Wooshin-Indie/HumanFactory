@@ -1,8 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
-using System;
-using UnityEngine.Rendering;
 using System.Collections;
+using UnityEngine.Rendering;
+using HumanFactory.Manager;
 
 namespace HumanFactory
 {
@@ -53,7 +53,11 @@ namespace HumanFactory
 
         private IEnumerator VolumeFadeOutCoroutine(float duration)
         {
-            if (volumeObject == null) yield break;
+            if (volumeObject == null)
+            {
+                Managers.Input.ReleaseMouseInput();
+                yield break;
+            }
 
             float elapsedTime = 0f;
             while (elapsedTime < duration)
@@ -63,6 +67,7 @@ namespace HumanFactory
                 yield return null;
                 elapsedTime += Time.deltaTime;
             }
+            Managers.Input.ReleaseMouseInput();
         }
 
  
@@ -99,7 +104,10 @@ namespace HumanFactory
                 .SetEase(Ease.Linear);
 
             GetComponent<Camera>().DOOrthoSize(originSize, duration)
-                .SetEase(Ease.Linear);
+                .SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    Managers.Input.ReleaseMouseInput();
+                });
         }
 
     }

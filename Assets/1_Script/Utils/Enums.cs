@@ -42,4 +42,10 @@ namespace HumanFactory
         Operand1 = 1,
         Operand2 = 2,
     }
+
+    public enum SoundType 
+    { 
+        Bgm = 0,
+        Sfx = 0,
+    }
 }

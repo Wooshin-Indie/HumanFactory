@@ -1,5 +1,3 @@
-using HumanFactory.Effects;
-using HumanFactory.Props;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,22 +35,6 @@ namespace HumanFactory
 
         public List<Camera> Cameras { get { return cameras; } }
 
-        private void Start()
-        {
-            
-        }
-
-        private void Update()
-        {
-            ShootRayCast();
-
-            // HACK - TEST camera backward
-            if (Input.GetMouseButtonDown(1))
-            {
-                Camera.main.GetComponent<CameraBase>().LerpToOrigin();
-            }
-
-        }
 
         private CameraType currentCamType = CameraType.Main;
         public CameraType CurrentCamType { get => currentCamType; }
@@ -94,36 +76,8 @@ namespace HumanFactory
                     cameras[2].tag = Constants.TAG_CAMERA;
                     break;
             }
-            lockRayCast = false;
         }
 
-        private bool lockRayCast = false;
-        private ClickableScreenBase prevScreen = null;
-        private void ShootRayCast()
-        {
-            if (lockRayCast) return;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 20) 
-                && hit.transform.GetComponent<ClickableScreenBase>() != null)
-            {
-                prevScreen = hit.transform.GetComponent<ClickableScreenBase>();
-                prevScreen?.OnPointerEnter();
-
-                // INPUT - Mouse 0
-                if(Input.GetMouseButtonDown(0))
-                {
-                    lockRayCast = true;
-                    prevScreen?.OnPointerClick();
-                }
-
-            }
-            else
-            {
-                prevScreen?.OnPointerExit();
-            }
-        }
     }
 }
 

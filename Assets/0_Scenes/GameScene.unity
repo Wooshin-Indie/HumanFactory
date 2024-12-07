@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 46820028}
   - component: {fileID: 46820027}
   - component: {fileID: 46820031}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Screen (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a17d57452553243b2cde843681c7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomInPosition: {x: -2.16, y: 0.424}
   zoomInCameraSize: 0.6
   outline: {fileID: 379981333}
 --- !u!23 &46820029
@@ -2528,7 +2527,7 @@ GameObject:
   - component: {fileID: 1504462827}
   - component: {fileID: 1504462829}
   - component: {fileID: 1504462830}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2613,7 +2612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a17d57452553243b2cde843681c7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomInPosition: {x: -1.87, y: 0.4}
   zoomInCameraSize: 0.6
   outline: {fileID: 1868257258}
 --- !u!65 &1504462830
@@ -3654,7 +3652,7 @@ GameObject:
   - component: {fileID: 2000868426}
   - component: {fileID: 2000868425}
   - component: {fileID: 2000868429}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3710,7 +3708,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a17d57452553243b2cde843681c7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomInPosition: {x: 3.2, y: 1.65}
   zoomInCameraSize: 2.3
   outline: {fileID: 488095331}
 --- !u!23 &2000868427

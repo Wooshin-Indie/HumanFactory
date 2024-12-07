@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-namespace HumanFactory.Managers
+namespace HumanFactory.Manager
 {
 
     public class MapGrid

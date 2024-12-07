@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace HumanFactory.Managers
+namespace HumanFactory.Manager
 {
     /*
      * 게임의 리소스를 관리하는 매니저입니다.
