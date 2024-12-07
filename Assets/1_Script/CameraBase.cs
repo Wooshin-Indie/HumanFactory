@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine.Rendering;
 using HumanFactory.Manager;
+using HumanFactory.UI;
 
 namespace HumanFactory
 {
@@ -10,6 +11,7 @@ namespace HumanFactory
     {
         [Header("Effect")]
         [SerializeField] private GameObject volumeObject;
+        [SerializeField] private CCTVUI cctvUI;
         [SerializeField] private float duration;
         [SerializeField] private CameraType forwardType;
         [SerializeField] private CameraType backwardType;
@@ -53,11 +55,13 @@ namespace HumanFactory
 
         private IEnumerator VolumeFadeOutCoroutine(float duration)
         {
+            cctvUI?.LerpToAlpha0(duration);
             if (volumeObject == null)
             {
                 Managers.Input.ReleaseMouseInput();
                 yield break;
             }
+
 
             float elapsedTime = 0f;
             while (elapsedTime < duration)
@@ -84,6 +88,7 @@ namespace HumanFactory
 
         private IEnumerator VolumeFadeInCoroutine(float duration)
         {
+            cctvUI?.LerpToWhite(duration);
             if (volumeObject == null) yield break;
 
             float elapsedTime = 0f;

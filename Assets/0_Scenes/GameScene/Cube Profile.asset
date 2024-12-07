@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4104395575925374861
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+  m_Name: ColorAdjustments
+  m_EditorClassIdentifier: 
+  active: 1
+  postExposure:
+    m_OverrideState: 1
+    m_Value: 0.5
+  contrast:
+    m_OverrideState: 1
+    m_Value: 31
+  colorFilter:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 0.9947716, b: 0.8349056, a: 1}
+  hueShift:
+    m_OverrideState: 0
+    m_Value: 20
+  saturation:
+    m_OverrideState: 1
+    m_Value: -27
 --- !u!114 &-1033252928093566115
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -46,6 +74,7 @@ MonoBehaviour:
   - {fileID: 6115052166236216107}
   - {fileID: 6897263602018870458}
   - {fileID: 7798141865457714785}
+  - {fileID: -4104395575925374861}
 --- !u!114 &2227649367958771740
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -86,10 +115,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.6703297}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.72527474}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.02747253}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.082417585}
   highlights:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1, z: 1, w: 0.054945063}
