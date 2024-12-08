@@ -11,6 +11,18 @@ namespace HumanFactory.Manager
         {
             cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            // HACK - SoundManager 테스트용 입력입니다.
+            // 나중에 UI에서 호출하도록 변경해야합니다.
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                Managers.Sound.ChangeBGM(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                Managers.Sound.ChangeBGM(false);
+            }
+
             OnMainScene();
             OnMenuScene();
             OnGameScene();
