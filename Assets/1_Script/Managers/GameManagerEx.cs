@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace HumanFactory
 {
@@ -44,7 +45,6 @@ namespace HumanFactory
         /// CCTV를 구현하기 위한 RenderTexture를 끊고
         /// Tag를 mainCamera로 변경해야합니다.
         /// </summary>
-        /// <param name="type"></param>
         public void ChangeRenderCamera(CameraType type)
         {
             currentCamType = type;
@@ -52,28 +52,43 @@ namespace HumanFactory
                 case CameraType.Main:
                     cameras[0].gameObject.SetActive(true);
                     cameras[1].gameObject.SetActive(true);
+                    cameras[3].gameObject.SetActive(true);
                     cameras[1].targetTexture = renderTextures[0];
                     cameras[2].targetTexture = renderTextures[1];
+                    cameras[3].targetTexture = renderTextures[2];
                     cameras[0].tag = Constants.TAG_CAMERA;
                     cameras[1].tag = Constants.TAG_NONE;
                     cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_NONE;
                     break;
                 case CameraType.Menu:
                     cameras[0].gameObject.SetActive(false);
                     cameras[1].gameObject.SetActive(true);
+                    cameras[3].gameObject.SetActive(false);
                     cameras[1].targetTexture = null;
                     cameras[2].targetTexture = renderTextures[1];
                     cameras[0].tag = Constants.TAG_NONE;
                     cameras[1].tag = Constants.TAG_CAMERA;
                     cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_NONE;
                     break;
                 case CameraType.Game:
                     cameras[0].gameObject.SetActive(false);
                     cameras[1].gameObject.SetActive(false);
+                    cameras[3].gameObject.SetActive(false);
                     cameras[2].targetTexture = null;
                     cameras[0].tag = Constants.TAG_NONE;
                     cameras[1].tag = Constants.TAG_NONE;
                     cameras[2].tag = Constants.TAG_CAMERA;
+                    cameras[3].tag = Constants.TAG_NONE;
+                    break;
+                case CameraType.Setting:
+                    cameras[0].gameObject.SetActive(false);
+                    cameras[3].targetTexture = null;
+                    cameras[0].tag = Constants.TAG_NONE;
+                    cameras[1].tag = Constants.TAG_NONE;
+                    cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_CAMERA;
                     break;
             }
         }

@@ -24,9 +24,11 @@ namespace HumanFactory
 
     public enum CameraType
     {
+        None = -1,
         Main = 0,
         Menu = 1,
-        Game = 2
+        Game = 2,
+        Setting = 3,
     }
 
     public enum ButtonType

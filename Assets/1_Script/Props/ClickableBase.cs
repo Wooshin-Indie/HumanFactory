@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace HumanFactory.Props
 {
-    public class ClickableScreenBase : MonoBehaviour
+    public class ClickableBase : MonoBehaviour
     {
         [SerializeField] protected float zoomInCameraSize;
         [SerializeField] private GameObject outline;
@@ -22,11 +22,9 @@ namespace HumanFactory.Props
             outline.SetActive(false);
         }
 
-        public void OnPointerClick()
+        public virtual void OnPointerClick()
         {
             OnPointerExit();
-            Camera.main.GetComponent<CameraBase>().LerpToScreen(transform.localPosition,
-                zoomInCameraSize);
         }
 
 
