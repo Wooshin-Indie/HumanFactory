@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIOnClickExpand : MonoBehaviour, IPointerClickHandler
+public class UIOnClickExpand : MonoBehaviour
 {
     private Vector2 originSize;
     private Vector2 expandedSize;
-    private bool isExpanded = false;
-
-    public int index = 0;
     
     private void Start()
     {
@@ -27,17 +24,14 @@ public class UIOnClickExpand : MonoBehaviour, IPointerClickHandler
     }
     */
 
-    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+
+    public void Expand()
     {
-        Debug.Log(Input.mousePosition);
-        if (isExpanded)
-        {
-            GetComponent<RectTransform>().sizeDelta = originSize;
-        }
-        else
-        {
-            GetComponent<RectTransform>().sizeDelta = expandedSize;
-        }
-        isExpanded = !isExpanded;
+        GetComponent<RectTransform>().sizeDelta = expandedSize;
+    }
+
+    public void Reduce()
+    {
+        GetComponent<RectTransform>().sizeDelta = originSize;
     }
 }
