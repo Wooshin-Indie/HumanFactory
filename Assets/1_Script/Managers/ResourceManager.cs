@@ -16,12 +16,18 @@ namespace HumanFactory.Manager
         /** Json file Paths**/
         private string stageInfoPath = "JsonData/StageData";
 
+        /** Audio source Paths **/
+        private string bgmPath = "Sounds/BGM";
+
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
+        private AudioClip[] audioSources;
 
         public void Init()
         {
             //stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
+            audioSources = Resources.LoadAll<AudioClip>(bgmPath);
+            Debug.Log(audioSources.Length);
         }
 
         /** Getter Functions **/
@@ -44,6 +50,16 @@ namespace HumanFactory.Manager
             return stageInfos.stageInfo.Length;
         }
 
+        public AudioClip GetBGM(BGMType type)
+        {
+            if (audioSources.Length <= (int)type)
+            {
+                Debug.LogError("Resource Error : There is not enough bgms..");
+                return null;
+            }
+
+            return audioSources[(int)type];
+        }
 
     }
 }

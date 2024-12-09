@@ -213,7 +213,6 @@ namespace HumanFactory.Manager
         /// </summary>
         private void InitPerCycle()
         {
-            Debug.Log("싸이클 시작!");
             isCycleRunning = true;
             cycleElapsedTime = 0f;
             for (int i = 0; i < flags.Count; i++)
@@ -247,8 +246,6 @@ namespace HumanFactory.Manager
         /// </summary>
         private bool ExecuteAtOneThird()
         {
-
-            Debug.Log("싸이클 0.3");
             for (int i = 0; i < mapSize.x; i++)
             {
                 for (int j = 0; j < mapSize.y; j++)
@@ -271,7 +268,7 @@ namespace HumanFactory.Manager
         private bool ExecuteAtHalfTime()
         {
             targetPosSet.Clear();
-            Debug.Log("싸이클 0.5");
+
             // Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
             foreach (var controller in humanControllers)
             {
@@ -306,7 +303,6 @@ namespace HumanFactory.Manager
         /// </summary>
         private bool ExecuteAtTwoThirds()
         {
-            Debug.Log("싸이클 0.7");
             foreach (var controller in humanControllers)
             {
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
@@ -328,8 +324,6 @@ namespace HumanFactory.Manager
                 // TODO - 맵과 상호작용하여 연산해야됨
                 controller.OnFinPerCycle();
             }
-
-            Debug.Log("싸이클 끝!");
         }
     }
 }

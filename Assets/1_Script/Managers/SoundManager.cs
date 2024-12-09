@@ -1,4 +1,5 @@
 
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 
@@ -12,7 +13,9 @@ namespace HumanFactory.Manager
     public class SoundManager
     {
         private AudioSource[] audioSources = new AudioSource[(int)Enum.GetNames(typeof(SoundType)).Length];
-        
+
+        private int currentBGM = (int)BGMType.None;
+
         public void init()
         {
             GameObject root = GameObject.Find("@SoundManager");
@@ -34,15 +37,30 @@ namespace HumanFactory.Manager
         }
 
         // path들은 Constants에서 관리됩니다.
-        public void PlaySound(SoundType type, string path)
+        public void PlaySound(SoundType soundType, SFXType sfType)
         {
             // TODO - 사운드 재생
             // PlayOneShot 사용
         }
 
-        public void ChangeBGM(string path)
+        // TODO - 소리 바꿀때 치지직- 이런 효과음 있으면 좋을듯?
+        // TODO - BGM 정해야됨
+        public void ChangeBGM(bool isNext)
         {
+            int count = Enum.GetNames(typeof(BGMType)).Length;
+            currentBGM = isNext ? ((currentBGM + 1) % count)
+                      : (currentBGM - 1 < 0 ? count - 1 : currentBGM - 1);
 
+            if (currentBGM == (int)BGMType.None)   
+            {
+                audioSources[(int)SoundType.Bgm].Stop();
+                return;
+            }
+
+            audioSources[(int)SoundType.Bgm].clip = Managers.Resource.GetBGM((BGMType)currentBGM);
+
+            if (!audioSources[(int)SoundType.Bgm].isPlaying)
+                audioSources[(int)SoundType.Bgm].Play();
         }
 
     }

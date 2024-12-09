@@ -11,9 +11,22 @@ namespace HumanFactory.Manager
         {
             cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            // HACK - SoundManager 테스트용 입력입니다.
+            // 나중에 UI에서 호출하도록 변경해야합니다.
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                Managers.Sound.ChangeBGM(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                Managers.Sound.ChangeBGM(false);
+            }
+
             OnMainScene();
             OnMenuScene();
             OnGameScene();
+            OnSettingScene();
         }
 
         private int mouseInputLock = 0;
@@ -56,16 +69,29 @@ namespace HumanFactory.Manager
             if (GameManagerEx.Instance.CurrentCamType != CameraType.Main) return;
 
             InteractClickableObject();
+
+            if (Camera.main.GetComponent<CameraBase>().IsZoomed)
+            {
+                ClickOutScene();
+            }
         }
 
+        private void OnSettingScene()
+        {
+            if (GameManagerEx.Instance.CurrentCamType != CameraType.Setting) return;
 
-        private ClickableScreenBase prevScreen = null;
+            ClickOutScene();
+        }
+
+        private ClickableBase prevScreen = null;
         private void InteractClickableObject()
         {
+            if (Camera.main.GetComponent<CameraBase>().IsZoomed) return;
+
             if (Physics.Raycast(cameraRay, out RaycastHit hit, 20, Constants.LAYER_CLICKABLE)
                 && IsMouseInputEnabled())
             {
-                prevScreen = hit.transform.GetComponent<ClickableScreenBase>();
+                prevScreen = hit.transform.GetComponent<ClickableBase>();
                 prevScreen?.OnPointerEnter();
 
                 if (Input.GetMouseButtonDown(0))
@@ -87,7 +113,7 @@ namespace HumanFactory.Manager
             if (Input.GetMouseButtonDown(1))
             {
                 LockMouseInput();
-                Camera.main.GetComponent<CameraBase>().LerpToOrigin();
+                Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
             }
         }
 
