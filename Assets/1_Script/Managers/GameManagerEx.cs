@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 
 namespace HumanFactory
@@ -27,6 +31,8 @@ namespace HumanFactory
         private void Awake()
         {
             Init();
+
+            ConvertUIRaycaster(CameraType.Main);
         }
         #endregion
 
@@ -90,6 +96,25 @@ namespace HumanFactory
                     cameras[2].tag = Constants.TAG_NONE;
                     cameras[3].tag = Constants.TAG_CAMERA;
                     break;
+            }
+
+            ConvertUIRaycaster(type);
+        }
+
+        [SerializeField] private List<GraphicRaycaster> raycasters 
+            = new List<GraphicRaycaster>(Enum.GetNames(typeof(CameraType)).Length);
+
+        private void ConvertUIRaycaster(CameraType type)
+        {
+            for(int i=0; i<raycasters.Count; i++)
+            {
+                if (raycasters[i] == null) continue;
+
+                if (i == (int)type)
+                {
+                    raycasters[i].enabled = true;
+                }
+                else raycasters[i].enabled = false;
             }
         }
 

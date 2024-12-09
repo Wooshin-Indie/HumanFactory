@@ -512,6 +512,11 @@ MonoBehaviour:
   - {fileID: 8400000, guid: 24b5742926e2822428df2cb407823c82, type: 2}
   - {fileID: 8400000, guid: 971b7dc4e1e04cc45bc489f9455166f6, type: 2}
   - {fileID: 8400000, guid: ebc45bc1eaa815f4d849b6c6d4c3f0dc, type: 2}
+  raycasters:
+  - {fileID: 1535679772}
+  - {fileID: 1670235472}
+  - {fileID: 1519477065}
+  - {fileID: 0}
 --- !u!1 &308524416
 GameObject:
   m_ObjectHideFlags: 0
