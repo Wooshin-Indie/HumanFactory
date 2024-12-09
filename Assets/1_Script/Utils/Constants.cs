@@ -14,8 +14,10 @@ namespace HumanFactory
         public static string TAG_NONE = "Untagged";
         public static string TAG_CAMERA = "MainCamera";
 
+        public static readonly int LAYER_CLICKABLE = 1 << 10;
 
-        public static Color COLOR_TRANS = new Color(0f, 1f, 0f, 0f);
+        public static Color COLOR_TRANS = new Color(1f, 1f, 1f, 0f);
         public static Color COLOR_ARROW = new Color(0f, 1f, 0f, 1f);
+        public static Color COLOR_WHITE = new Color(1f, 1f, 1f, 1f);
     }
 }

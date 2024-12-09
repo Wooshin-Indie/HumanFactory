@@ -1,7 +1,10 @@
-using HumanFactory.Effects;
-using HumanFactory.Props;
+using System;
 using System.Collections.Generic;
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
+using UnityEngine.UI;
+using UnityEngine.VFX;
 
 namespace HumanFactory
 {
@@ -28,6 +31,8 @@ namespace HumanFactory
         private void Awake()
         {
             Init();
+
+            ConvertUIRaycaster(CameraType.Main);
         }
         #endregion
 
@@ -35,16 +40,8 @@ namespace HumanFactory
         [SerializeField] private List<Camera> cameras;
         [SerializeField] private List<RenderTexture> renderTextures;
 
-        private void Start()
-        {
-            
-        }
+        public List<Camera> Cameras { get { return cameras; } }
 
-        private void Update()
-        {
-            ShootRayCast();
-
-        }
 
         private CameraType currentCamType = CameraType.Main;
         public CameraType CurrentCamType { get => currentCamType; }
@@ -54,7 +51,6 @@ namespace HumanFactory
         /// CCTV를 구현하기 위한 RenderTexture를 끊고
         /// Tag를 mainCamera로 변경해야합니다.
         /// </summary>
-        /// <param name="type"></param>
         public void ChangeRenderCamera(CameraType type)
         {
             currentCamType = type;
@@ -62,63 +58,66 @@ namespace HumanFactory
                 case CameraType.Main:
                     cameras[0].gameObject.SetActive(true);
                     cameras[1].gameObject.SetActive(true);
+                    cameras[3].gameObject.SetActive(true);
                     cameras[1].targetTexture = renderTextures[0];
                     cameras[2].targetTexture = renderTextures[1];
+                    cameras[3].targetTexture = renderTextures[2];
                     cameras[0].tag = Constants.TAG_CAMERA;
                     cameras[1].tag = Constants.TAG_NONE;
                     cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_NONE;
                     break;
                 case CameraType.Menu:
                     cameras[0].gameObject.SetActive(false);
                     cameras[1].gameObject.SetActive(true);
+                    cameras[3].gameObject.SetActive(false);
                     cameras[1].targetTexture = null;
                     cameras[2].targetTexture = renderTextures[1];
                     cameras[0].tag = Constants.TAG_NONE;
                     cameras[1].tag = Constants.TAG_CAMERA;
                     cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_NONE;
                     break;
                 case CameraType.Game:
                     cameras[0].gameObject.SetActive(false);
                     cameras[1].gameObject.SetActive(false);
+                    cameras[3].gameObject.SetActive(false);
                     cameras[2].targetTexture = null;
                     cameras[0].tag = Constants.TAG_NONE;
                     cameras[1].tag = Constants.TAG_NONE;
                     cameras[2].tag = Constants.TAG_CAMERA;
+                    cameras[3].tag = Constants.TAG_NONE;
+                    break;
+                case CameraType.Setting:
+                    cameras[0].gameObject.SetActive(false);
+                    cameras[3].targetTexture = null;
+                    cameras[0].tag = Constants.TAG_NONE;
+                    cameras[1].tag = Constants.TAG_NONE;
+                    cameras[2].tag = Constants.TAG_NONE;
+                    cameras[3].tag = Constants.TAG_CAMERA;
                     break;
             }
-            lockRayCast = false;
+
+            ConvertUIRaycaster(type);
         }
 
-        private bool lockRayCast = false;
-        private ClickableScreenBase prevScreen = null;
-        private void ShootRayCast()
+        [SerializeField] private List<GraphicRaycaster> raycasters 
+            = new List<GraphicRaycaster>(Enum.GetNames(typeof(CameraType)).Length);
+
+        private void ConvertUIRaycaster(CameraType type)
         {
-            if (lockRayCast) return;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 20) 
-                && hit.transform.GetComponent<ClickableScreenBase>() != null)
+            for(int i=0; i<raycasters.Count; i++)
             {
-                prevScreen = hit.transform.GetComponent<ClickableScreenBase>();
-                prevScreen?.OnPointerEnter();
+                if (raycasters[i] == null) continue;
 
-                // INPUT - Mouse 0
-                if(Input.GetMouseButtonDown(0))
+                if (i == (int)type)
                 {
-                    lockRayCast = true;
-                    prevScreen?.OnPointerClick();
+                    raycasters[i].enabled = true;
                 }
-                if (Input.GetMouseButtonDown(1))
-                {
-                    prevScreen?.GetComponent<TVNoiseEffect>().MakeNoise();
-                }
-            }
-            else
-            {
-                prevScreen?.OnPointerExit();
+                else raycasters[i].enabled = false;
             }
         }
+
     }
 }
 

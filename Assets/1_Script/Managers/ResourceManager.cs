@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace HumanFactory.Managers
+namespace HumanFactory.Manager
 {
     /*
      * 게임의 리소스를 관리하는 매니저입니다.
@@ -16,12 +16,18 @@ namespace HumanFactory.Managers
         /** Json file Paths**/
         private string stageInfoPath = "JsonData/StageData";
 
+        /** Audio source Paths **/
+        private string bgmPath = "Sounds/BGM";
+
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
+        private AudioClip[] audioSources;
 
         public void Init()
         {
             //stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
+            audioSources = Resources.LoadAll<AudioClip>(bgmPath);
+            Debug.Log(audioSources.Length);
         }
 
         /** Getter Functions **/
@@ -44,6 +50,16 @@ namespace HumanFactory.Managers
             return stageInfos.stageInfo.Length;
         }
 
+        public AudioClip GetBGM(BGMType type)
+        {
+            if (audioSources.Length <= (int)type)
+            {
+                Debug.LogError("Resource Error : There is not enough bgms..");
+                return null;
+            }
+
+            return audioSources[(int)type];
+        }
 
     }
 }

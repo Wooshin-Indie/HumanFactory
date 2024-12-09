@@ -1,0 +1,67 @@
+
+using JetBrains.Annotations;
+using System;
+using UnityEngine;
+
+namespace HumanFactory.Manager
+{
+    /// <summary>
+    /// 소리를 내는 매니저입니다.
+    /// 게임 실행 시 동적으로 AudioSource를 생성합니다.
+    /// audioClip 은 ResourceManager에서 동적으로 로드합니다.
+    /// </summary>
+    public class SoundManager
+    {
+        private AudioSource[] audioSources = new AudioSource[(int)Enum.GetNames(typeof(SoundType)).Length];
+
+        private int currentBGM = (int)BGMType.None;
+
+        public void init()
+        {
+            GameObject root = GameObject.Find("@SoundManager");
+            if (root == null)
+            {
+                root = new GameObject { name = "@SoundManager" };
+                UnityEngine.Object.DontDestroyOnLoad(root);
+
+                string[] soundTypeNames = Enum.GetNames(typeof(SoundType));
+                for(int i=0; i<soundTypeNames.Length; i++)
+                {
+                    GameObject go = new GameObject { name = soundTypeNames[i] };
+                    audioSources[i] = go.AddComponent<AudioSource>();
+                    go.transform.parent = root.transform;
+                }
+            }
+
+            audioSources[(int)SoundType.Bgm].loop = true;
+        }
+
+        // path들은 Constants에서 관리됩니다.
+        public void PlaySound(SoundType soundType, SFXType sfType)
+        {
+            // TODO - 사운드 재생
+            // PlayOneShot 사용
+        }
+
+        // TODO - 소리 바꿀때 치지직- 이런 효과음 있으면 좋을듯?
+        // TODO - BGM 정해야됨
+        public void ChangeBGM(bool isNext)
+        {
+            int count = Enum.GetNames(typeof(BGMType)).Length;
+            currentBGM = isNext ? ((currentBGM + 1) % count)
+                      : (currentBGM - 1 < 0 ? count - 1 : currentBGM - 1);
+
+            if (currentBGM == (int)BGMType.None)   
+            {
+                audioSources[(int)SoundType.Bgm].Stop();
+                return;
+            }
+
+            audioSources[(int)SoundType.Bgm].clip = Managers.Resource.GetBGM((BGMType)currentBGM);
+
+            if (!audioSources[(int)SoundType.Bgm].isPlaying)
+                audioSources[(int)SoundType.Bgm].Play();
+        }
+
+    }
+}
