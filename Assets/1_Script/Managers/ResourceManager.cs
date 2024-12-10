@@ -25,9 +25,8 @@ namespace HumanFactory.Manager
 
         public void Init()
         {
-            //stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
+            stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
             audioSources = Resources.LoadAll<AudioClip>(bgmPath);
-            Debug.Log(audioSources.Length);
         }
 
         /** Getter Functions **/

@@ -35,7 +35,7 @@ namespace HumanFactory
     public class StageInfo
     {
         public int stageId;
-
+        public string stageName;
         // TODO : 스테이지에 따라 다른 데이터를 추가해야합니다.
     }
     #endregion

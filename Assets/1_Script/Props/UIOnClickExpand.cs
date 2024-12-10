@@ -1,29 +1,27 @@
+using HumanFactory;
+using HumanFactory.Manager;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIOnClickExpand : MonoBehaviour
 {
+
+    [SerializeField] private TextMeshProUGUI stageName;
+    
     private Vector2 originSize;
     private Vector2 expandedSize;
-    
+
     private void Start()
     {
-        
         originSize = GetComponent<RectTransform>().sizeDelta;
         expandedSize = new Vector2(originSize.x, originSize.y * 2f);
     }
-    /*
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        transform.localScale = bigScale;
-    }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void SetStageId(int id)
     {
-        transform.localScale = originScale;
+        stageName.text = Managers.Resource.GetStageInfo(id).stageName;
     }
-    */
-
 
     public void Expand()
     {
