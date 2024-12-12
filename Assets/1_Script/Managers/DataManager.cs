@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.IO;
+using System.Security.Cryptography;
+using JetBrains.Annotations;
+using UnityEditor;
 
 namespace HumanFactory.Manager
 {
@@ -22,12 +25,16 @@ namespace HumanFactory.Manager
         private SettingData settingData = null;
         private GameplayData gameplayData = null;
 
+        /** Properties (for outer uses) **/
+        public SettingData BasicSettingData { get { return settingData; } }
+
         public void Init()
         {
             settingDataPath = Application.persistentDataPath + "/SettingData.json";
             playDataPath = Application.persistentDataPath + "/PlayData.json";
 
             LoadAll();
+            SetSettings();
         }
 
         /** Save/Load Functions **/
@@ -58,8 +65,6 @@ namespace HumanFactory.Manager
             else
             {
                 data = new T();
-
-                Debug.Log(data.ToString());
             }
         }
 
@@ -70,6 +75,12 @@ namespace HumanFactory.Manager
             // TODO : GameplayData 에 진행상황 bool 배열로 저장해둬야합니다.
         }
 
+        // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.
+        private void SetSettings()
+        {
+            Managers.Sound.BgmVolume = settingData.BgmVolume;
+            Managers.Sound.SfxVolume = settingData.SfxVolume;
+        }
     }
 
 

@@ -1,5 +1,3 @@
-
-using JetBrains.Annotations;
 using System;
 using UnityEngine;
 
@@ -16,7 +14,15 @@ namespace HumanFactory.Manager
 
         private int currentBGM = (int)BGMType.None;
 
-        public void init()
+        private float sfxVolume;
+        private float bgmVolume;
+
+        /** Properties **/
+        public float SfxVolume { get { return sfxVolume; } set {  sfxVolume = value; } }
+        public float BgmVolume { get { return bgmVolume; } set {  bgmVolume = value; } }
+
+
+        public void Init()
         {
             GameObject root = GameObject.Find("@SoundManager");
             if (root == null)

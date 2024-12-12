@@ -41,7 +41,8 @@ namespace HumanFactory.Manager
             }
 
             s_instance._resource.Init();
-            s_instance._sound.init();
+            s_instance._sound.Init();
+            s_instance._data.Init();
         }
 
 

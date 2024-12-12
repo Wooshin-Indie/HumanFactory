@@ -70,4 +70,13 @@ namespace HumanFactory
     {
 
     }
+
+    public enum InputMode   // InputMode in GameScene
+    {
+        None = 0,
+        Pad,
+        Building,
+        Circuit,
+        Running
+    }
 }
