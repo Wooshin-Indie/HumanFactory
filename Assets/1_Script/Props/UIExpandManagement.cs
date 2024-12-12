@@ -1,19 +1,23 @@
 using DG.Tweening;
 using HumanFactory.Effects;
+using HumanFactory.Util.Effect;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIExpandManagement : MonoBehaviour
 {
     private List<GameObject> stages = new List<GameObject>();
 
+    [Header("Interact Effects")]
     [SerializeField] private GameObject stagePanelPrefab;
     [SerializeField] private Transform content;
     [SerializeField] private float lerpDuration;
+
+    [Header("Additional Subjects")]
     [SerializeField] private TVNoiseEffect noiseEffect;
+    [SerializeField] private TextMeshProUGUI stageDescript;
 
 
     private Tweener scrollTweener;
@@ -41,6 +45,9 @@ public class UIExpandManagement : MonoBehaviour
 
     private void OnClickStages(int index)
     {
+        if (typeCoroutine != null) StopCoroutine(typeCoroutine);
+        stageDescript.text = "";
+
         if (currentExpandedPanel == -1) // 아무것도 확대 안돼있음
         {
             stages[index].GetComponent<UIOnClickExpand>().Expand();
@@ -74,5 +81,17 @@ public class UIExpandManagement : MonoBehaviour
             maxPosition);
 
         scrollTweener = content.GetComponent<RectTransform>().DOAnchorPosY(setPosition, duration);
+
+
+        StartTypingDescript(index);
+    }
+
+    private Coroutine typeCoroutine = null;
+    private void StartTypingDescript(int index)
+    {
+        stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
+        // 이건 나중에 ResourceManager나 Localization에서 받아옴
+        string tmpDescript = "Stage #1 - Mov\r\n\r\nThis is your first task. \r\nIt's very simple, but you must not take it lightly. \r\nThe people you see on the screen will obey your commands without question. \r\nIf you tell them to go, they will go... and if you tell them to die, they will die\r\n";
+        typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, tmpDescript, 0.01f));
     }
 }
