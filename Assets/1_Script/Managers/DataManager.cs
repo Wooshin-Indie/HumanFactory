@@ -34,7 +34,7 @@ namespace HumanFactory.Manager
             playDataPath = Application.persistentDataPath + "/PlayData.json";
 
             LoadAll();
-            SetSettings();
+            ApplyBasicSettings();
         }
 
         /** Save/Load Functions **/
@@ -76,7 +76,7 @@ namespace HumanFactory.Manager
         }
 
         // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.
-        private void SetSettings()
+        private void ApplyBasicSettings()
         {
             Managers.Sound.BgmVolume = settingData.BgmVolume;
             Managers.Sound.SfxVolume = settingData.SfxVolume;

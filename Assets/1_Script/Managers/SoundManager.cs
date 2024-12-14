@@ -14,13 +14,27 @@ namespace HumanFactory.Manager
 
         private int currentBGM = (int)BGMType.None;
 
-        private float sfxVolume;
-        private float bgmVolume;
 
         /** Properties **/
-        public float SfxVolume { get { return sfxVolume; } set {  sfxVolume = value; } }
-        public float BgmVolume { get { return bgmVolume; } set {  bgmVolume = value; } }
-
+        public float SfxVolume
+        {
+            get { return audioSources[(int)SoundType.Sfx].volume; }
+            set
+            {
+                audioSources[(int)SoundType.Sfx].volume = value;
+                Managers.Data.BasicSettingData.SfxVolume = value;
+            }
+        }
+        public float BgmVolume
+        {
+            get { return audioSources[(int)SoundType.Bgm].volume; }
+            set
+            {
+                audioSources[(int)SoundType.Bgm].volume = value;
+                Managers.Data.BasicSettingData.BgmVolume = value;
+            }
+        }
+        public int CurrentBGM { get { return currentBGM; } }
 
         public void Init()
         {
@@ -31,7 +45,7 @@ namespace HumanFactory.Manager
                 UnityEngine.Object.DontDestroyOnLoad(root);
 
                 string[] soundTypeNames = Enum.GetNames(typeof(SoundType));
-                for(int i=0; i<soundTypeNames.Length; i++)
+                for (int i = 0; i < soundTypeNames.Length; i++)
                 {
                     GameObject go = new GameObject { name = soundTypeNames[i] };
                     audioSources[i] = go.AddComponent<AudioSource>();
@@ -41,6 +55,7 @@ namespace HumanFactory.Manager
 
             audioSources[(int)SoundType.Bgm].loop = true;
         }
+
 
         // path들은 Constants에서 관리됩니다.
         public void PlaySound(SoundType soundType, SFXType sfType)
@@ -57,7 +72,7 @@ namespace HumanFactory.Manager
             currentBGM = isNext ? ((currentBGM + 1) % count)
                       : (currentBGM - 1 < 0 ? count - 1 : currentBGM - 1);
 
-            if (currentBGM == (int)BGMType.None)   
+            if (currentBGM == (int)BGMType.None)
             {
                 audioSources[(int)SoundType.Bgm].Stop();
                 return;
