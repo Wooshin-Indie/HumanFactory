@@ -1,5 +1,4 @@
 using HumanFactory.Manager;
-using System.Collections;
 using UnityEngine;
 
 namespace HumanFactory.Controller

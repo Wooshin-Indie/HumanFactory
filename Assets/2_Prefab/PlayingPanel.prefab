@@ -331,9 +331,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4f8c4c95424c1747a7a1fa67d6e5eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayButton: {fileID: 6797253342628343217}
-  PauseButton: {fileID: 908432127873897848}
-  SpeedUp2Button: {fileID: 2149384586491998946}
+  playButton: {fileID: 9076793935367694103}
+  pauseButton: {fileID: 5210354621727137009}
+  speedUp2Button: {fileID: 4332379435308008974}
 --- !u!1 &6797253342628343217
 GameObject:
   m_ObjectHideFlags: 0

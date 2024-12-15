@@ -36,6 +36,7 @@ namespace HumanFactory.Manager
         }
         public int CurrentBGM { get { return currentBGM; } }
 
+
         public void Init()
         {
             GameObject root = GameObject.Find("@SoundManager");

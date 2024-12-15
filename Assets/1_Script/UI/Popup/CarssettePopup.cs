@@ -7,7 +7,7 @@ namespace HumanFactory.UI
 {
     public class CarssettePopup : PopUpUIBase
     {
-        [SerializeField] private PopUpUIBase volumeSetUI;
+        [SerializeField] private PopUpUIBase volumeSetUI; // 오른쪽에서 나옴
         [SerializeField] private TextMeshProUGUI musicNameText;
 
         // Editor 상에서 Button에 연결
