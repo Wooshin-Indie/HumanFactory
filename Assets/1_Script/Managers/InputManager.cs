@@ -91,6 +91,8 @@ namespace HumanFactory.Manager
         {
             if (inputMode != InputMode.Building) return;
 
+            ClickMapGridInBuildingMode();
+
         }
         private void OnGameSceneCircuitMode()
         {
@@ -133,7 +135,7 @@ namespace HumanFactory.Manager
         private void ClickOutScene()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 LockMouseInput();
                 Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
@@ -156,6 +158,39 @@ namespace HumanFactory.Manager
 
                 MapManager.Instance.OnClickMapGrid(curMousePos.x, curMousePos.y);
             }
+        }
+
+        private BuildingType currentSelectedBuilding = 0;
+        public Action<BuildingType> OnBuildingTypeChanged { get; set; }
+
+        public void ChangeCurSelectedBuilding(BuildingType type)
+        {
+            currentSelectedBuilding = type;
+            OnBuildingTypeChanged?.Invoke(type);
+        }
+
+        /// <summary>
+        /// GameScene - Layer 2 일때 입력을 받음.
+        /// 건물 설치
+        /// </summary>
+        private void ClickMapGridInBuildingMode()
+        {
+            if (!IsMouseInputEnabled()) return;
+            if (Input.GetMouseButtonDown(0))
+            {
+                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+
+                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
+            }
+            else if (Input.GetMouseButtonDown(1)) {
+                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+
+                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, BuildingType.None);
+
+            }
+
         }
 
         public Action<InputMode> OnModeChangedAction { get; set; }

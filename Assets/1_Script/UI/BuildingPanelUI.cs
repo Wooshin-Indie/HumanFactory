@@ -1,6 +1,8 @@
 using DG.Tweening;
 using HumanFactory.Manager;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HumanFactory.UI {
     public class BuildingPanelUI : MonoBehaviour
@@ -10,8 +12,16 @@ namespace HumanFactory.UI {
         [SerializeField] private float lerpDuration;
         [SerializeField] private Ease easeType;
 
+
+        [Header("Content Setter")]
+        [SerializeField] private Transform content;
+        [SerializeField] private GameObject buildingItemPrefab;
+
+
         private Vector2 originalPos;
         private Vector2 hidePos;
+
+        private string[] buildingTypes;
 
         private void Start()
         {
@@ -22,6 +32,9 @@ namespace HumanFactory.UI {
 
             Managers.Input.OnModeChangedAction -= OnModeChanged;
             Managers.Input.OnModeChangedAction += OnModeChanged;
+
+            buildingTypes = Enum.GetNames(typeof(BuildingType));
+            SetBanner();
         }
 
         private void OnModeChanged(InputMode mode)
@@ -48,5 +61,16 @@ namespace HumanFactory.UI {
                 .SetEase(easeType);
         }
 
+        /// <summary>
+        /// Start 에서 호출되어야 합니다.
+        /// </summary>
+        private void SetBanner()
+        {
+            for(int i =0; i<buildingTypes.Length-1; i++)
+            {
+                GameObject go = Instantiate(buildingItemPrefab, content);
+                go.GetComponent<BuildingPanelItem>().SetItemInfo(i);
+            }
+        }
     }
 }

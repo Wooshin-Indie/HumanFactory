@@ -12,6 +12,7 @@ namespace HumanFactory.Manager
     {
         private int posX, posY;
         private SpriteRenderer arrowSprite;
+        private SpriteRenderer buildingSprite;
         private PadType padType = PadType.DirNone;
         private BuildingType buildingType = 0;
         private ButtonInfos buttonInfo = new ButtonInfos(null);
@@ -29,13 +30,16 @@ namespace HumanFactory.Manager
 
         private PadType originPadType = 0;
 
-        public MapGrid(int posX, int posY, SpriteRenderer arrow)
+        public MapGrid(int posX, int posY, SpriteRenderer arrow, SpriteRenderer building)
         {
             this.posX = posX;
             this.posY = posY;
-            arrowSprite = arrow; 
+            arrowSprite = arrow;
+            buildingSprite = building;
             padType = PadType.DirNone;
             arrow.color = Constants.COLOR_TRANS;
+            building.sprite = null;
+            building.color = Color.white;
         }
 
         public void GetPadParameter(out int dir)
@@ -62,7 +66,14 @@ namespace HumanFactory.Manager
             }
         }
 
-
+        public void SetBuilding(BuildingType type)
+        {
+            buildingType = type;
+            if (type != BuildingType.None)
+                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+            else
+                buildingSprite.sprite = null;
+        }
 
         public void OnRelease()
         {
@@ -148,8 +159,9 @@ namespace HumanFactory.Manager
                 for (int j = 0; j < mapSize.y; j++)
                 {
                     programMap[i, j] = new MapGrid(i, j, 
-                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity)
-                        .GetComponent<SpriteRenderer>());
+                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>(),
+                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
+                        );
                 }
             }
 
@@ -178,6 +190,11 @@ namespace HumanFactory.Manager
         {
             if (!CheckBoundary(x, y)) return;
             programMap[x, y].OnClickRotate();
+        }
+        public void OnClickMapGridInBuildingMode(int x, int y, BuildingType type)
+        {
+            if (!CheckBoundary(x, y)) return;
+            programMap[x, y].SetBuilding(type);
         }
 
         [Header("Game Cycle")]
