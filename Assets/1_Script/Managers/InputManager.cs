@@ -135,7 +135,7 @@ namespace HumanFactory.Manager
         private void ClickOutScene()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 LockMouseInput();
                 Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
@@ -183,6 +183,14 @@ namespace HumanFactory.Manager
 
                 MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             }
+            else if (Input.GetMouseButtonDown(1)) {
+                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+
+                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, BuildingType.None);
+
+            }
+
         }
 
         public Action<InputMode> OnModeChangedAction { get; set; }

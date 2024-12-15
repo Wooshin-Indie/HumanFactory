@@ -69,7 +69,10 @@ namespace HumanFactory.Manager
         public void SetBuilding(BuildingType type)
         {
             buildingType = type;
-            buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+            if (type != BuildingType.None)
+                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+            else
+                buildingSprite.sprite = null;
         }
 
         public void OnRelease()
