@@ -1,27 +1,17 @@
-
 using HumanFactory.Props;
+using System;
 using UnityEngine;
 
 namespace HumanFactory.Manager
 {
     public class InputManager
     {
+        private InputMode inputMode = InputMode.None;
         private Ray cameraRay;
+
         public void OnUpdate()
         {
             cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            // HACK - SoundManager 테스트용 입력입니다.
-            // 나중에 UI에서 호출하도록 변경해야합니다.
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                Managers.Sound.ChangeBGM(true);
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                Managers.Sound.ChangeBGM(false);
-            }
 
             OnMainScene();
             OnMenuScene();
@@ -29,6 +19,7 @@ namespace HumanFactory.Manager
             OnSettingScene();
         }
 
+        #region MouseInputLock
         private int mouseInputLock = 0;
         public void LockMouseInput()
         {
@@ -45,17 +36,10 @@ namespace HumanFactory.Manager
         {
             return mouseInputLock <= 0;
         }
+        #endregion
 
         private Vector3 worldPos;
         private Vector2Int curMousePos;
-        private void OnGameScene()
-        {
-            if (GameManagerEx.Instance.CurrentCamType != CameraType.Game) return;
-            
-            ClickMapGrid();
-            ClickOutScene();
-        }
-
         private void OnMenuScene()
         {
             if (GameManagerEx.Instance.CurrentCamType != CameraType.Menu) return;
@@ -76,12 +60,53 @@ namespace HumanFactory.Manager
             }
         }
 
+        private void OnGameScene()
+        {
+            if (GameManagerEx.Instance.CurrentCamType != CameraType.Game) return;
+
+            ChangeInputMode();
+
+            OnGameSceneNoneMode();
+            OnGameScenePadMode();
+            OnGameSceneBuildingMode();
+            OnGameSceneCircuitMode();
+
+            ClickOutScene();
+        }
+
+        private void OnGameSceneNoneMode()
+        {
+            if (inputMode != InputMode.None) return;
+
+        }
+
+        private void OnGameScenePadMode()
+        {
+            if (inputMode != InputMode.Pad) return;
+
+            ClickMapGrid();
+        }
+
+        private void OnGameSceneBuildingMode()
+        {
+            if (inputMode != InputMode.Building) return;
+
+            ClickMapGridInBuildingMode();
+
+        }
+        private void OnGameSceneCircuitMode()
+        {
+            if (inputMode != InputMode.Circuit) return;
+        }
+
         private void OnSettingScene()
         {
             if (GameManagerEx.Instance.CurrentCamType != CameraType.Setting) return;
 
             ClickOutScene();
         }
+
+        /* Input Modules */
 
         private ClickableBase prevScreen = null;
         private void InteractClickableObject()
@@ -110,10 +135,13 @@ namespace HumanFactory.Manager
         private void ClickOutScene()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 LockMouseInput();
                 Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
+
+                inputMode = InputMode.None;
+                OnModeChangedAction.Invoke(inputMode);
             }
         }
 
@@ -130,6 +158,69 @@ namespace HumanFactory.Manager
 
                 MapManager.Instance.OnClickMapGrid(curMousePos.x, curMousePos.y);
             }
+        }
+
+        private BuildingType currentSelectedBuilding = 0;
+        public Action<BuildingType> OnBuildingTypeChanged { get; set; }
+
+        public void ChangeCurSelectedBuilding(BuildingType type)
+        {
+            currentSelectedBuilding = type;
+            OnBuildingTypeChanged?.Invoke(type);
+        }
+
+        /// <summary>
+        /// GameScene - Layer 2 일때 입력을 받음.
+        /// 건물 설치
+        /// </summary>
+        private void ClickMapGridInBuildingMode()
+        {
+            if (!IsMouseInputEnabled()) return;
+            if (Input.GetMouseButtonDown(0))
+            {
+                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+
+                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
+            }
+            else if (Input.GetMouseButtonDown(1)) {
+                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+
+                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, BuildingType.None);
+
+            }
+
+        }
+
+        public Action<InputMode> OnModeChangedAction { get; set; }
+
+        // TODO - GameScene에서 UI 띄우는 함수 필요,
+        // none일떄는 시뮬레이션 실행하는 UI 도 띄워줘야됨
+        private void ChangeInputMode()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1) && inputMode != InputMode.None)
+            {
+                inputMode = InputMode.None;
+            }
+            else if(Input.GetKeyDown(KeyCode.Alpha2) && inputMode != InputMode.Pad)
+            {
+                inputMode = InputMode.Pad;
+            }
+            else if(Input.GetKeyDown(KeyCode.Alpha3) && inputMode != InputMode.Building)
+            {
+                inputMode = InputMode.Building;
+            }
+            else if(Input.GetKeyDown(KeyCode.Alpha4) && inputMode != InputMode.Circuit)
+            {
+                inputMode = InputMode.Circuit;
+            }
+            else { return; }
+
+            Debug.Log("InputMode Changed to : " + inputMode.ToString());
+
+            OnModeChangedAction.Invoke(inputMode);
+
         }
 
     }

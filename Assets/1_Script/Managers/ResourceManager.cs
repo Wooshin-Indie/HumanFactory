@@ -19,14 +19,22 @@ namespace HumanFactory.Manager
         /** Audio source Paths **/
         private string bgmPath = "Sounds/BGM";
 
+        private string buildingPressedPath = "Sprites/Buildings/Pressed";
+        private string buildingReleasedPath = "Sprites/Buildings/Released";
+
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
         private AudioClip[] audioSources;
+        private Sprite[] buildingPressedSprites;
+        private Sprite[] buildingReleasedSprites;
 
         public void Init()
         {
             stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
             audioSources = Resources.LoadAll<AudioClip>(bgmPath);
+
+            buildingPressedSprites = Resources.LoadAll<Sprite>(buildingPressedPath);
+            buildingReleasedSprites = Resources.LoadAll<Sprite>(buildingReleasedPath);
         }
 
         /** Getter Functions **/
@@ -53,11 +61,17 @@ namespace HumanFactory.Manager
         {
             if (audioSources.Length <= (int)type)
             {
-                Debug.LogError("Resource Error : There is not enough bgms..");
+                Debug.Log("Resource Error : There is not enough bgms..");
                 return null;
             }
 
             return audioSources[(int)type];
+        }
+
+        public Sprite GetBuildingSprite(BuildingType type, bool isPressed)
+        {
+            return (isPressed ? buildingPressedSprites[(int)type] :
+                buildingReleasedSprites[(int)type]);
         }
 
     }

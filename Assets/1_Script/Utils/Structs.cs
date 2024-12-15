@@ -43,17 +43,25 @@ namespace HumanFactory
     #region DataManager Containers
     [Serializable]
     public class SettingData
-    {     // Setting 저장 (소리 크기, 해상도..)
+    {
 
         public SettingData()
         {
             sfxVolume = 1f;
             bgmVolume = 1f;
+            languageIndex = 0;
+            isRevealBlood = true;
         }
 
-        public float sfxVolume;
-        public float bgmVolume;
+        private float sfxVolume;
+        private float bgmVolume;
+        private bool isRevealBlood;
+        private int languageIndex;
 
+        public float SfxVolume { get=> sfxVolume; set=> sfxVolume = value; }
+        public float BgmVolume { get=> bgmVolume; set=> bgmVolume = value; }
+        public bool IsRevealBlood { get=> isRevealBlood; set=> isRevealBlood = value; }
+        public int LanguageIndex { get=> languageIndex; set=> languageIndex = value; }
         // etc...
     }
 

@@ -19,7 +19,11 @@ namespace HumanFactory
 
     public enum BuildingType
     {
-
+        None = -1,
+        Add1 = 0,
+        Sub1,
+        Jump,
+        Button,
     }
 
     public enum CameraType
@@ -70,4 +74,14 @@ namespace HumanFactory
     {
 
     }
+
+    public enum InputMode   // InputMode in GameScene
+    {
+        None = 0,
+        Pad,
+        Building,
+        Circuit,
+        Running
+    }
+
 }
