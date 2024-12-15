@@ -19,7 +19,11 @@ namespace HumanFactory
 
     public enum BuildingType
     {
-
+        None = -1,
+        Add1 = 0,
+        Sub1,
+        Jump,
+        Button,
     }
 
     public enum CameraType
@@ -79,4 +83,5 @@ namespace HumanFactory
         Circuit,
         Running
     }
+
 }

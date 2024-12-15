@@ -41,9 +41,6 @@ namespace HumanFactory.UI
             volumeSetUI.CloseWindow();
         }
 
-        private int currentSelectedIdx = 0;
-
-
         private void UpdateBGMText()
         {
             AudioClip clip = Managers.Resource.GetBGM((BGMType)Managers.Sound.CurrentBGM);
