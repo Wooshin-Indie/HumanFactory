@@ -52,7 +52,7 @@ namespace HumanFactory
     public enum SoundType 
     { 
         Bgm = 0,
-        Sfx = 0,
+        Sfx = 1,
     }
 
     // HACK - 임시로 설정해둔 Enum
@@ -80,7 +80,6 @@ namespace HumanFactory
         None = 0,
         Pad,
         Building,
-        Circuit,
         Running
     }
 

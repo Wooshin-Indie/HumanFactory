@@ -1,5 +1,6 @@
 using HumanFactory.Manager;
 using System;
+using UnityEngine;
 
 namespace HumanFactory
 {
@@ -8,15 +9,15 @@ namespace HumanFactory
 
     public class ButtonInfos
     {
-        public MapGrid linkedGrid;
+        public Vector2Int linkedGridPos;
         public ButtonType buttonType;
         public PadType dirType;
 
-        public ButtonInfos(MapGrid linkedGrid,
+        public ButtonInfos(Vector2Int linkedGrid,
             ButtonType buttonType = ButtonType.NewInput, 
-            PadType dirType = PadType.DirUp)
+            PadType dirType = PadType.DirNone)
         {
-            this.linkedGrid = linkedGrid;
+            this.linkedGridPos = linkedGrid;
             this.buttonType = buttonType;
             this.dirType = dirType;
         }

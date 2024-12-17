@@ -19,5 +19,6 @@ namespace HumanFactory
         public static Color COLOR_TRANS = new Color(1f, 1f, 1f, 0f);
         public static Color COLOR_ARROW = new Color(0f, 1f, 0f, 1f);
         public static Color COLOR_WHITE = new Color(1f, 1f, 1f, 1f);
+        public static Color COLOR_INVISIBLE = new Color(1f, 1f, 1f, 0.3f);
     }
 }

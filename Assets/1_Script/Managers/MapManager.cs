@@ -1,3 +1,4 @@
+using DG.Tweening;
 using HumanFactory.Controller;
 using System;
 using System.Collections;
@@ -14,12 +15,14 @@ namespace HumanFactory.Manager
         private SpriteRenderer arrowSprite;
         private SpriteRenderer buildingSprite;
         private PadType padType = PadType.DirNone;
-        private BuildingType buildingType = 0;
-        private ButtonInfos buttonInfo = new ButtonInfos(null);
+        private BuildingType buildingType = BuildingType.None;
+        private ButtonInfos buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
 
         public PadType PadType { get => padType; set => padType = value; }
         public BuildingType BuildingType { get => buildingType; set => buildingType = value; }
         public ButtonInfos ButtonInfo { get=>buttonInfo; }
+
+        public Sprite BuildingSprite { get => buildingSprite.sprite; }
 
         private bool isBlocked = false;
         private bool isPressed = false;
@@ -115,6 +118,25 @@ namespace HumanFactory.Manager
         {
             isBlocked = false;
         }
+
+        public void SetVisibility(InputMode mode)
+        {
+            float duration = 0.5f;
+            switch (mode) { 
+                case InputMode.None:
+                    if(padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_ARROW, duration);
+                    buildingSprite.DOColor(Constants.COLOR_WHITE, duration);
+                    break;
+                case InputMode.Pad:
+                    if (padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_ARROW, duration);
+                    buildingSprite.DOColor(Constants.COLOR_INVISIBLE, duration);
+                    break;
+                case InputMode.Building:
+                    if (padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_INVISIBLE, duration);
+                    buildingSprite.DOColor(Constants.COLOR_WHITE, duration);
+                    break;
+            }
+        }
     }
 
     public class MapManager : MonoBehaviour
@@ -150,9 +172,15 @@ namespace HumanFactory.Manager
         [SerializeField] private GameObject arrowPrefab;
         [SerializeField] private GameObject humanPrefab;
 
+        [Header("Circuit")]
+        [SerializeField] private SpriteRenderer buttonRect;
+        [SerializeField] private SpriteRenderer tileRect;
 
         private void Start()
         {
+            buttonRect.gameObject.SetActive(false);
+            tileRect.gameObject.SetActive(false);
+
             programMap = new MapGrid[mapSize.x, mapSize.y];
             for (int i = 0; i < mapSize.x; i++)
             {
@@ -164,8 +192,6 @@ namespace HumanFactory.Manager
                         );
                 }
             }
-
-
 
             secFuncs.Add(instance.ExecuteAtOneThird);
             secFuncs.Add(instance.ExecuteAtHalfTime);
@@ -186,6 +212,38 @@ namespace HumanFactory.Manager
         {
             return (x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y);
         }
+        public void OnHoverMapGrid(int x, int y)
+        {
+            if (!CheckBoundary(x, y) || programMap[x, y].BuildingType == BuildingType.None)
+            {
+                buttonRect.gameObject.SetActive(false);
+                tileRect.gameObject.SetActive(false);
+            }
+            else
+            {
+                buttonRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+                buttonRect.sprite = programMap[x, y].BuildingSprite;
+                buttonRect.gameObject.SetActive(true);
+                
+                if (programMap[x, y].BuildingType != BuildingType.Button
+                && programMap[x, y].BuildingType != BuildingType.Jump)
+                {
+                    tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+                    tileRect.gameObject.SetActive(true);
+                }
+                else if (programMap[x, y].ButtonInfo.linkedGridPos.x < 0)
+                {
+                    tileRect.gameObject.SetActive(false);
+                }
+                else
+                {
+                    tileRect.transform.position = new Vector3(programMap[x, y].ButtonInfo.linkedGridPos.x,
+                        programMap[x, y].ButtonInfo.linkedGridPos.y,
+                        Constants.HUMAN_POS_Z);
+                    tileRect.gameObject.SetActive(true);
+                }
+            }
+        }
         public void OnClickMapGrid(int x, int y)
         {
             if (!CheckBoundary(x, y)) return;
@@ -195,6 +253,13 @@ namespace HumanFactory.Manager
         {
             if (!CheckBoundary(x, y)) return;
             programMap[x, y].SetBuilding(type);
+        }
+
+        public void OnInputModeChanged(InputMode mode)
+        {
+            buttonRect.gameObject.SetActive(false);
+            tileRect.gameObject.SetActive(false);
+            ChangeMapVisibility(mode);
         }
 
         [Header("Game Cycle")]
@@ -338,6 +403,17 @@ namespace HumanFactory.Manager
                 controller.ExecuteOperand();
                 // TODO - 맵과 상호작용하여 연산해야됨
                 controller.OnFinPerCycle();
+            }
+        }
+
+        private void ChangeMapVisibility(InputMode mode)
+        {
+            for (int i = 0; i < mapSize.x; i++)
+            {
+                for (int j = 0; j < mapSize.y; j++)
+                {
+                    programMap[i, j].SetVisibility(mode);
+                }
             }
         }
     }
