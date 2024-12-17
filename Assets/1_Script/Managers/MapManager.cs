@@ -202,6 +202,9 @@ namespace HumanFactory.Manager
         }
 
         private bool isCycleRunning = false;
+        private bool isCircuiting = false;
+        private Vector2Int circuitingButtonPos;
+        public bool IsCircuiting { get => isCircuiting; }
         private void Update()
         {
             if (!isCycleRunning)
@@ -214,6 +217,20 @@ namespace HumanFactory.Manager
         }
         public void OnHoverMapGrid(int x, int y)
         {
+            if (isCircuiting)
+            {
+                
+                buttonRect.transform.position = new Vector3(circuitingButtonPos.x,
+                    circuitingButtonPos.y, Constants.HUMAN_POS_Z);
+                tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+                if (circuitingButtonPos.x != x || circuitingButtonPos.y != y)
+                    tileRect.gameObject.SetActive(true);
+                else
+                    tileRect.gameObject.SetActive(false);
+
+                return;
+            }
+
             if (!CheckBoundary(x, y) || programMap[x, y].BuildingType == BuildingType.None)
             {
                 buttonRect.gameObject.SetActive(false);
@@ -244,6 +261,30 @@ namespace HumanFactory.Manager
                 }
             }
         }
+
+        public void OnClickMapGridInNoneMode(int x, int y)
+        {
+            if (!CheckBoundary(x, y)) return;
+            if (isCircuiting)   // 회로작업 중이면 -> 클릭했을 때 전에 클릭했던 버튼과 연결 
+            {
+                if (circuitingButtonPos.x == x && circuitingButtonPos.y == y) return;
+
+                programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonInfo.linkedGridPos 
+                    = new Vector2Int(x, y);
+                isCircuiting = false;
+            }
+            else
+            {
+                // TODO - UI 띄우기
+                if (programMap[x, y].BuildingType != BuildingType.Jump
+                    && programMap[x, y].BuildingType != BuildingType.Button) return;
+
+                // HACK : 임시로 circuiting 시험용 코드입니다.
+                isCircuiting = true;
+                circuitingButtonPos = new Vector2Int(x, y);
+            }
+        }
+
         public void OnClickMapGrid(int x, int y)
         {
             if (!CheckBoundary(x, y)) return;

@@ -80,6 +80,12 @@ namespace HumanFactory.Manager
         {
             if (inputMode != InputMode.None) return;
             MapManager.Instance.OnHoverMapGrid(curMousePos.x, curMousePos.y);
+
+            if (!IsMouseInputEnabled()) return;
+            if (Input.GetMouseButtonDown(0))
+            {
+                MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y);
+            }
         }
 
         private void OnGameScenePadMode()

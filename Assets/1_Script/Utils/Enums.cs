@@ -79,8 +79,7 @@ namespace HumanFactory
     {
         None = 0,
         Pad,
-        Building,
-        Running
+        Building
     }
 
 }

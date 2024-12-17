@@ -82,6 +82,4 @@ namespace HumanFactory.Manager
             Managers.Sound.SfxVolume = settingData.SfxVolume;
         }
     }
-
-
 }
