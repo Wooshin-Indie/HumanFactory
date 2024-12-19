@@ -1,5 +1,8 @@
 using HumanFactory.Manager;
 using System;
+using System.Xml;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace HumanFactory
 {
@@ -8,17 +11,65 @@ namespace HumanFactory
 
     public class ButtonInfos
     {
-        public MapGrid linkedGrid;
+        public Vector2Int linkedGridPos;
         public ButtonType buttonType;
         public PadType dirType;
+        public ButtonInputType inputType;
+        public ButtonToggleType toggleType;
 
-        public ButtonInfos(MapGrid linkedGrid,
-            ButtonType buttonType = ButtonType.NewInput, 
-            PadType dirType = PadType.DirUp)
+        public ButtonInfos(Vector2Int linkedGrid,
+            ButtonType buttonType = ButtonType.Input, 
+            PadType dirType = PadType.DirNone,
+            ButtonInputType inputType = ButtonInputType.New,
+            ButtonToggleType toggle = ButtonToggleType.Off)
         {
-            this.linkedGrid = linkedGrid;
+            this.linkedGridPos = linkedGrid;
             this.buttonType = buttonType;
             this.dirType = dirType;
+            this.inputType = inputType;
+            this.toggleType = toggle;
+        }
+        public void ChangeButtonType(bool isNext)
+        {
+            if (isNext)
+            {
+                buttonType = (ButtonType)(((int)buttonType + 1) % Enum.GetNames(typeof(ButtonType)).Length);
+            }
+            else
+            {
+                buttonType--;
+                if ((int)buttonType == -1)
+                {
+                    buttonType = ButtonType.Toggle;
+                }
+            }
+        }
+
+        public void ChangePadType(bool isNext)
+        {
+            if (isNext)
+            {
+                dirType = (PadType)(((int)dirType + 1) % Enum.GetNames(typeof(PadType)).Length);
+            }
+            else
+            {
+                dirType--;
+                if ((int)dirType == -1)
+                {
+                    dirType = PadType.DirNone;
+                }
+            }
+        }
+
+        public void ChangeInputType(bool isNext)
+        {
+            // 바꿀필요 없음
+        }
+
+        public void ChangeToggleType(bool isNext)
+        {
+            if (toggleType == ButtonToggleType.On) toggleType = ButtonToggleType.Off;
+            else toggleType = ButtonToggleType.On;
         }
     }
 

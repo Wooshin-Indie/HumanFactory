@@ -12,6 +12,9 @@ namespace HumanFactory.UI
         [SerializeField] private TextMeshProUGUI timeText;
         [SerializeField] private List<Image> cctvImage;
 
+        [Header("Must Enable in GameScene")]
+        [SerializeField] private CurrentModeUI curModeUI;
+
         private int elapsedSeconds = 34567;
 
         private void Start()
@@ -52,12 +55,14 @@ namespace HumanFactory.UI
                     {
                         cctvImage[i].gameObject.SetActive(false);
                     }
+                    curModeUI.gameObject.SetActive(true);
                 });
         }
 
         public void LerpToWhite(float duration)
         {
             timeText.gameObject.SetActive(true);
+
             for (int i = 0; i < cctvImage.Count; i++)
             {
                 cctvImage[i].gameObject.SetActive(true);
@@ -70,6 +75,9 @@ namespace HumanFactory.UI
                 cctvImage[i].DOColor(Constants.COLOR_WHITE, duration)
                     .SetEase(Ease.InQuad);
             }
+
+
+            curModeUI.gameObject.SetActive(false);
         }
 
     }

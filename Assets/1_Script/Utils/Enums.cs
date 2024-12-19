@@ -37,9 +37,20 @@ namespace HumanFactory
 
     public enum ButtonType
     {
-        NewInput    = 0,
+        Input       = 0,
         Rotate      = 1,
-        Stop        = 2,
+        Toggle        = 2,
+    }
+
+    public enum ButtonInputType
+    {
+        New = 0,
+    }
+
+    public enum ButtonToggleType
+    {
+        Off = 0,
+        On = 1,
     }
 
     public enum HumanOperandType
@@ -52,7 +63,7 @@ namespace HumanFactory
     public enum SoundType 
     { 
         Bgm = 0,
-        Sfx = 0,
+        Sfx = 1,
     }
 
     // HACK - 임시로 설정해둔 Enum
@@ -79,9 +90,7 @@ namespace HumanFactory
     {
         None = 0,
         Pad,
-        Building,
-        Circuit,
-        Running
+        Building
     }
 
 }

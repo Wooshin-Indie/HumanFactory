@@ -1,5 +1,7 @@
 using HumanFactory.Props;
 using System;
+using System.Net;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -12,6 +14,8 @@ namespace HumanFactory.Manager
         public void OnUpdate()
         {
             cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
 
             OnMainScene();
             OnMenuScene();
@@ -69,15 +73,30 @@ namespace HumanFactory.Manager
             OnGameSceneNoneMode();
             OnGameScenePadMode();
             OnGameSceneBuildingMode();
-            OnGameSceneCircuitMode();
 
             ClickOutScene();
         }
 
+        // UI 켜지는 함수 넣어둬야됨
+        public Action<Vector2Int> OnClickMapGridInNoneModeAction { get; set; }
+
         private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
+            MapManager.Instance.OnHoverMapGrid(curMousePos.x, curMousePos.y);
 
+            if (!IsMouseInputEnabled()) return;
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (MapManager.Instance.IsCircuiting)
+                {
+                    MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, false);
+                }
+                else
+                {
+                    OnClickMapGridInNoneModeAction?.Invoke(curMousePos);
+                }
+            }
         }
 
         private void OnGameScenePadMode()
@@ -93,10 +112,6 @@ namespace HumanFactory.Manager
 
             ClickMapGridInBuildingMode();
 
-        }
-        private void OnGameSceneCircuitMode()
-        {
-            if (inputMode != InputMode.Circuit) return;
         }
 
         private void OnSettingScene()
@@ -141,7 +156,7 @@ namespace HumanFactory.Manager
                 Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
 
                 inputMode = InputMode.None;
-                OnModeChangedAction.Invoke(inputMode);
+                OnInputModeChanged(inputMode);
             }
         }
 
@@ -153,14 +168,11 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
-
                 MapManager.Instance.OnClickMapGrid(curMousePos.x, curMousePos.y);
             }
         }
 
-        private BuildingType currentSelectedBuilding = 0;
+        private BuildingType currentSelectedBuilding = BuildingType.None;
         public Action<BuildingType> OnBuildingTypeChanged { get; set; }
 
         public void ChangeCurSelectedBuilding(BuildingType type)
@@ -178,17 +190,12 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
-
+                if (currentSelectedBuilding == BuildingType.None) return;
                 MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             }
-            else if (Input.GetMouseButtonDown(1)) {
-                worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                curMousePos = new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
-
+            else if (Input.GetMouseButtonDown(1))
+            {
                 MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, BuildingType.None);
-
             }
 
         }
@@ -203,24 +210,26 @@ namespace HumanFactory.Manager
             {
                 inputMode = InputMode.None;
             }
-            else if(Input.GetKeyDown(KeyCode.Alpha2) && inputMode != InputMode.Pad)
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && inputMode != InputMode.Pad)
             {
                 inputMode = InputMode.Pad;
             }
-            else if(Input.GetKeyDown(KeyCode.Alpha3) && inputMode != InputMode.Building)
+            else if (Input.GetKeyDown(KeyCode.Alpha3) && inputMode != InputMode.Building)
             {
                 inputMode = InputMode.Building;
             }
-            else if(Input.GetKeyDown(KeyCode.Alpha4) && inputMode != InputMode.Circuit)
-            {
-                inputMode = InputMode.Circuit;
-            }
             else { return; }
 
-            Debug.Log("InputMode Changed to : " + inputMode.ToString());
+            OnInputModeChanged(inputMode);
+        }
 
+        private void OnInputModeChanged(InputMode mode)
+        {
             OnModeChangedAction.Invoke(inputMode);
+            MapManager.Instance.OnInputModeChanged(inputMode);
 
+            OnBuildingTypeChanged.Invoke(BuildingType.None);
+            currentSelectedBuilding = BuildingType.None;
         }
 
     }
