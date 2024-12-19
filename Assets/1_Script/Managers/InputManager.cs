@@ -1,5 +1,6 @@
 using HumanFactory.Props;
 using System;
+using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -76,6 +77,9 @@ namespace HumanFactory.Manager
             ClickOutScene();
         }
 
+        // UI 켜지는 함수 넣어둬야됨
+        public Action<Vector2Int> OnClickMapGridInNoneModeAction { get; set; }
+
         private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
@@ -84,7 +88,14 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y);
+                if (MapManager.Instance.IsCircuiting)
+                {
+                    MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, false);
+                }
+                else
+                {
+                    OnClickMapGridInNoneModeAction?.Invoke(curMousePos);
+                }
             }
         }
 
@@ -179,6 +190,7 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
+                if (currentSelectedBuilding == BuildingType.None) return;
                 MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             }
             else if (Input.GetMouseButtonDown(1))

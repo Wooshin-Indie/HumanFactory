@@ -6,12 +6,17 @@ namespace HumanFactory.UI
     public class PopUpUIBase : MonoBehaviour
     {
         private RectTransform rect;
+
         public virtual void Awake()
         {
             rect = GetComponent<RectTransform>();
             gameObject.SetActive(false);
         }
+        public virtual void Start()
+        {
+        }
 
+        [Header("Popup Info")]
         [SerializeField] private Vector2 outScreenPos;
         [SerializeField] private Vector2 inScreenPos;
         [SerializeField] private float duration;

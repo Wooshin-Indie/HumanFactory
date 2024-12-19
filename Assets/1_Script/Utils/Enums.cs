@@ -37,9 +37,20 @@ namespace HumanFactory
 
     public enum ButtonType
     {
-        NewInput    = 0,
+        Input       = 0,
         Rotate      = 1,
-        Stop        = 2,
+        Toggle        = 2,
+    }
+
+    public enum ButtonInputType
+    {
+        New = 0,
+    }
+
+    public enum ButtonToggleType
+    {
+        Off = 0,
+        On = 1,
     }
 
     public enum HumanOperandType

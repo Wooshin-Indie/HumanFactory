@@ -1,5 +1,6 @@
 using DG.Tweening;
 using HumanFactory.Controller;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace HumanFactory.Manager
         private BuildingType buildingType = BuildingType.None;
         private ButtonInfos buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
 
+        public int PosX { get => posX; }
+        public int PosY { get => posY; }
         public PadType PadType { get => padType; set => padType = value; }
         public BuildingType BuildingType { get => buildingType; set => buildingType = value; }
         public ButtonInfos ButtonInfo { get=>buttonInfo; }
@@ -211,7 +214,11 @@ namespace HumanFactory.Manager
                 StartCoroutine(ProgramCycleCoroutine());
         }
 
-        private bool CheckBoundary(int x, int y)
+        public MapGrid GetMapGrid(int x, int y)
+        {
+            return programMap[x, y];
+        }
+        public bool CheckBoundary(int x, int y)
         {
             return (x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y);
         }
@@ -262,9 +269,13 @@ namespace HumanFactory.Manager
             }
         }
 
-        public void OnClickMapGridInNoneMode(int x, int y)
+
+        public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
         {
             if (!CheckBoundary(x, y)) return;
+
+            if (isCircuiting == isSet) return;
+
             if (isCircuiting)   // 회로작업 중이면 -> 클릭했을 때 전에 클릭했던 버튼과 연결 
             {
                 if (circuitingButtonPos.x == x && circuitingButtonPos.y == y) return;
@@ -283,6 +294,8 @@ namespace HumanFactory.Manager
                 isCircuiting = true;
                 circuitingButtonPos = new Vector2Int(x, y);
             }
+
+            //isCircuiting = isSet;
         }
 
         public void OnClickMapGrid(int x, int y)
