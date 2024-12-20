@@ -432,6 +432,7 @@ namespace HumanFactory.Manager
             return true;
         }
 
+
         /// <summary>
         /// 2/3 경과 시, 이동한 위치의 Button을 Press 하고 변경사항 업데이트
         /// </summary>
