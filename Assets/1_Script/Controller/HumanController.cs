@@ -132,5 +132,12 @@ namespace HumanFactory.Controller
             Debug.Log("TARGET POS : " + TargetPos);
 
         }
+
+        [ContextMenu("TESTFUNC")]
+        public void EffectTestFunc()
+        {
+            Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
+                EffectType.Subi);
+        }
     }
 }

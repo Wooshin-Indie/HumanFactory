@@ -21,12 +21,14 @@ namespace HumanFactory.Manager
 
         private string buildingPressedPath = "Sprites/Buildings/Pressed";
         private string buildingReleasedPath = "Sprites/Buildings/Released";
+        private string effectSpritePath = "Sprites/Effects";
 
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
         private AudioClip[] audioSources;
         private Sprite[] buildingPressedSprites;
         private Sprite[] buildingReleasedSprites;
+        private Sprite[] effectSprites;
 
         public void Init()
         {
@@ -35,6 +37,7 @@ namespace HumanFactory.Manager
 
             buildingPressedSprites = Resources.LoadAll<Sprite>(buildingPressedPath);
             buildingReleasedSprites = Resources.LoadAll<Sprite>(buildingReleasedPath);
+            effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
 
         /** Getter Functions **/
@@ -72,6 +75,11 @@ namespace HumanFactory.Manager
         {
             return (isPressed ? buildingPressedSprites[(int)type] :
                 buildingReleasedSprites[(int)type]);
+        }
+
+        public Sprite GetEffectSprite(EffectType type)
+        {
+            return effectSprites[(int)type];
         }
 
     }
