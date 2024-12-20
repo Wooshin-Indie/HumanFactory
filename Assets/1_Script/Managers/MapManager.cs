@@ -1,10 +1,11 @@
 using DG.Tweening;
 using HumanFactory.Controller;
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -92,7 +93,7 @@ namespace HumanFactory.Manager
         {
             // TODO - 버튼이 있으면 동작 수행
             if (isPressed) {
-                Debug.LogError("Logic Err : MapGrid - Pressed Twice");
+                // 여러 사람이 들어올수도 있음
                 return;
             }
             isPressed = true;
@@ -320,7 +321,7 @@ namespace HumanFactory.Manager
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
         
         // TODO - Destory하고 null값 남아있음 처리 필요.
-        private List<HumanController> humanControllers = new List<HumanController>();
+        [SerializeField]private List<HumanController> humanControllers = new List<HumanController>();
 
         private List<bool> flags = new List<bool> { false, false, false };
         private List<float> timeSections = new List<float> { 0.3f, 0.5f, 0.7f };
@@ -341,6 +342,15 @@ namespace HumanFactory.Manager
             FinPerCycle();
         }
 
+
+        private bool isPersonAdd = false;
+        [ContextMenu("Add 1")]
+        public void AddPerson()
+        {
+            isPersonAdd = true;
+        }
+
+
         /// <summary>
         /// 싸이클 시작할 떄 수행해야하는 애들
         /// 변수 값 초기화가 주 목적
@@ -348,6 +358,13 @@ namespace HumanFactory.Manager
         private void InitPerCycle()
         {
             isCycleRunning = true;
+
+            if (isPersonAdd)
+            {
+                humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+                    .GetComponent<HumanController>());
+            }
+
             cycleElapsedTime = 0f;
             for (int i = 0; i < flags.Count; i++)
             {
@@ -452,13 +469,19 @@ namespace HumanFactory.Manager
         /// </summary>
         private void FinPerCycle()
         {
-            isCycleRunning = false;
             foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
                 // TODO - 맵과 상호작용하여 연산해야됨
+            }
+
+            humanControllers.RemoveAll(item => item.OperandType == HumanOperandType.Operand2);
+
+            foreach (var controller in humanControllers)
+            {
                 controller.OnFinPerCycle();
             }
+            isCycleRunning = false;
         }
 
         private void ChangeMapVisibility(InputMode mode)
