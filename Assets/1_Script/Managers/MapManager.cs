@@ -473,6 +473,7 @@ namespace HumanFactory.Manager
         {
             foreach (var controller in humanControllers)
             {
+                Debug.Log("DEBUG :" + controller.HumanNum);
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
             }
             return true;
@@ -495,6 +496,21 @@ namespace HumanFactory.Manager
 
             humanControllers.RemoveAll(item => item.OperandType == HumanOperandType.Operand2);
 
+
+            /*
+             * 1. 아도겐 코드임
+             * 
+             * > for, if 같이 depth가 늘어나는 경우에는 depth가 너무 깊어지지 않도록 주의해야됨
+             *   예를 들어, if(cond){~} 가 아니라 if(!coand) continue; ~ 같이 바꿀 수 있음
+             *   
+             *   
+             * 2. 바로 위에 RemoveAll이 있는 이유는 Destroy 된 애들을 전부 없애기 위함임
+             *    걔네를 List에서 없애지않고 접근하면 에러가 남
+             *    
+             *    Output은 항상 하나만 나오므로 (1) 찾고, (2) Destroy하고 (3) Erase하고 끝
+             *    break로 빠져나와야함 
+             */
+
             foreach (var controller in humanControllers)
             {
                 controller.OnFinPerCycle();
@@ -510,6 +526,7 @@ namespace HumanFactory.Manager
                     }
                     Destroy(controller.gameObject); //null값 처리해야되는건가? 이것땜에 오류뜸
                 }
+
                 if (idxout >= stage0.outputs.Length)
                 {
                     Debug.Log("OUTPUT : " + isOutputCorrect);
