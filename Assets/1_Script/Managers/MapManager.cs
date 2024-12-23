@@ -76,9 +76,28 @@ namespace HumanFactory.Manager
         {
             buildingType = type;
             if (type != BuildingType.None)
+            {
                 buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+                buildingSprite.color = Color.white;
+            }
             else
                 buildingSprite.sprite = null;
+        }
+
+        public void PreviewBuilding(BuildingType type)
+        {
+            if (type != BuildingType.None)
+            {
+                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+                buildingSprite.color = Constants.COLOR_INVISIBLE;
+            } 
+        }
+
+        public void UnpreviewBuilding()
+        {
+            if (buildingType != BuildingType.None) return;
+
+            buildingSprite.sprite = null;
         }
 
         public void OnRelease()
@@ -140,6 +159,7 @@ namespace HumanFactory.Manager
                     break;
             }
         }
+
     }
 
     public class MapManager : MonoBehaviour
@@ -207,6 +227,7 @@ namespace HumanFactory.Manager
         private bool isCycleRunning = false;
         private bool isCircuiting = false;
         private Vector2Int circuitingButtonPos;
+        public Vector2Int prevHoverPos = new Vector2Int(0, 0);
         public bool IsCircuiting { get => isCircuiting; }
         private void Update()
         {
@@ -222,11 +243,10 @@ namespace HumanFactory.Manager
         {
             return (x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y);
         }
-        public void OnHoverMapGrid(int x, int y)
+        public void OnHoverMapGridInNoneMode(int x, int y)
         {
             if (isCircuiting)
             {
-                
                 buttonRect.transform.position = new Vector3(circuitingButtonPos.x,
                     circuitingButtonPos.y, Constants.HUMAN_POS_Z);
                 tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
@@ -268,8 +288,6 @@ namespace HumanFactory.Manager
                 }
             }
         }
-
-
         public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
         {
             if (!CheckBoundary(x, y)) return;
@@ -297,11 +315,28 @@ namespace HumanFactory.Manager
 
             //isCircuiting = isSet;
         }
-
-        public void OnClickMapGrid(int x, int y)
+        public void OnClickMapGridInPadMode(int x, int y)
         {
             if (!CheckBoundary(x, y)) return;
             programMap[x, y].OnClickRotate();
+        }
+
+        public void OnHoverMapGridInBuildingMode(int x, int y, BuildingType type)
+        {
+            if (!CheckBoundary(x, y))
+            {
+                programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+                return;
+            }
+            if (prevHoverPos.x == x && prevHoverPos.y == y) return;
+
+            if (programMap[x, y].BuildingType == BuildingType.None)
+            {
+                programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+                programMap[x, y].PreviewBuilding(type);
+                prevHoverPos.Set(x, y);
+            }
+
         }
         public void OnClickMapGridInBuildingMode(int x, int y, BuildingType type)
         {
@@ -311,6 +346,7 @@ namespace HumanFactory.Manager
 
         public void OnInputModeChanged(InputMode mode)
         {
+            programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
             ChangeMapVisibility(mode);
