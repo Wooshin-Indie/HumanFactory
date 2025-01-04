@@ -2,7 +2,9 @@
     "stageInfo": [
         {
             "stageId": 0,
-            "stageName": "Stage_0"
+            "stageName": "Stage_0",
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7 ]
         },
         {
             "stageId": 1,

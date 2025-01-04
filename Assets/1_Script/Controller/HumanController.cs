@@ -1,4 +1,5 @@
 using HumanFactory.Manager;
+using TMPro;
 using UnityEngine;
 
 namespace HumanFactory.Controller
@@ -14,9 +15,21 @@ namespace HumanFactory.Controller
         [SerializeField] private Vector2Int targetPos;  // 이동할 그리드 위치
         [SerializeField] private int currentDir;        // 이동할 방향
         [SerializeField] private HumanOperandType operandType;
+        [SerializeField] private int humanNum = 2;
+
+        [SerializeField] private TextMeshPro numTMP;
 
         public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
         public Vector2Int TargetPos { get => targetPos; }
+        public int HumanNum { get => humanNum; 
+            set
+            {
+                humanNum = value;
+                numTMP.text = humanNum.ToString();
+            }
+        }
+
+        public HumanOperandType OperandType { get => operandType; }
 
         public void UpdateCurpos()
         {
@@ -26,28 +39,29 @@ namespace HumanFactory.Controller
         private int operandsResult = 0;
         public void SetAsOperand1() {
             operandType = HumanOperandType.Operand1;
-            operandsResult = 0;    // TODO - 내가 들고있는 값으로 바꿔야함
+            operandsResult = humanNum;
         }
 
         public void SetOperands(int number) {
             operandsResult += number;
         }
 
+
+
         public int SetAsOperand2() {
-            // TODO - 내가 들고있는 값 리턴해야됨
             // 애니메이션 필요하면 애니메이션 추가해야됨
             operandType = HumanOperandType.Operand2;
-            return -1;
+            return humanNum;
         }
 
         public void ExecuteOperand()
         {
             switch (operandType) {
                 case HumanOperandType.Operand1:
-                    // TODO - 현재 들고있는 값을 operandResult 값으로 바꾸기
+                    HumanNum = operandsResult;
                     break;
                 case HumanOperandType.Operand2:
-                    Destroy(this.gameObject);       //HACK - Destory가 아니라 좀 더 일찍 스르륵 사라지게 할 수도
+                    Destroy(gameObject);       //HACK - Destory가 아니라 좀 더 일찍 스르륵 사라지게 할 수도
                     break;
             }
         }
@@ -62,25 +76,6 @@ namespace HumanFactory.Controller
             UnsetOperand();
         }
 
-        //private void Start()
-        //{
-        //    statemachine = new playerstatemachine();
-        //    idlestate = new idlestate(this, statemachine);
-        //    statemachine.init(idlestate);
-        //}
-
-        //private void update()
-        //{
-        //    statemachine.curstate.handleinput();
-
-        //    statemachine.curstate.logicupdate();
-        //}
-
-        //private void fixedupdate()
-        //{
-        //    statemachine.curstate.physicsupdate();
-        //}
-
 
         private void Awake()
         {
@@ -89,6 +84,7 @@ namespace HumanFactory.Controller
             currentPos = new Vector2Int(0, -1);
             targetPos = new Vector2Int(0, 0);
             currentDir = 0;
+            numTMP.text = humanNum.ToString();
         }
 
         // 
