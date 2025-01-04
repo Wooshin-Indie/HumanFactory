@@ -34,7 +34,6 @@ namespace HumanFactory.Controller
         public void UpdateCurpos()
         {
             currentPos = targetPos;
-            numTMP.text = humanNum.ToString();
         }
 
         private int operandsResult = 0;
