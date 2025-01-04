@@ -2,6 +2,7 @@ using HumanFactory.Manager;
 using System.Collections;
 using System.Transactions;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ namespace HumanFactory.UI {
 
         [SerializeField] private TextMeshProUGUI btnTypeText;
         [SerializeField] private TextMeshProUGUI opTypeText;
+
+        private Vector2 originDelta = new Vector2(600, 450);
+        private Vector2 shortDelta = new Vector2(600, 220);
 
         // GridInfos
         private MapGrid currentGridInfo;
@@ -97,7 +101,6 @@ namespace HumanFactory.UI {
             if (currentGridInfo.BuildingType == BuildingType.Button ||
                 currentGridInfo.BuildingType == BuildingType.Jump)
             {
-
                 gameObject.SetActive(true);
                 UpdateUIInfo();
             }
@@ -132,20 +135,48 @@ namespace HumanFactory.UI {
         {
             if (currentGridInfo == null) return;
 
-            btnTypeText.text = currentGridInfo.ButtonInfo.buttonType.ToString();
+            if (currentGridInfo.BuildingType == BuildingType.Button)
+            {
+                btnTypeText.gameObject.SetActive(true);
+                btnTypeLeft.gameObject.SetActive(true);
+                btnTypeRight.gameObject.SetActive(true);
+                opTypeText.gameObject.SetActive(true);
+                opTypeLeft.gameObject.SetActive(true); 
+                opTypeRight.gameObject.SetActive(true);
 
-            switch (currentGridInfo.ButtonInfo.buttonType) {
-                case ButtonType.Input:
-                    opTypeText.text = currentGridInfo.ButtonInfo.inputType.ToString();
-                    break;
-                case ButtonType.Rotate:
-                    opTypeText.text = currentGridInfo.ButtonInfo.dirType.ToString();
-                    break;
-                case ButtonType.Toggle:
-                    opTypeText.text = currentGridInfo.ButtonInfo.toggleType.ToString();
-                    break;
+                GetComponent<RectTransform>().sizeDelta = originDelta;
+
+                btnTypeText.text = currentGridInfo.ButtonInfo.buttonType.ToString();
+
+                switch (currentGridInfo.ButtonInfo.buttonType)
+                {
+                    case ButtonType.Input:
+                        opTypeText.text = currentGridInfo.ButtonInfo.inputType.ToString();
+                        break;
+                    case ButtonType.Rotate:
+                        opTypeText.text = currentGridInfo.ButtonInfo.dirType.ToString();
+                        break;
+                    case ButtonType.Toggle:
+                        opTypeText.text = currentGridInfo.ButtonInfo.toggleType.ToString();
+                        break;
+                }
             }
+            else if(currentGridInfo.BuildingType == BuildingType.Jump)
+            {
+                btnTypeText.gameObject.SetActive(false);
+                btnTypeLeft.gameObject.SetActive(false);
+                btnTypeRight.gameObject.SetActive(false);
+                opTypeText.gameObject.SetActive(false);
+                opTypeLeft.gameObject.SetActive(false);
+                opTypeRight.gameObject.SetActive(false);
 
+
+                GetComponent<RectTransform>().sizeDelta = shortDelta;
+            }
+            else
+            {
+                Debug.LogError("Why UI is opened?");
+            }
 
         }
 

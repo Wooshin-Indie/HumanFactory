@@ -83,7 +83,7 @@ namespace HumanFactory.Manager
         private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
-            MapManager.Instance.OnHoverMapGrid(curMousePos.x, curMousePos.y);
+            MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y);
 
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
@@ -103,15 +103,15 @@ namespace HumanFactory.Manager
         {
             if (inputMode != InputMode.Pad) return;
 
-            ClickMapGrid();
+            ClickMapGridInPadMode();
         }
 
         private void OnGameSceneBuildingMode()
         {
             if (inputMode != InputMode.Building) return;
 
+            MapManager.Instance.OnHoverMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             ClickMapGridInBuildingMode();
-
         }
 
         private void OnSettingScene()
@@ -163,12 +163,12 @@ namespace HumanFactory.Manager
         /// <summary>
         /// GameScene - Layer 1 일떄만 입력을 받아야됨
         /// </summary>
-        private void ClickMapGrid()
+        private void ClickMapGridInPadMode()
         {
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                MapManager.Instance.OnClickMapGrid(curMousePos.x, curMousePos.y);
+                MapManager.Instance.OnClickMapGridInPadMode(curMousePos.x, curMousePos.y);
             }
         }
 

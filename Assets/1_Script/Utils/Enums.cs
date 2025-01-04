@@ -93,4 +93,12 @@ namespace HumanFactory
         Building
     }
 
+    public enum EffectType
+    {
+        Add = 0,
+        Addi,
+        Subi,
+
+    }
+
 }
