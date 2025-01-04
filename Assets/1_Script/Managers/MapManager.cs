@@ -1,10 +1,11 @@
 using DG.Tweening;
 using HumanFactory.Controller;
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -111,7 +112,7 @@ namespace HumanFactory.Manager
         {
             // TODO - 버튼이 있으면 동작 수행
             if (isPressed) {
-                Debug.LogError("Logic Err : MapGrid - Pressed Twice");
+                // 여러 사람이 들어올수도 있음
                 return;
             }
             isPressed = true;
@@ -187,11 +188,13 @@ namespace HumanFactory.Manager
         {
             Init();
         }
-
+        private StageInfo stage0;
+        public StageInfo Stage0 { get => stage0; }
         private MapGrid[,] programMap;
         public MapGrid[,] ProgramMap { get => programMap; }
 
         [SerializeField] private Vector2Int mapSize;
+        public Vector2Int MapSize { get => mapSize; }
         [SerializeField] private GameObject arrowPrefab;
         [SerializeField] private GameObject humanPrefab;
 
@@ -203,6 +206,7 @@ namespace HumanFactory.Manager
         {
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
+            stage0 = Managers.Resource.GetStageInfo(0);
 
             programMap = new MapGrid[mapSize.x, mapSize.y];
             for (int i = 0; i < mapSize.x; i++)
@@ -220,8 +224,8 @@ namespace HumanFactory.Manager
             secFuncs.Add(instance.ExecuteAtHalfTime);
             secFuncs.Add(instance.ExecuteAtTwoThirds);
 
-            humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
-                .GetComponent<HumanController>());
+            //humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+            //    .GetComponent<HumanController>());
         }
 
         private bool isCycleRunning = false;
@@ -356,7 +360,7 @@ namespace HumanFactory.Manager
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
         
         // TODO - Destory하고 null값 남아있음 처리 필요.
-        private List<HumanController> humanControllers = new List<HumanController>();
+        [SerializeField]private List<HumanController> humanControllers = new List<HumanController>();
 
         private List<bool> flags = new List<bool> { false, false, false };
         private List<float> timeSections = new List<float> { 0.3f, 0.5f, 0.7f };
@@ -377,13 +381,42 @@ namespace HumanFactory.Manager
             FinPerCycle();
         }
 
+
+        private bool isPersonAdd = false;
+        [ContextMenu("Add 1")]
+        public void AddPerson()
+        {
+            isPersonAdd = true;
+        }
+
+        [ContextMenu("Stop Add")]
+        public void StopAddPerson()
+        {
+            isPersonAdd = false;
+        }
+
         /// <summary>
         /// 싸이클 시작할 떄 수행해야하는 애들
         /// 변수 값 초기화가 주 목적
         /// </summary>
+        private int idxin = 0; //테스트용
         private void InitPerCycle()
         {
             isCycleRunning = true;
+
+            if (isPersonAdd && idxin < stage0.inputs.Length )
+            {
+                HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+                    .GetComponent<HumanController>();
+                humanControllers.Add(tmpController);
+
+                tmpController.HumanNum = stage0.inputs[idxin];
+                Debug.Log(stage0.inputs[idxin]);
+                idxin++;
+            }
+
+
+
             cycleElapsedTime = 0f;
             for (int i = 0; i < flags.Count; i++)
             {
@@ -391,7 +424,7 @@ namespace HumanFactory.Manager
             }
 
         }
-
+        
         /// <summary>
         /// 매 프레임 실행하는 함수
         /// </summary>
@@ -468,6 +501,7 @@ namespace HumanFactory.Manager
             return true;
         }
 
+
         /// <summary>
         /// 2/3 경과 시, 이동한 위치의 Button을 Press 하고 변경사항 업데이트
         /// </summary>
@@ -475,11 +509,14 @@ namespace HumanFactory.Manager
         {
             foreach (var controller in humanControllers)
             {
+                Debug.Log("DEBUG :" + controller.HumanNum);
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
             }
             return true;
         }
 
+        private int idxout = 0;
+        private bool isOutputCorrect = true;
         /// <summary>
         /// 전부 경과하여 이동 완료
         /// 1/2 에서 controller에 체크한 걸로 더하기 연산 먼저 수행
@@ -487,13 +524,51 @@ namespace HumanFactory.Manager
         /// </summary>
         private void FinPerCycle()
         {
-            isCycleRunning = false;
             foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
                 // TODO - 맵과 상호작용하여 연산해야됨
-                controller.OnFinPerCycle();
             }
+
+            humanControllers.RemoveAll(item => item.OperandType == HumanOperandType.Operand2);
+
+
+            /*
+             * 1. 아도겐 코드임
+             * 
+             * > for, if 같이 depth가 늘어나는 경우에는 depth가 너무 깊어지지 않도록 주의해야됨
+             *   예를 들어, if(cond){~} 가 아니라 if(!coand) continue; ~ 같이 바꿀 수 있음
+             *   
+             *   
+             * 2. 바로 위에 RemoveAll이 있는 이유는 Destroy 된 애들을 전부 없애기 위함임
+             *    걔네를 List에서 없애지않고 접근하면 에러가 남
+             *    
+             *    Output은 항상 하나만 나오므로 (1) 찾고, (2) Destroy하고 (3) Erase하고 끝
+             *    break로 빠져나와야함 
+             */
+
+            foreach (var controller in humanControllers)
+            {
+                controller.OnFinPerCycle();
+                if (controller.CurrentPos.x == mapSize.x - 1 && controller.CurrentPos.y == mapSize.y - 1)
+                {
+                    if (idxout < stage0.outputs.Length)
+                    {
+                        if (controller.HumanNum != stage0.outputs[idxout])
+                            {
+                                isOutputCorrect = false;
+                            }
+                        idxout++;
+                    }
+                    Destroy(controller.gameObject); //null값 처리해야되는건가? 이것땜에 오류뜸
+                }
+
+                if (idxout >= stage0.outputs.Length)
+                {
+                    Debug.Log("OUTPUT : " + isOutputCorrect);
+                }
+            }
+            isCycleRunning = false;
         }
 
         private void ChangeMapVisibility(InputMode mode)
