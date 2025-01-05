@@ -590,27 +590,32 @@ namespace HumanFactory.Manager
              *    break로 빠져나와야함 
              */
 
-            foreach (var controller in humanControllers)
+            for (int i = humanControllers.Count - 1; i >= 0; i--)
             {
-                controller.OnFinPerCycle();
-                if (controller.CurrentPos.x == mapSize.x - 1 && controller.CurrentPos.y == mapSize.y - 1)
-                {
-                    if (idxout < stage0.outputs.Length)
-                    {
-                        if (controller.HumanNum != stage0.outputs[idxout])
-                            {
-                                isOutputCorrect = false;
-                            }
-                        idxout++;
-                    }
-                    Destroy(controller.gameObject); //null값 처리해야되는건가? 이것땜에 오류뜸
-                }
+                humanControllers[i].OnFinPerCycle();
 
-                if (idxout >= stage0.outputs.Length)
+                if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
+                //human이 output지점 (4,4)가 아니면 스킵
+
+                if (idxout < stage0.outputs.Length)
                 {
-                    Debug.Log("OUTPUT : " + isOutputCorrect);
+                    if (humanControllers[i].HumanNum != stage0.outputs[idxout])
+                    {
+                        isOutputCorrect = false;
+                    }
+                    idxout++;
                 }
+                Destroy(humanControllers[i].gameObject);
+                humanControllers.Remove(humanControllers[i]);
             }
+
+            if (idxout >= stage0.outputs.Length)
+            {
+                Debug.Log("OUTPUT : " + isOutputCorrect);
+                idxout = 0;
+                isOutputCorrect = true;
+            }
+
             isCycleRunning = false;
         }
 
