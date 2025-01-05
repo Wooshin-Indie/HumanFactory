@@ -1,7 +1,6 @@
-using HumanFactory.Manager;
+using JetBrains.Annotations;
 using System;
-using System.Xml;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HumanFactory
@@ -29,6 +28,16 @@ namespace HumanFactory
             this.inputType = inputType;
             this.toggleType = toggle;
         }
+
+        public ButtonInfos(ButtonInfos info)
+        {
+			this.linkedGridPos = info.linkedGridPos;
+			this.buttonType = info.buttonType;
+			this.dirType = info.dirType;
+			this.inputType = info.inputType;
+			this.toggleType = info.toggleType;
+		}
+
         public void ChangeButtonType(bool isNext)
         {
             if (isNext)
@@ -119,8 +128,24 @@ namespace HumanFactory
     }
 
     [Serializable]
-    public class GameplayData {     // 유저가 플레이한 게임 데이터를 저장. Start에서 
-        //List<bool> stageCleared = new List<bool>();
+    public class StageGridData
+    {
+        public int posX, posY;
+        public PadType padtype;
+        public BuildingType buildingType;
+        public ButtonInfos buttonInfos;
+    }
+
+    [Serializable]
+    public class StageGridDatas
+	{
+		public List<StageGridData> gridDatas = new List<StageGridData>();
+	}
+
+    [Serializable]
+    public class GameplayData 
+    {
+        public StageGridDatas[] stageGridDatas;
     }
     #endregion
 }

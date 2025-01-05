@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.IO;
-using System.Security.Cryptography;
-using JetBrains.Annotations;
-using UnityEditor;
+using System;
 
 namespace HumanFactory.Manager
 {
@@ -42,6 +40,12 @@ namespace HumanFactory.Manager
         {
             LoadData<SettingData>(ref settingData, settingDataPath);
             LoadData<GameplayData>(ref gameplayData, playDataPath);
+
+            if (gameplayData.stageGridDatas == null ||
+				gameplayData.stageGridDatas.Length != Managers.Resource.GetStageCount() + 1)
+            {
+                Array.Resize(ref gameplayData.stageGridDatas, Managers.Resource.GetStageCount() + 1);
+            }
         }
         public void SaveAll()
         {
@@ -68,6 +72,15 @@ namespace HumanFactory.Manager
             }
         }
 
+        public StageGridDatas GetGridDatas(int stageId)
+        {
+            return gameplayData.stageGridDatas[stageId];
+        }
+
+        public void AddStageGridData(int stageId, StageGridDatas datas)
+        {
+            gameplayData.stageGridDatas[stageId] = datas;
+        }
 
         public void SaveClearStage(int stageId)
         {
