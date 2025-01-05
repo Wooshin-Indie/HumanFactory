@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -58,20 +56,26 @@ namespace HumanFactory.Manager
         {
             padType = (PadType)(((int)padType + 1) % Enum.GetValues(typeof(PadType)).Length);
 
-            switch (padType)
-            {
-                case PadType.DirLeft:
-                case PadType.DirRight:
-                case PadType.DirUp:
-                case PadType.DirDown:
-                    arrowSprite.color = Constants.COLOR_ARROW;
-                    arrowSprite.transform.rotation = Quaternion.Euler(0f, 0f, -90f * (int)padType);
-                    break;
-                case PadType.DirNone:
-                    arrowSprite.color = Constants.COLOR_TRANS;
-                    break;
-            }
+            SetPad(padType);
         }
+
+        private void SetPad(PadType type)
+		{
+            PadType = type;
+			switch (type)
+			{
+				case PadType.DirLeft:
+				case PadType.DirRight:
+				case PadType.DirUp:
+				case PadType.DirDown:
+					arrowSprite.color = Constants.COLOR_ARROW;
+					arrowSprite.transform.rotation = Quaternion.Euler(0f, 0f, -90f * (int)padType);
+					break;
+				case PadType.DirNone:
+					arrowSprite.color = Constants.COLOR_TRANS;
+					break;
+			}
+		}
 
         public void SetBuilding(BuildingType type)
         {
@@ -161,7 +165,35 @@ namespace HumanFactory.Manager
             }
         }
 
-    }
+        public StageGridData GetStageGridData()
+        {
+            StageGridData data = new StageGridData();
+            data.posX = posX;
+            data.posY = posY;
+            data.padtype = padType;
+            data.buildingType = buildingType;
+            data.buttonInfos = new ButtonInfos(buttonInfo);
+
+            return data;
+        }
+
+        public void SetStageGridInfo(StageGridData data)
+		{
+			posX = data.posX;
+			posY = data.posY;
+			SetPad(data.padtype);
+			SetBuilding(data.buildingType);
+			buttonInfo = new ButtonInfos(data.buttonInfos);
+		}
+
+        public void ClearGrid()
+		{
+			SetPad(PadType.DirNone);
+            SetBuilding(BuildingType.None);
+            buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
+		}
+
+	}
 
     public class MapManager : MonoBehaviour
     {
@@ -237,9 +269,18 @@ namespace HumanFactory.Manager
         {
             if (!isCycleRunning)
                 StartCoroutine(ProgramCycleCoroutine());
+
+            // HACK : 저장 타이밍 따로 정해줘야됨
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SaveStage();
+            }
+
         }
 
-        public MapGrid GetMapGrid(int x, int y)
+		#region Screen Interact
+
+		public MapGrid GetMapGrid(int x, int y)
         {
             return programMap[x, y];
         }
@@ -355,8 +396,11 @@ namespace HumanFactory.Manager
             tileRect.gameObject.SetActive(false);
             ChangeMapVisibility(mode);
         }
+		#endregion
 
-        [Header("Game Cycle")]
+		#region Game Cycle
+
+		[Header("Game Cycle")]
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
         
         // TODO - Destory하고 null값 남아있음 처리 필요.
@@ -509,7 +553,6 @@ namespace HumanFactory.Manager
         {
             foreach (var controller in humanControllers)
             {
-                Debug.Log("DEBUG :" + controller.HumanNum);
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
             }
             return true;
@@ -571,7 +614,9 @@ namespace HumanFactory.Manager
             isCycleRunning = false;
         }
 
-        private void ChangeMapVisibility(InputMode mode)
+		#endregion
+
+		private void ChangeMapVisibility(InputMode mode)
         {
             for (int i = 0; i < mapSize.x; i++)
             {
@@ -581,5 +626,61 @@ namespace HumanFactory.Manager
                 }
             }
         }
+
+        #region Save/Load Data
+
+        private int currentStage = -1;
+
+        public int CurrentStaeg { get => currentStage; }
+        
+
+
+        public void LoadStage(int stageId)
+        {
+            Debug.Log($"Load Stage : {stageId}");
+
+            currentStage = stageId;
+
+            StageInfo tmpStageInfo = Managers.Resource.GetStageInfo(stageId);
+
+			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
+
+			for (int i = 0; i < mapSize.x; i++)
+			{
+				for (int j = 0; j < mapSize.y; j++)
+				{
+                    programMap[i, j].ClearGrid();
+				}
+			}
+
+
+			StageGridDatas tmpGridData = Managers.Data.GetGridDatas(stageId);
+            if (tmpGridData == null) return;
+
+            foreach (var data in tmpGridData.gridDatas)
+            {
+                programMap[data.posX, data.posY].SetStageGridInfo(data);
+            }
+
+        }
+
+        public void SaveStage()
+		{
+			Debug.Log($"Save Stage : {currentStage}");
+
+			StageGridDatas gridDatas = new StageGridDatas();
+
+            for (int i = 0; i < mapSize.x; i++)
+            {
+                for (int j = 0; j < mapSize.y; j++)
+                {
+                    gridDatas.gridDatas.Add(programMap[i, j].GetStageGridData());
+                }
+            }
+
+            Managers.Data.AddStageGridData(currentStage, gridDatas);
+        }
+
+        #endregion
     }
 }

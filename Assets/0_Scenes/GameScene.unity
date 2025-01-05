@@ -790,6 +790,7 @@ GameObject:
   - component: {fileID: 187081356}
   - component: {fileID: 187081358}
   - component: {fileID: 187081359}
+  - component: {fileID: 187081360}
   m_Layer: 0
   m_Name: CurrentMode
   m_TagString: Untagged
@@ -913,6 +914,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!95 &187081360
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187081352}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0e887375ada3a7347aea37022c041c41, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &292508985
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,7 +3187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0025634766}
+  m_AnchoredPosition: {x: 0, y: 0.0036621094}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &870290298
@@ -3608,6 +3630,7 @@ MonoBehaviour:
   tileRect: {fileID: 1150456103}
   prevHoverPos: {x: 0, y: 0}
   cycleTime: 1
+  humanControllers: []
 --- !u!1 &1056665033
 GameObject:
   m_ObjectHideFlags: 0
@@ -4368,7 +4391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.002319336}
+  m_AnchoredPosition: {x: 0, y: 0.0017089844}
   m_SizeDelta: {x: -530.98, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1256118437

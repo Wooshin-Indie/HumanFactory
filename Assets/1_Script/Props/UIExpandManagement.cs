@@ -1,5 +1,6 @@
 using DG.Tweening;
 using HumanFactory.Effects;
+using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
 using TMPro;
@@ -35,6 +36,7 @@ public class UIExpandManagement : MonoBehaviour
             stages[idx].GetComponent<Button>().onClick.AddListener(() =>
             {
                 OnClickStages(idx);
+                
             });
         }
 
@@ -53,6 +55,7 @@ public class UIExpandManagement : MonoBehaviour
             stages[index].GetComponent<UIOnClickExpand>().Expand();
             SetSelectedStageOnCenter(index, lerpDuration);
             currentExpandedPanel = index;
+            MapManager.Instance.LoadStage(currentExpandedPanel);
         }
         else if (currentExpandedPanel == index) // 이미 확대돼있던걸 클릭 -> 축소
         {
@@ -66,7 +69,8 @@ public class UIExpandManagement : MonoBehaviour
             stages[index].GetComponent<UIOnClickExpand>().Expand();
             SetSelectedStageOnCenter(index, lerpDuration);
             currentExpandedPanel = index;
-        }
+			MapManager.Instance.LoadStage(currentExpandedPanel);
+		}
     }
 
     // 선택된(확장된) 스테이지가 가운데 오도록 합니다.
