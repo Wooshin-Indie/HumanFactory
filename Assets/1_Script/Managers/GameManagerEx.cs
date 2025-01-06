@@ -1,3 +1,4 @@
+using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,6 +116,31 @@ namespace HumanFactory
             }
         }
 
-    }
+
+        #region Success/Fail
+
+        [SerializeField] private SuccessPopupUI successUI;
+
+        public void OnStageSuccess(int stageId)
+        {
+            successUI.SetStageInfos();
+            successUI.gameObject.SetActive(true);
+
+        }
+
+        public void OnStageFail(int stageId)
+        {
+            // TODO - 비상벨 울리기 : serializeField로 받아둬야됨
+            // 모두 다 초기화하기 - 
+        }
+
+		private void Update()
+		{
+            if (Input.GetKeyDown(KeyCode.K)) OnStageSuccess(1);
+		}
+
+		#endregion
+
+	}
 }
 

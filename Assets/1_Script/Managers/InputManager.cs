@@ -152,13 +152,18 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                LockMouseInput();
-                Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
-
-                inputMode = InputMode.None;
-                OnInputModeChanged(inputMode);
-            }
+                OnEscape();
+			}
         }
+
+        public void OnEscape()
+        {
+			LockMouseInput();
+			Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
+
+			inputMode = InputMode.None;
+			OnInputModeChanged(inputMode);
+		}
 
         /// <summary>
         /// GameScene - Layer 1 일떄만 입력을 받아야됨
@@ -166,10 +171,20 @@ namespace HumanFactory.Manager
         private void ClickMapGridInPadMode()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 MapManager.Instance.OnClickMapGridInPadMode(curMousePos.x, curMousePos.y);
             }
+            else
+            {
+				MapManager.Instance.OnReleaseMapGridInPadMode();
+			}
+
+            if (Input.GetMouseButton(1))
+            {
+                MapManager.Instance.OnRightClickMapGridInPadMode(curMousePos.x, curMousePos.y);
+			}
+            
         }
 
         private BuildingType currentSelectedBuilding = BuildingType.None;
