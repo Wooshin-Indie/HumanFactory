@@ -60,7 +60,7 @@ namespace HumanFactory.Manager
             SetPad(padType);
         }
 
-        private void SetPad(PadType type)
+        public void SetPad(PadType type)
 		{
             PadType = type;
 			switch (type)
@@ -382,13 +382,64 @@ namespace HumanFactory.Manager
 
             //isCircuiting = isSet;
         }
-        public void OnClickMapGridInPadMode(int x, int y)
-        {
-            if (!CheckBoundary(x, y)) return;
-            programMap[x, y].OnClickRotate();
-        }
 
-        public void OnHoverMapGridInBuildingMode(int x, int y, BuildingType type)
+		private Vector2Int prevDirPad = new Vector2Int(-1, -1);
+		public void OnClickMapGridInPadMode(int x, int y)
+        {
+            if (prevDirPad.x == x && prevDirPad.y == y) return;
+            
+            if(!CheckBoundary(prevDirPad.x, prevDirPad.y))
+			{
+				if (CheckBoundary(x, y))
+				{
+					programMap[x, y].OnClickRotate();
+					prevDirPad.Set(x, y);
+					return;
+				}
+                else
+                {
+                    return;
+                }
+			}
+
+			Vector2Int dir = new Vector2Int(x, y) - prevDirPad;
+
+            PadType type = PadType.DirNone;
+            if (dir.x == 1)
+            {
+                type = PadType.DirRight;
+            }
+            else if (dir.x == -1)
+			{
+				type = PadType.DirLeft;
+			}
+            else if (dir.y == 1)
+			{
+				type = PadType.DirUp;
+			}
+            else if (dir.y == -1)
+			{
+				type = PadType.DirDown;
+			}
+
+            programMap[prevDirPad.x, prevDirPad.y].SetPad(type);
+            if (CheckBoundary(x, y)) programMap[x, y].SetPad(type);
+
+			prevDirPad.Set(x, y);
+		}
+        public void OnReleaseMapGridInPadMode()
+		{
+            prevDirPad = new Vector2Int(-1, -1);
+	    }
+
+        public void OnRightClickMapGridInPadMode(int x, int y)
+		{
+            if (!CheckBoundary(x, y)) return;
+
+            programMap[x, y].SetPad(PadType.DirNone);
+		}
+
+		public void OnHoverMapGridInBuildingMode(int x, int y, BuildingType type)
         {
             if (!CheckBoundary(x, y))
             {
@@ -416,7 +467,8 @@ namespace HumanFactory.Manager
             programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
-            ChangeMapVisibility(mode);
+            prevDirPad.Set(-1, -1);
+			ChangeMapVisibility(mode);
         }
 		#endregion
 
@@ -713,6 +765,7 @@ namespace HumanFactory.Manager
             Managers.Data.AddStageGridData(currentStage, gridDatas);
         }
 
-        #endregion
-    }
+		#endregion
+
+	}
 }
