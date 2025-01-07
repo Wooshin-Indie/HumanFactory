@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -220,8 +221,8 @@ namespace HumanFactory.Manager
         {
             Init();
         }
-        private StageInfo stage0;
-        public StageInfo Stage0 { get => stage0; }
+        private StageInfo currentStageInfo;
+        public StageInfo CurrentStageInfo { get => currentStageInfo; }
         private MapGrid[,] programMap;
         public MapGrid[,] ProgramMap { get => programMap; }
 
@@ -238,7 +239,7 @@ namespace HumanFactory.Manager
         {
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
-            stage0 = Managers.Resource.GetStageInfo(0);
+            currentStageInfo = Managers.Resource.GetStageInfo(0);
 
             programMap = new MapGrid[mapSize.x, mapSize.y];
             for (int i = 0; i < mapSize.x; i++)
@@ -265,10 +266,31 @@ namespace HumanFactory.Manager
         private Vector2Int circuitingButtonPos;
         public Vector2Int prevHoverPos = new Vector2Int(0, 0);
         public bool IsCircuiting { get => isCircuiting; }
-        private void Update()
+
+		#region CycleLock
+		private int cycleLock = 0;
+		public void LockCycle()
+		{
+			cycleLock++;
+		}
+		public void ReleaseCycle()
+		{
+			if (cycleLock > 0)
+				cycleLock--;
+		}
+		private bool IsCycleEnabled()
+		{
+			return cycleLock <= 0;
+		}
+
+		#endregion
+		private void Update()
         {
             if (!isCycleRunning)
+            {
+                if (!IsCycleEnabled()) return;
                 StartCoroutine(ProgramCycleCoroutine());
+            }
 
             // HACK : 저장 타이밍 따로 정해줘야됨
             if (Input.GetKeyDown(KeyCode.S))
@@ -411,7 +433,7 @@ namespace HumanFactory.Manager
         private List<Func<bool>> secFuncs = new List<Func<bool>>();
         private float cycleElapsedTime = 0f;
 
-        private IEnumerator ProgramCycleCoroutine()
+		private IEnumerator ProgramCycleCoroutine()
         {
             InitPerCycle();
             
@@ -427,9 +449,15 @@ namespace HumanFactory.Manager
 
 
         private bool isPersonAdd = false;
-        [ContextMenu("Add 1")]
+
+
+        public void DoubleCycleTime()
+        {
+            cycleTime = 0.5f;
+        }
         public void AddPerson()
         {
+            cycleTime = 1f;
             isPersonAdd = true;
         }
 
@@ -448,14 +476,14 @@ namespace HumanFactory.Manager
         {
             isCycleRunning = true;
 
-            if (isPersonAdd && idxin < stage0.inputs.Length )
+            if (isPersonAdd && idxin < currentStageInfo.inputs.Length )
             {
                 HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
                     .GetComponent<HumanController>();
                 humanControllers.Add(tmpController);
 
-                tmpController.HumanNum = stage0.inputs[idxin];
-                Debug.Log(stage0.inputs[idxin]);
+                tmpController.HumanNum = currentStageInfo.inputs[idxin];
+                Debug.Log(currentStageInfo.inputs[idxin]);
                 idxin++;
             }
 
@@ -484,7 +512,7 @@ namespace HumanFactory.Manager
 
             foreach(var controller in humanControllers)
             {
-                // TODO - 매 프레임 Lerp로 Player 이동하는 코드 필요
+                controller.SetPositionByRatio(elapsedTime/maxTime);
             }
         }
 
@@ -597,9 +625,9 @@ namespace HumanFactory.Manager
                 if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
                 //human이 output지점 (4,4)가 아니면 스킵
 
-                if (idxout < stage0.outputs.Length)
+                if (idxout < currentStageInfo.outputs.Length)
                 {
-                    if (humanControllers[i].HumanNum != stage0.outputs[idxout])
+                    if (humanControllers[i].HumanNum != currentStageInfo.outputs[idxout])
                     {
                         isOutputCorrect = false;
                     }
@@ -609,7 +637,7 @@ namespace HumanFactory.Manager
                 humanControllers.Remove(humanControllers[i]);
             }
 
-            if (idxout >= stage0.outputs.Length)
+            if (idxout >= currentStageInfo.outputs.Length)
             {
                 Debug.Log("OUTPUT : " + isOutputCorrect);
                 idxout = 0;
@@ -636,7 +664,7 @@ namespace HumanFactory.Manager
 
         private int currentStage = -1;
 
-        public int CurrentStaeg { get => currentStage; }
+        public int CurrentStage { get => currentStage; }
         
 
 
@@ -645,8 +673,7 @@ namespace HumanFactory.Manager
             Debug.Log($"Load Stage : {stageId}");
 
             currentStage = stageId;
-
-            StageInfo tmpStageInfo = Managers.Resource.GetStageInfo(stageId);
+            currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
 			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
 
