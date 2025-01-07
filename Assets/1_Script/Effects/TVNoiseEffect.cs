@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,9 @@ namespace HumanFactory.Effects
         [SerializeField] private Material noiseMat;
         [SerializeField] private float noiseTime;
 
+        private bool isTempNoising = false;
         private bool isNoising = false;
+        private Coroutine noiseCoroutine = null;
 
         private void Awake()
         {
@@ -24,17 +27,27 @@ namespace HumanFactory.Effects
         public void MakeNoise()
         {
             maxTime = noiseTime;
-            if (isNoising) {
+            if (isTempNoising) {
                 elapsedTime = 0f;
                 return;
             }
 
-            isNoising = true;
-            GetComponent<MeshRenderer>().material = noiseMat;
-            StartCoroutine(NoiseCoroutine());
+			isTempNoising = true;
+            SetNoiseMat();
+			noiseCoroutine = StartCoroutine(NoiseCoroutine());
         }
 
-        private IEnumerator NoiseCoroutine()
+        public void SetPermanentNoise()
+		{
+			if (isTempNoising)
+            {
+                StopCoroutine(noiseCoroutine);
+				isTempNoising = false;
+			}
+            SetNoiseMat();
+		}
+
+		private IEnumerator NoiseCoroutine()
         {
             elapsedTime = 0f;
             while (elapsedTime < maxTime)
@@ -42,15 +55,32 @@ namespace HumanFactory.Effects
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-
             OnReleaseNoise();
         }
 
         private void OnReleaseNoise()
+		{
+			isTempNoising = false; 
+            SetRenderMat();
+		}
+
+
+        private void SetNoiseMat()
         {
-            isNoising = false;
-            GetComponent<MeshRenderer>().material = renderMat;
-        }
-    }
+            if (isNoising) return;
+
+			GetComponent<MeshRenderer>().material = noiseMat;
+            Managers.Input.LockMenuInput();
+            isNoising = true;
+		}
+		private void SetRenderMat()
+		{
+			if (!isNoising) return;
+
+			GetComponent<MeshRenderer>().material = renderMat;
+			Managers.Input.ReleaseMenuInput();
+			isNoising = false;
+		}
+	}
 
 }

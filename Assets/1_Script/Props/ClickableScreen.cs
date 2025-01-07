@@ -8,6 +8,8 @@ namespace HumanFactory.Props
 
         public override void OnPointerClick()
         {
+
+
             base.OnPointerClick();
 
             Camera.main.GetComponent<CameraBase>().ConvertSceneForward(transform.localPosition,
