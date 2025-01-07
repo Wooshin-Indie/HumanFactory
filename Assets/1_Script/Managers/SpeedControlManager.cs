@@ -10,9 +10,7 @@ namespace HumanFactory
         [SerializeField] private Button playButton; // 재생 버튼
         [SerializeField] private Button pauseButton; // 일시정지 버튼
         [SerializeField] private Button speedUp2Button; // 배속 버튼
-
-        private float defaultTimeScale = 1f; // 기본 배속
-        private float speedUpScale2 = 2f;    // 배속 값
+        [SerializeField] private Button stopButton; // 정지 버튼
 
         void Start()
         {
@@ -20,6 +18,7 @@ namespace HumanFactory
             playButton.onClick.AddListener(PlayGame);
             pauseButton.onClick.AddListener(PauseGame);
             speedUp2Button.onClick.AddListener(SpeedUp2Game);
+            stopButton.onClick.AddListener(StopGame);
 
             // 초기 상태 설정
             //Time.timeScale = 1f; // 게임 시작 시 1배속
@@ -29,7 +28,7 @@ namespace HumanFactory
         {
             MapManager.Instance.AddPerson();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
-			Debug.Log("게임 재생");
+            Debug.Log("게임 재생");
         }
 
         private void PauseGame()
@@ -41,7 +40,13 @@ namespace HumanFactory
         private void SpeedUp2Game()
         {
             MapManager.Instance.DoubleCycleTime();
-			Debug.Log($"게임 배속: {speedUpScale2}x");
+			Debug.Log("게임 배속");
+        }
+
+        private void StopGame()
+        {
+            GameManagerEx.Instance.SetExeType(ExecuteType.None);
+            Debug.Log("게임 정지");
         }
     }
 }

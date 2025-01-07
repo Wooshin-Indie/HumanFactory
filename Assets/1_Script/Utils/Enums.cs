@@ -103,7 +103,7 @@ namespace HumanFactory
 
     public enum ExecuteType
     {
-        None = 0,
+        None = 0, // Stop누를 때 None으로 감
         Play = 1,
         Pause = 2
     }

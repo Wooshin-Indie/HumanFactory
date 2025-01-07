@@ -118,14 +118,14 @@ namespace HumanFactory.Manager
 
         private void OnGameScenePadMode()
         {
-            if (inputMode != InputMode.Pad) return;
+            if (inputMode != InputMode.Pad || !IsMouseInputEnabled()) return;
 
             ClickMapGridInPadMode();
         }
 
         private void OnGameSceneBuildingMode()
         {
-            if (inputMode != InputMode.Building) return;
+            if (inputMode != InputMode.Building || !IsMouseInputEnabled()) return;
 
             MapManager.Instance.OnHoverMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             ClickMapGridInBuildingMode();
@@ -223,6 +223,7 @@ namespace HumanFactory.Manager
         // none일떄는 시뮬레이션 실행하는 UI 도 띄워줘야됨
         private void ChangeInputMode()
         {
+            if (!IsMouseInputEnabled()) return;
             if (Input.GetKeyDown(KeyCode.Alpha1) && inputMode != InputMode.None)
             {
                 inputMode = InputMode.None;

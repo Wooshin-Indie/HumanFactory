@@ -124,15 +124,21 @@ namespace HumanFactory
         {
             switch (type) {
                 case ExecuteType.None:
+                    if (exeType == ExecuteType.None) break;
+                    Managers.Input.ReleaseMouseInput();
                     break;
                 case ExecuteType.Play:
                     if (exeType == ExecuteType.Play) break;
                     MapManager.Instance.ReleaseCycle();
+                    if (exeType == ExecuteType.Pause) break;
+                    Managers.Input.LockMouseInput();
                     break;
                 case ExecuteType.Pause:
 					if (exeType == ExecuteType.Pause) break;
 					MapManager.Instance.LockCycle();
-					break;
+                    if (exeType == ExecuteType.Play) break;
+                    Managers.Input.LockMouseInput();
+                    break;
 			}
 			exeType = type;
 		}
