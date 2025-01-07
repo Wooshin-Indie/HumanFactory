@@ -1,7 +1,5 @@
 using HumanFactory.Props;
 using System;
-using System.Net;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -40,15 +38,34 @@ namespace HumanFactory.Manager
         {
             return mouseInputLock <= 0;
         }
-        #endregion
 
-        private Vector3 worldPos;
+		private int menuInputLock = 0;
+		public void LockMenuInput()
+		{
+			menuInputLock++;
+		}
+		public void ReleaseMenuInput()
+		{
+			if (menuInputLock > 0)
+				menuInputLock--;
+			else
+				Debug.LogError("Error : Release Mouse Input dosen't expected!");
+		}
+
+		private bool IsMenuInputEnabled()
+		{
+			return menuInputLock <= 0;
+		}
+		#endregion
+
+		private Vector3 worldPos;
         private Vector2Int curMousePos;
         private void OnMenuScene()
         {
             if (GameManagerEx.Instance.CurrentCamType != CameraType.Menu) return;
 
-            InteractClickableObject();
+            if (IsMenuInputEnabled())
+                InteractClickableObject();
             ClickOutScene();
         }
 

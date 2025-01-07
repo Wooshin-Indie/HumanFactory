@@ -28,8 +28,8 @@ public class UIExpandManagement : MonoBehaviour
     public int CurrentExpandedPanel { get => currentExpandedPanel;}
 
     private void Start()
-    {
-        for (int i = 0; i < 20; i++)
+	{
+		for (int i = 0; i < Managers.Resource.GetStageCount(); i++)
         {
             int idx = i;
             stages.Add(Instantiate(stagePanelPrefab, content));
@@ -44,9 +44,15 @@ public class UIExpandManagement : MonoBehaviour
         scrollviewHeight = GetComponent<RectTransform>().rect.height;
         content.GetComponent<VerticalLayoutGroup>().padding.bottom = (int)scrollviewHeight / 2;
         content.GetComponent<VerticalLayoutGroup>().padding.top = (int)scrollviewHeight / 2;
-    }
 
-    private void OnClickStages(int index)
+
+		if (currentExpandedPanel == -1)
+		{
+			noiseEffect.SetPermanentNoise();
+		}
+	}
+
+	private void OnClickStages(int index)
     {
         if (typeCoroutine != null) StopCoroutine(typeCoroutine);
         stageDescript.text = "";
@@ -62,7 +68,8 @@ public class UIExpandManagement : MonoBehaviour
         {
             stages[index].GetComponent<UIOnClickExpand>().Reduce();
             currentExpandedPanel = -1;
-            scrollTweener.Kill();
+			noiseEffect.SetPermanentNoise();
+			scrollTweener.Kill();
         }
         else if (currentExpandedPanel != index) // 확대 돼있는게 있는 상태에서 다른 패널 클릭
         {

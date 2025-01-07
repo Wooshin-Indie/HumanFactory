@@ -101,4 +101,11 @@ namespace HumanFactory
 
     }
 
+    public enum ExecuteType
+    {
+        None = 0,
+        Play = 1,
+        Pause = 2
+    }
+
 }

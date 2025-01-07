@@ -1,4 +1,5 @@
 using HumanFactory.Manager;
+using HumanFactory.Util;
 using TMPro;
 using UnityEngine;
 
@@ -7,12 +8,10 @@ namespace HumanFactory.Controller
     public class HumanController : MonoBehaviour
     {
 
-        [Header("Movement Args")]
-        [SerializeField] private float moveSpeed;       // TODO - 1 grid per 1 sec
-
         [Header("Debug")]
         [SerializeField] private Vector2Int currentPos; // 현재 그리드 위치
         [SerializeField] private Vector2Int targetPos;  // 이동할 그리드 위치
+        [SerializeField] private Vector2Int prevPos;  // 이전 그리드 위치
         [SerializeField] private int currentDir;        // 이동할 방향
         [SerializeField] private HumanOperandType operandType;
         [SerializeField] private int humanNum = 2;
@@ -20,6 +19,7 @@ namespace HumanFactory.Controller
         [SerializeField] private TextMeshPro numTMP;
 
         public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
+        public Vector2Int PrevPos { get => prevPos; set => prevPos = value; }
         public Vector2Int TargetPos { get => targetPos; }
         public int HumanNum { get => humanNum; 
             set
@@ -79,22 +79,19 @@ namespace HumanFactory.Controller
 
         private void Awake()
         {
-
             // HACK - must set appropriate pos after instantiate
+            prevPos = new Vector2Int(0, -1);
             currentPos = new Vector2Int(0, -1);
             targetPos = new Vector2Int(0, 0);
             currentDir = 0;
             numTMP.text = humanNum.ToString();
         }
 
-        // 
-        private void Update()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, 
-                new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z),
-                moveSpeed * Time.deltaTime);
 
-            //UpdateTargetPos();
+        public void SetPositionByRatio(float ratio)
+        {
+            Vector2 tmpV = Vector2.Lerp(new Vector2(prevPos.x, prevPos.y), new Vector2(targetPos.x, targetPos.y), ratio);
+            transform.position = new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z);
         }
 
         /// <summary>
@@ -104,9 +101,6 @@ namespace HumanFactory.Controller
         {
             float eulerDistance = Mathf.Abs(transform.position.x - targetPos.x) + Mathf.Abs(transform.position.y - targetPos.y);
 
-            if (eulerDistance > Mathf.Epsilon) return;
-
-            Debug.Log("UPDATE TARGET POSITION");
 
             // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
@@ -117,7 +111,8 @@ namespace HumanFactory.Controller
             //
             grid.GetPadParameter(out currentDir);
 
-            targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
+			prevPos = targetPos;
+			targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
             if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1)
                 || targetPos.x < 0 || targetPos.y < 0)
             {
@@ -135,5 +130,6 @@ namespace HumanFactory.Controller
             Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
                 EffectType.Subi);
         }
-    }
+        
+	}
 }

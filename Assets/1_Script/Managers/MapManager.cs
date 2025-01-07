@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -265,10 +266,31 @@ namespace HumanFactory.Manager
         private Vector2Int circuitingButtonPos;
         public Vector2Int prevHoverPos = new Vector2Int(0, 0);
         public bool IsCircuiting { get => isCircuiting; }
-        private void Update()
+
+		#region CycleLock
+		private int cycleLock = 0;
+		public void LockCycle()
+		{
+			cycleLock++;
+		}
+		public void ReleaseCycle()
+		{
+			if (cycleLock > 0)
+				cycleLock--;
+		}
+		private bool IsCycleEnabled()
+		{
+			return cycleLock <= 0;
+		}
+
+		#endregion
+		private void Update()
         {
             if (!isCycleRunning)
+            {
+                if (!IsCycleEnabled()) return;
                 StartCoroutine(ProgramCycleCoroutine());
+            }
 
             // HACK : 저장 타이밍 따로 정해줘야됨
             if (Input.GetKeyDown(KeyCode.S))
@@ -411,7 +433,7 @@ namespace HumanFactory.Manager
         private List<Func<bool>> secFuncs = new List<Func<bool>>();
         private float cycleElapsedTime = 0f;
 
-        private IEnumerator ProgramCycleCoroutine()
+		private IEnumerator ProgramCycleCoroutine()
         {
             InitPerCycle();
             
@@ -427,9 +449,15 @@ namespace HumanFactory.Manager
 
 
         private bool isPersonAdd = false;
-        [ContextMenu("Add 1")]
+
+
+        public void DoubleCycleTime()
+        {
+            cycleTime = 0.5f;
+        }
         public void AddPerson()
         {
+            cycleTime = 1f;
             isPersonAdd = true;
         }
 
@@ -484,7 +512,7 @@ namespace HumanFactory.Manager
 
             foreach(var controller in humanControllers)
             {
-                // TODO - 매 프레임 Lerp로 Player 이동하는 코드 필요
+                controller.SetPositionByRatio(elapsedTime/maxTime);
             }
         }
 
@@ -646,8 +674,6 @@ namespace HumanFactory.Manager
 
             currentStage = stageId;
             currentStageInfo = Managers.Resource.GetStageInfo(stageId);
-
-            StageInfo tmpStageInfo = Managers.Resource.GetStageInfo(stageId);
 
 			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
 

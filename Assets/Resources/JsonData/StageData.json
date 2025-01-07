@@ -8,83 +8,21 @@
         },
         {
             "stageId": 1,
-            "stageName": "Stage_1"
+            "stageName": "Stage_1",
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7 ]
         },
         {
             "stageId": 2,
-            "stageName": "Stage_2"
+            "stageName": "Stage_2",
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7 ]
         },
         {
             "stageId": 3,
-            "stageName": "Stage_3"
-        },
-        {
-            "stageId": 4,
-            "stageName": "Stage_4"
-        },
-        {
-            "stageId": 5,
-            "stageName": "Stage_5"
-        },
-        {
-            "stageId": 6,
-            "stageName": "Stage_6"
-        },
-        {
-            "stageId": 7,
-            "stageName": "Stage_7"
-        },
-        {
-            "stageId": 8,
-            "stageName": "Stage_8"
-        },
-        {
-            "stageId": 9,
-            "stageName": "Stage_9"
-        },
-        {
-            "stageId": 10,
-            "stageName": "Stage_10"
-        },
-        {
-            "stageId": 11,
-            "stageName": "Stage_11"
-        },
-        {
-            "stageId": 12,
-            "stageName": "Stage_12"
-        },
-        {
-            "stageId": 13,
-            "stageName": "Stage_13"
-        },
-        {
-            "stageId": 14,
-            "stageName": "Stage_14"
-        },
-        {
-            "stageId": 15,
-            "stageName": "Stage_15"
-        },
-        {
-            "stageId": 16,
-            "stageName": "Stage_16"
-        },
-        {
-            "stageId": 17,
-            "stageName": "Stage_17"
-        },
-        {
-            "stageId": 18,
-            "stageName": "Stage_18"
-        },
-        {
-            "stageId": 19,
-            "stageName": "Stage_19"
-        },
-        {
-            "stageId": 20,
-            "stageName": "Stage_20"
+            "stageName": "Stage_3",
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7 ]
         }
     ]
 }

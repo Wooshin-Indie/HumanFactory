@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,6 +115,27 @@ namespace HumanFactory
                 else raycasters[i].enabled = false;
             }
         }
+
+
+        private ExecuteType exeType = ExecuteType.None;
+        public ExecuteType ExeType { get => exeType; }
+
+        public void SetExeType(ExecuteType type)
+        {
+            switch (type) {
+                case ExecuteType.None:
+                    break;
+                case ExecuteType.Play:
+                    if (exeType == ExecuteType.Play) break;
+                    MapManager.Instance.ReleaseCycle();
+                    break;
+                case ExecuteType.Pause:
+					if (exeType == ExecuteType.Pause) break;
+					MapManager.Instance.LockCycle();
+					break;
+			}
+			exeType = type;
+		}
 
     }
 }
