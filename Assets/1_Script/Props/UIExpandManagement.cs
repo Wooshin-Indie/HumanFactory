@@ -1,4 +1,5 @@
 using DG.Tweening;
+using HumanFactory;
 using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
@@ -24,7 +25,7 @@ public class UIExpandManagement : MonoBehaviour
     private Tweener scrollTweener;
     private int currentExpandedPanel = -1;
     private float scrollviewHeight;
-
+    public int CurrentExpandedPanel { get => currentExpandedPanel;}
 
     private void Start()
     {

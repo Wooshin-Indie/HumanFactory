@@ -220,8 +220,8 @@ namespace HumanFactory.Manager
         {
             Init();
         }
-        private StageInfo stage0;
-        public StageInfo Stage0 { get => stage0; }
+        private StageInfo currentStageInfo;
+        public StageInfo CurrentStageInfo { get => currentStageInfo; }
         private MapGrid[,] programMap;
         public MapGrid[,] ProgramMap { get => programMap; }
 
@@ -238,7 +238,7 @@ namespace HumanFactory.Manager
         {
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
-            stage0 = Managers.Resource.GetStageInfo(0);
+            currentStageInfo = Managers.Resource.GetStageInfo(0);
 
             programMap = new MapGrid[mapSize.x, mapSize.y];
             for (int i = 0; i < mapSize.x; i++)
@@ -448,14 +448,14 @@ namespace HumanFactory.Manager
         {
             isCycleRunning = true;
 
-            if (isPersonAdd && idxin < stage0.inputs.Length )
+            if (isPersonAdd && idxin < currentStageInfo.inputs.Length )
             {
                 HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
                     .GetComponent<HumanController>();
                 humanControllers.Add(tmpController);
 
-                tmpController.HumanNum = stage0.inputs[idxin];
-                Debug.Log(stage0.inputs[idxin]);
+                tmpController.HumanNum = currentStageInfo.inputs[idxin];
+                Debug.Log(currentStageInfo.inputs[idxin]);
                 idxin++;
             }
 
@@ -597,9 +597,9 @@ namespace HumanFactory.Manager
                 if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
                 //human이 output지점 (4,4)가 아니면 스킵
 
-                if (idxout < stage0.outputs.Length)
+                if (idxout < currentStageInfo.outputs.Length)
                 {
-                    if (humanControllers[i].HumanNum != stage0.outputs[idxout])
+                    if (humanControllers[i].HumanNum != currentStageInfo.outputs[idxout])
                     {
                         isOutputCorrect = false;
                     }
@@ -609,7 +609,7 @@ namespace HumanFactory.Manager
                 humanControllers.Remove(humanControllers[i]);
             }
 
-            if (idxout >= stage0.outputs.Length)
+            if (idxout >= currentStageInfo.outputs.Length)
             {
                 Debug.Log("OUTPUT : " + isOutputCorrect);
                 idxout = 0;
@@ -636,7 +636,7 @@ namespace HumanFactory.Manager
 
         private int currentStage = -1;
 
-        public int CurrentStaeg { get => currentStage; }
+        public int CurrentStage { get => currentStage; }
         
 
 
@@ -645,6 +645,7 @@ namespace HumanFactory.Manager
             Debug.Log($"Load Stage : {stageId}");
 
             currentStage = stageId;
+            currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
             StageInfo tmpStageInfo = Managers.Resource.GetStageInfo(stageId);
 
