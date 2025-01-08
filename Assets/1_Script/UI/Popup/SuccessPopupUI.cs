@@ -29,7 +29,7 @@ namespace HumanFactory.UI
 			{
 				Managers.Input.ReleaseMouseInput();
 				CloseWindow();
-				MapManager.Instance.LoadStage(MapManager.Instance.CurrentStaeg + 1);	// 다음 스테이지 호출
+				MapManager.Instance.LoadStage(MapManager.Instance.CurrentStage + 1);	// 다음 스테이지 호출
 			});
 		}
 

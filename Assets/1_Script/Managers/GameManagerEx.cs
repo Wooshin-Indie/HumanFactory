@@ -53,7 +53,8 @@ namespace HumanFactory
         public void ChangeRenderCamera(CameraType type)
         {
             currentCamType = type;
-            switch (type) {
+            switch (type)
+            {
                 case CameraType.Main:
                     cameras[0].gameObject.SetActive(true);
                     cameras[1].gameObject.SetActive(true);
@@ -100,12 +101,13 @@ namespace HumanFactory
             ConvertUIRaycaster(type);
         }
 
-        [SerializeField] private List<GraphicRaycaster> raycasters 
+        [SerializeField]
+        private List<GraphicRaycaster> raycasters
             = new List<GraphicRaycaster>(Enum.GetNames(typeof(CameraType)).Length);
 
         private void ConvertUIRaycaster(CameraType type)
         {
-            for(int i=0; i<raycasters.Count; i++)
+            for (int i = 0; i < raycasters.Count; i++)
             {
                 if (raycasters[i] == null) continue;
 
@@ -135,20 +137,20 @@ namespace HumanFactory
             // 모두 다 초기화하기 - 
         }
 
-		private void Update()
-		{
+        private void Update()
+        {
             if (Input.GetKeyDown(KeyCode.K)) OnStageSuccess(1);
-		}
+        }
 
-		#endregion
+        #endregion
 
-	}
         private ExecuteType exeType = ExecuteType.None;
         public ExecuteType ExeType { get => exeType; }
 
         public void SetExeType(ExecuteType type)
         {
-            switch (type) {
+            switch (type)
+            {
                 case ExecuteType.None:
                     if (exeType == ExecuteType.None) break;
                     Managers.Input.ReleaseMouseInput();
@@ -160,15 +162,15 @@ namespace HumanFactory
                     Managers.Input.LockMouseInput();
                     break;
                 case ExecuteType.Pause:
-					if (exeType == ExecuteType.Pause) break;
-					MapManager.Instance.LockCycle();
+                    if (exeType == ExecuteType.Pause) break;
+                    MapManager.Instance.LockCycle();
                     if (exeType == ExecuteType.Play) break;
                     Managers.Input.LockMouseInput();
                     break;
-			}
-			exeType = type;
-		}
+            }
+            exeType = type;
+        }
 
-}
+    }
 }
 
