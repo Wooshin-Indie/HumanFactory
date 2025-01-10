@@ -14,6 +14,7 @@ namespace HumanFactory.UI
 
         [Header("Must Enable in GameScene")]
         [SerializeField] private CurrentModeUI curModeUI;
+        [SerializeField] private InOutRevealUI inOutRevealUI;
 
         private int elapsedSeconds = 34567;
 
@@ -56,6 +57,7 @@ namespace HumanFactory.UI
                         cctvImage[i].gameObject.SetActive(false);
                     }
                     curModeUI.gameObject.SetActive(true);
+					inOutRevealUI.gameObject.SetActive(true);
                 });
         }
 
@@ -78,6 +80,7 @@ namespace HumanFactory.UI
 
 
             curModeUI.gameObject.SetActive(false);
+			inOutRevealUI.gameObject.SetActive(false);
         }
 
     }

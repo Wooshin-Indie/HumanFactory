@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -499,7 +499,7 @@ namespace HumanFactory.Manager
 		private IEnumerator ProgramCycleCoroutine()
         {
             InitPerCycle();
-            
+
             while (cycleElapsedTime < cycleTime)
             {
                 ExecutePerFrame(cycleElapsedTime, cycleTime);
@@ -516,11 +516,20 @@ namespace HumanFactory.Manager
 
         public void DoubleCycleTime()
         {
+            float prev = cycleTime;
             cycleTime = 0.5f;
+
+            cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+
+
         }
         public void AddPerson()
         {
-            cycleTime = 1f;
+
+			float prev = cycleTime;
+			cycleTime = 1f;
+			cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+
             isPersonAdd = true;
         }
 
@@ -546,7 +555,6 @@ namespace HumanFactory.Manager
                 humanControllers.Add(tmpController);
 
                 tmpController.HumanNum = currentStageInfo.inputs[idxin];
-                Debug.Log(currentStageInfo.inputs[idxin]);
                 idxin++;
             }
 

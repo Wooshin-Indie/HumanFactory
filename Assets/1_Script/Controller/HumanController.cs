@@ -115,8 +115,6 @@ namespace HumanFactory.Controller
 			prevPos = targetPos;
 			targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
 
-            Debug.Log("TARGET POS : " + TargetPos);
-
         }
 
         [ContextMenu("TESTFUNC")]
