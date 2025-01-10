@@ -120,8 +120,6 @@ namespace HumanFactory.Controller
                 Destroy(gameObject);
             }
 
-            Debug.Log("TARGET POS : " + TargetPos);
-
         }
 
         [ContextMenu("TESTFUNC")]

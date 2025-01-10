@@ -21,10 +21,5 @@ namespace HumanFactory.UI
 				outStack.PushValue(MapManager.Instance.CurrentStageInfo.outputs[i]);
 		}
 
-		private void Start()
-		{
-            gameObject.SetActive(false);
-		}
-
 	}
 }
