@@ -13,6 +13,7 @@ namespace HumanFactory
 
         public static string TAG_NONE = "Untagged";
         public static string TAG_CAMERA = "MainCamera";
+        public static string TAG_PAGES = "Pages";
 
         public static readonly int LAYER_CLICKABLE = 1 << 10;
 

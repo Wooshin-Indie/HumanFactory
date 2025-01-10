@@ -22,7 +22,7 @@
             "stageId": 3,
             "stageName": "Stage_3",
             "inputs": [ 1, 2, 3, 4, 5, 6, 7 ],
-            "outputs": [ 1, 2, 3, 4, 5, 6, 7 ]
+            "outputs": [ 4, 62, 21, 5, 2, 1, 0 ]
         }
     ]
 }
