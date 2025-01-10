@@ -17,6 +17,8 @@ namespace HumanFactory.UI
         private List<RectTransform> pages = new List<RectTransform>();
 		private int curPage = 0;
 
+		private bool isPaging = false;
+
 		private void Awake()
 		{
 			// 시작하자마자 자식에 있는 (정렬된)페이지들을 pages에 저장
@@ -38,9 +40,19 @@ namespace HumanFactory.UI
 			prevPageButton.onClick.AddListener(OnPrevPage);
 		}
 
-		private void OnNextPage()
+		private void OnEnable()
 		{
+			curPage = 0;
+			ResetChildOrder();
+			isPaging = false;
+		}
+
+		private void OnNextPage()
+		{ 
 			if (curPage == pages.Count() - 1) return;
+			
+			if (isPaging) return;
+			isPaging = true;
 
 			int nextPage = curPage + 1;
 
@@ -63,6 +75,7 @@ namespace HumanFactory.UI
 				{
 					pages[curPage].gameObject.SetActive(false);
 					curPage++;
+					isPaging = false;
 				}));
 			seq2.Join(pages[curPage].DOLocalRotate(new Vector3(0, 0, 0), moveDuration));
 
@@ -74,6 +87,9 @@ namespace HumanFactory.UI
 		private void OnPrevPage()
 		{
 			if (curPage == 0) return;
+
+			if (isPaging) return;
+			isPaging = true;
 
 			int prevPage = curPage - 1;
 
@@ -96,6 +112,7 @@ namespace HumanFactory.UI
 				{
 					pages[curPage].gameObject.SetActive(false);
 					curPage--;
+					isPaging = false;
 				}));
 			seq2.Join(pages[curPage].DOLocalRotate(new Vector3(0, 0, 0), moveDuration));
 			

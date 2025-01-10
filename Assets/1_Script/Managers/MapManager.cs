@@ -216,7 +216,26 @@ namespace HumanFactory.Manager
         }
         #endregion
 
-        private void Awake()
+        #region
+        private ExampleManager exam;
+        private void InitManager()
+        {
+            GameObject go = new GameObject { name = "@ExampleManager" };
+            go.AddComponent<ExampleManager>();
+            exam = go.GetComponent<ExampleManager>();
+
+            // 리스트에서 지우고
+            go.transform.DOLocalMoveX(4, 5f)
+                .OnComplete(
+                    () =>
+                    {
+                        Destroy(go);
+                    }
+                );
+        }
+		#endregion
+
+		private void Awake()
         {
             Init();
         }
