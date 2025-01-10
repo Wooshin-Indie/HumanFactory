@@ -1,3 +1,4 @@
+using DG.Tweening;
 using HumanFactory.Manager;
 using HumanFactory.Util;
 using TMPro;
@@ -113,12 +114,6 @@ namespace HumanFactory.Controller
 
 			prevPos = targetPos;
 			targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
-            if(targetPos.x >= MapManager.Instance.ProgramMap.GetLength(0) || targetPos.y >= MapManager.Instance.ProgramMap.GetLength(1)
-                || targetPos.x < 0 || targetPos.y < 0)
-            {
-                // TODO - Disappear. It could cause err
-                Destroy(gameObject);
-            }
 
             Debug.Log("TARGET POS : " + TargetPos);
 
@@ -129,6 +124,17 @@ namespace HumanFactory.Controller
         {
             Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
                 EffectType.Subi);
+        }
+
+        public void HumanDyingProcess()
+        {
+            Debug.Log("Log ::" + humanNum);
+            this.transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
+            this.GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
+                        OnComplete(() =>
+                        {
+                            Destroy(this.gameObject);
+                        });
         }
         
 	}
