@@ -217,9 +217,18 @@ namespace HumanFactory.Manager
         }
         #endregion
 
+        private GunnersManagement gunnersManagement;
+        private void InitGunners()
+        {
+            this.AddComponent<GunnersManagement>();
+            gunnersManagement = this.GetComponent<GunnersManagement>();
+            gunnersManagement.PlaceGunners(mapSize);
+        }
+ 
         private void Awake()
         {
             Init();
+            InitGunners();
         }
         private StageInfo currentStageInfo;
         public StageInfo CurrentStageInfo { get => currentStageInfo; }
@@ -230,6 +239,7 @@ namespace HumanFactory.Manager
         public Vector2Int MapSize { get => mapSize; }
         [SerializeField] private GameObject arrowPrefab;
         [SerializeField] private GameObject humanPrefab;
+        [SerializeField] private GameObject gunnerPrefab;
 
         [Header("Circuit")]
         [SerializeField] private SpriteRenderer buttonRect;
@@ -476,7 +486,8 @@ namespace HumanFactory.Manager
 
 		[Header("Game Cycle")]
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
-        
+        public float CycleTime { get => cycleTime; }
+
         // TODO - Destory하고 null값 남아있음 처리 필요.
         [SerializeField]private List<HumanController> humanControllers = new List<HumanController>();
 
@@ -631,6 +642,7 @@ namespace HumanFactory.Manager
         /// </summary>
         private bool ExecuteAtTwoThirds()
         {
+
             foreach (var controller in humanControllers)
             {
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
@@ -674,8 +686,18 @@ namespace HumanFactory.Manager
             {
                 humanControllers[i].OnFinPerCycle();
 
+                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y)) //타겟 위치가 (0,-1)이 아닌 맵 밖일 때
+                {
+                    gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
+                    Debug.Log("log: " + humanControllers[i].HumanNum);
+                    humanControllers[i].HumanDyingProcess();
+                    humanControllers.Remove(humanControllers[i]);
+                    continue;
+                }
+
                 if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
                 //human이 output지점 (4,4)가 아니면 스킵
+
 
                 if (idxout < currentStageInfo.outputs.Length)
                 {
@@ -689,7 +711,8 @@ namespace HumanFactory.Manager
                 humanControllers.Remove(humanControllers[i]);
             }
 
-            if (idxout >= currentStageInfo.outputs.Length)
+            // TODO - input으로 들어온 human이 맵에서 다 빠지면 답인지아닌지 출력하도록 수정해야 함, output 갯수 상관 없이
+            if (idxout >= currentStageInfo.outputs.Length) 
             {
                 Debug.Log("OUTPUT : " + isOutputCorrect);
                 idxout = 0;
