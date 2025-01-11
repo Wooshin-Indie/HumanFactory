@@ -238,7 +238,7 @@ namespace HumanFactory.Manager
         private GunnersManagement gunnersManagement;
         private void InitGunners()
         {
-            gunnersManagement = this.GetComponent<GunnersManagement>();
+            gunnersManagement = GetComponent<GunnersManagement>();
             gunnersManagement.PlaceGunners(mapSize);
         }
  
