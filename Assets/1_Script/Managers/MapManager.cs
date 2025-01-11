@@ -220,7 +220,6 @@ namespace HumanFactory.Manager
         private GunnersManagement gunnersManagement;
         private void InitGunners()
         {
-            this.AddComponent<GunnersManagement>();
             gunnersManagement = this.GetComponent<GunnersManagement>();
             gunnersManagement.PlaceGunners(mapSize);
         }
@@ -686,7 +685,7 @@ namespace HumanFactory.Manager
             {
                 humanControllers[i].OnFinPerCycle();
 
-                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y)) //타겟 위치가 (0,-1)이 아닌 맵 밖일 때
+                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y))
                 {
                     gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
                     Debug.Log("log: " + humanControllers[i].HumanNum);

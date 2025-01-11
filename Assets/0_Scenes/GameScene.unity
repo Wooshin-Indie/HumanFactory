@@ -2772,7 +2772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2601958685685097540, guid: cd4ae99ae8bcc9d428372936176ac350, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -428
+      value: -370
       objectReference: {fileID: 0}
     - target: {fileID: 2601958685685097540, guid: cd4ae99ae8bcc9d428372936176ac350, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3426,8 +3426,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0063171387}
-  m_AnchoredPosition: {x: 0, y: 0.0015563965}
+  m_AnchoredPosition: {x: 0, y: 0.0018310547}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &870290298
@@ -3609,7 +3608,7 @@ Transform:
   m_GameObject: {fileID: 974702528}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 1, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3866,6 +3865,7 @@ MonoBehaviour:
   mapSize: {x: 5, y: 5}
   arrowPrefab: {fileID: 4782348956925915108, guid: 8e5c2de190d85d248b35fda4a3fe67cf, type: 3}
   humanPrefab: {fileID: 6113738478267193543, guid: 35f6cc5f56be0b444a2b11c7d81bf678, type: 3}
+  gunnerPrefab: {fileID: 0}
   buttonRect: {fileID: 1754703173}
   tileRect: {fileID: 1150456103}
   prevHoverPos: {x: 0, y: 0}
@@ -4631,8 +4631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0033874512}
-  m_AnchoredPosition: {x: 0, y: 0.0020446777}
+  m_AnchoredPosition: {x: 0, y: -0.0013427734}
   m_SizeDelta: {x: -530.98, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1256118437
