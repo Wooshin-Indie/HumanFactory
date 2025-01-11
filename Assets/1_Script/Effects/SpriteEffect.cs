@@ -5,7 +5,6 @@ public class SpriteEffect : MonoBehaviour
 {
     public void ShowEffect(float localY, float duration)
     {
-        Debug.Log(transform.position.y + localY);
         transform.DOMoveY(transform.position.y + localY, duration)
             .SetEase(Ease.Linear)
             .OnComplete(() => {
@@ -14,8 +13,4 @@ public class SpriteEffect : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        Debug.Log(transform.position.ToString());
-    }
 }

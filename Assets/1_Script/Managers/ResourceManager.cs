@@ -73,6 +73,7 @@ namespace HumanFactory.Manager
 
         public Sprite GetBuildingSprite(BuildingType type, bool isPressed)
         {
+            if (type == BuildingType.None) return null;
             return (isPressed ? buildingPressedSprites[(int)type] :
                 buildingReleasedSprites[(int)type]);
         }
