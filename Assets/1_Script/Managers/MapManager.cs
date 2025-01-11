@@ -27,11 +27,11 @@ namespace HumanFactory.Manager
 
         public Sprite BuildingSprite { get => buildingSprite.sprite; }
 
-        private bool isBlocked = false;
         private bool isPressed = false;
-
-        public bool IsBlocked { get => isBlocked; set => isBlocked = value; }
         public bool IsPressed { get => isPressed; set => isPressed = value; }
+
+        private bool isActive = true;
+        public bool IsActive { get => isActive; set => isActive = value; }
 
 
         private PadType originPadType = 0;
@@ -116,7 +116,7 @@ namespace HumanFactory.Manager
 
         public void OnRelease()
         {
-            if (!isPressed) return;
+            if (!isPressed || !isActive) return;
             isPressed = false;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false);
 
@@ -129,7 +129,8 @@ namespace HumanFactory.Manager
 							buttonInfo.linkedGridPos.y);
 						break;
 					case ButtonType.Toggle:
-						// TODO - 나중에 구현함
+						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+							buttonInfo.linkedGridPos.y);
 						break;
 				}
 			}
@@ -137,7 +138,7 @@ namespace HumanFactory.Manager
 
         public void OnPressed()
         {
-            if (isPressed) return;
+            if (isPressed || !isActive) return;
             isPressed = true;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true);
 
@@ -153,34 +154,11 @@ namespace HumanFactory.Manager
                             buttonInfo.dirType);
                         break;
                     case ButtonType.Toggle:
-                        // TODO - 나중에 구현함
-                        break;
+						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+							buttonInfo.linkedGridPos.y);
+						break;
                 }
             }
-        }
-
-
-        public void OnButtonRotate(PadType type)
-        {
-            // 버튼 누르면 바닥 회전
-            originPadType = padType;
-            padType = type;
-        }
-
-        public void OffButtonRotate()
-        {
-            padType = originPadType;
-            // TODO - 이게 버튼이면 연결된 애들도 original로 변경해야됨
-        }
-        public void OnButtonStop()
-        {
-            isBlocked = false;
-        }
-
-
-        public void OffButtonStop()
-        {
-            isBlocked = false;
         }
 
         public void SetVisibility(InputMode mode)
@@ -230,6 +208,10 @@ namespace HumanFactory.Manager
             buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
 		}
 
+		public void ToggleActive()
+        {
+            isActive = !isActive;
+        }
 	}
 
     public class MapManager : MonoBehaviour
@@ -302,9 +284,6 @@ namespace HumanFactory.Manager
             secFuncs.Add(instance.ExecuteAtOneThird);
             secFuncs.Add(instance.ExecuteAtHalfTime);
             secFuncs.Add(instance.ExecuteAtTwoThirds);
-
-            //humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
-            //    .GetComponent<HumanController>());
         }
 
         private bool isCycleRunning = false;
@@ -565,42 +544,27 @@ namespace HumanFactory.Manager
 			cycleTime = 1f;
 			cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
 
-            isPersonAdd = true;
+            if (idxIn == 0)
+                isPersonAdd = true;
         }
         public void AddPerson()
         {
 			isPersonAdd = true;
 		}
 
-        [ContextMenu("Stop Add")]
-        public void StopAddPerson()
-        {
-            isPersonAdd = false;
-        }
-
         /// <summary>
         /// 싸이클 시작할 떄 수행해야하는 애들
         /// 변수 값 초기화가 주 목적
         /// </summary>
-        private int idxin = 0; //테스트용
+        private int idxIn = 0; //테스트용
         private void InitPerCycle()
         {
             isCycleRunning = true;
+            InitNewPerson();
 
-            if (isPersonAdd && idxin < currentStageInfo.inputs.Length )
-            {
-                HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
-                    .GetComponent<HumanController>();
-                humanControllers.Add(tmpController);
+            InitTeleport();
 
-                tmpController.HumanNum = currentStageInfo.inputs[idxin];
-                idxin++;
-                isPersonAdd = false;
-            }
-
-
-
-            cycleElapsedTime = 0f;
+			cycleElapsedTime = 0f;
             for (int i = 0; i < flags.Count; i++)
             {
                 flags[i] = false;
@@ -608,6 +572,7 @@ namespace HumanFactory.Manager
 
         }
         
+
         /// <summary>
         /// 매 프레임 실행하는 함수
         /// </summary>
@@ -654,33 +619,6 @@ namespace HumanFactory.Manager
         private bool ExecuteAtHalfTime()
         {
             targetPosSet.Clear();
-
-            // Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
-            foreach (var controller in humanControllers)
-            {
-                controller.UpdateCurpos();
-                tmpPos = controller.CurrentPos;
-                if (!targetPosSet.ContainsKey(tmpPos))
-                {
-                    targetPosSet[tmpPos] = new List<HumanController>();
-                }
-                targetPosSet[tmpPos].Add(controller);
-            }
-
-            // 같은 곳에 겹치는 애들만 모음
-            IEnumerable<List<HumanController>> tmpList = targetPosSet
-                .Where(item => item.Value.Count >= 2)
-                .Select(item => item.Value);
-
-            foreach (var list in tmpList)
-            {
-                list[0].SetAsOperand1();
-                for (int i = 1; i < list.Count; i++)
-                {
-                    list[0].SetOperands(list[i].SetAsOperand2());
-                }
-            }
-
             return true;
         }
 
@@ -693,7 +631,7 @@ namespace HumanFactory.Manager
 
             foreach (var controller in humanControllers)
             {
-                programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
+                programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
             }
             return true;
         }
@@ -707,7 +645,12 @@ namespace HumanFactory.Manager
         /// </summary>
         private void FinPerCycle()
         {
-            foreach (var controller in humanControllers)
+
+            DoTeleport();
+
+            CalcDuplicatedPos();
+
+			foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
                 // TODO - 맵과 상호작용하여 연산해야됨
@@ -771,10 +714,8 @@ namespace HumanFactory.Manager
                         case BuildingType.Sub1:
 							controller.SubByButton();
 							break;
-                        case BuildingType.Jump:
-                            break;
-
-						case BuildingType.Button:
+                        case BuildingType.Jump:     // DoTeleport 함수에서 진행
+						case BuildingType.Button:   // 이건 Grid의 OnPressed에서 진행
                         default:
                             break;
 					}
@@ -793,6 +734,12 @@ namespace HumanFactory.Manager
 		{
 			programMap[x, y].SetPadToOrigin();
 		}
+
+        public void ToggleButton(int x, int y)
+        {
+            programMap[x, y].ToggleActive();
+        }
+
 		private void ChangeMapVisibility(InputMode mode)
         {
             for (int i = 0; i < mapSize.x; i++)
@@ -804,9 +751,80 @@ namespace HumanFactory.Manager
             }
         }
 
-        #region Save/Load Data
 
-        private int currentStage = -1;
+		private void InitNewPerson()
+		{
+
+			if (isPersonAdd && idxIn < currentStageInfo.inputs.Length)
+			{
+				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+					.GetComponent<HumanController>();
+				humanControllers.Add(tmpController);
+
+				tmpController.HumanNum = currentStageInfo.inputs[idxIn];
+				idxIn++;
+				isPersonAdd = false;
+			}
+		}
+
+        private void InitTeleport()
+        {
+			foreach (HumanController controller in humanControllers)
+            {
+                if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y)) return;
+                if (programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump
+                    && programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
+                {
+					controller.OnTeleport();
+				}
+			}
+        }
+
+        // 더해질 애들 계산
+        private void CalcDuplicatedPos()
+        {
+			// Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
+			foreach (var controller in humanControllers)
+			{
+				controller.UpdateCurpos();
+				tmpPos = controller.CurrentPos;
+				if (!targetPosSet.ContainsKey(tmpPos))
+				{
+					targetPosSet[tmpPos] = new List<HumanController>();
+				}
+				targetPosSet[tmpPos].Add(controller);
+			}
+
+			// 같은 곳에 겹치는 애들만 모음
+			IEnumerable<List<HumanController>> tmpList = targetPosSet
+				.Where(item => item.Value.Count >= 2)
+				.Select(item => item.Value);
+
+			foreach (var list in tmpList)
+			{
+				list[0].SetAsOperand1();
+				for (int i = 1; i < list.Count; i++)
+				{
+					list[0].SetOperands(list[i].SetAsOperand2());
+				}
+			}
+
+		}
+
+        private void DoTeleport()
+		{
+			foreach (var controller in humanControllers)
+			{
+                if (!controller.IsTeleport) continue;
+				controller.OffTeleport(programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos);
+                programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
+			}
+		}
+
+
+		#region Save/Load Data
+
+		private int currentStage = -1;
 
         public int CurrentStage { get => currentStage; }
         
