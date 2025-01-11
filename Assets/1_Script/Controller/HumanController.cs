@@ -21,7 +21,7 @@ namespace HumanFactory.Controller
 
         public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
         public Vector2Int PrevPos { get => prevPos; set => prevPos = value; }
-        public Vector2Int TargetPos { get => targetPos; }
+        public Vector2Int TargetPos { get => targetPos; set => targetPos = value; }
         public int HumanNum { get => humanNum; 
             set
             {
@@ -117,23 +117,48 @@ namespace HumanFactory.Controller
 
         }
 
-        [ContextMenu("TESTFUNC")]
-        public void EffectTestFunc()
+        public void EffectTestFunc(EffectType type)
         {
             Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
-                EffectType.Subi);
+                type);
         }
 
         public void HumanDyingProcess()
         {
-            Debug.Log("Log ::" + humanNum);
-            this.transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
-            this.GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
+            transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
+            GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
                         OnComplete(() =>
                         {
                             Destroy(this.gameObject);
                         });
         }
-        
+
+        [SerializeField]
+        private bool isTeleport = false;
+        public bool IsTeleport { get => isTeleport; }
+        public void OnTeleport()
+        {
+            isTeleport = true;
+			targetPos = currentPos;
+		}
+        public void OffTeleport(Vector2Int vec)
+        {
+            isTeleport = false;
+            currentPos = vec;
+            targetPos = vec;
+            transform.position.Set(vec.x, vec.y, Constants.HUMAN_POS_Z);
+        }
+
+		public void AddByButton()
+        {
+            HumanNum++;
+			EffectTestFunc(EffectType.Addi);
+        }
+
+		public void SubByButton()
+		{
+			HumanNum--;
+			EffectTestFunc(EffectType.Subi);
+		}
 	}
 }

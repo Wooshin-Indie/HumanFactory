@@ -149,6 +149,8 @@ namespace HumanFactory
 
         public void SetExeType(ExecuteType type)
         {
+            
+            Managers.Input.OnInputModeChanged(InputMode.None);
             switch (type)
             {
                 case ExecuteType.None:

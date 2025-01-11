@@ -26,7 +26,7 @@ namespace HumanFactory
 
         private void PlayGame()
         {
-            MapManager.Instance.AddPerson();
+            MapManager.Instance.AddPersonWith1x();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
             Debug.Log("게임 재생");
         }
@@ -45,8 +45,11 @@ namespace HumanFactory
 
         private void StopGame()
         {
+            MapManager.Instance.ClearHumans();
+            MapManager.Instance.IdxIn = 0;
+            MapManager.Instance.IdxOut = 0;
             GameManagerEx.Instance.SetExeType(ExecuteType.None);
-            Debug.Log("게임 정지");
+            Debug.Log("게임 중지");
         }
     }
 }

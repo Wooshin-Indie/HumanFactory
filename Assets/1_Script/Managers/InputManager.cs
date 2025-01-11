@@ -256,9 +256,10 @@ namespace HumanFactory.Manager
             OnInputModeChanged(inputMode);
         }
 
-        private void OnInputModeChanged(InputMode mode)
-        {
-            OnModeChangedAction.Invoke(inputMode);
+        public void OnInputModeChanged(InputMode mode)
+		{
+			inputMode = mode;
+			OnModeChangedAction.Invoke(inputMode);
             MapManager.Instance.OnInputModeChanged(inputMode);
 
             OnBuildingTypeChanged.Invoke(BuildingType.None);

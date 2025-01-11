@@ -27,11 +27,11 @@ namespace HumanFactory.Manager
 
         public Sprite BuildingSprite { get => buildingSprite.sprite; }
 
-        private bool isBlocked = false;
         private bool isPressed = false;
-
-        public bool IsBlocked { get => isBlocked; set => isBlocked = value; }
         public bool IsPressed { get => isPressed; set => isPressed = value; }
+
+        private bool isActive = true;
+        public bool IsActive { get => isActive; set => isActive = value; }
 
 
         private PadType originPadType = 0;
@@ -43,6 +43,7 @@ namespace HumanFactory.Manager
             arrowSprite = arrow;
             buildingSprite = building;
             padType = PadType.DirNone;
+            originPadType = padType;
             arrow.color = Constants.COLOR_TRANS;
             building.sprite = null;
             building.color = Color.white;
@@ -56,13 +57,14 @@ namespace HumanFactory.Manager
         public void OnClickRotate()
         {
             padType = (PadType)(((int)padType + 1) % Enum.GetValues(typeof(PadType)).Length);
-
-            SetPad(padType);
+			originPadType = padType;
+			SetPad(padType);
         }
 
-        public void SetPad(PadType type)
+        public void SetPad(PadType type, bool isPermanent = true)
 		{
-            PadType = type;
+            padType = type;
+            if(isPermanent) originPadType = padType;
 			switch (type)
 			{
 				case PadType.DirLeft:
@@ -78,7 +80,13 @@ namespace HumanFactory.Manager
 			}
 		}
 
-        public void SetBuilding(BuildingType type)
+        public void SetPadToOrigin()
+        {
+            SetPad(originPadType);
+        }
+
+
+		public void SetBuilding(BuildingType type)
         {
             buildingType = type;
             if (type != BuildingType.None)
@@ -108,43 +116,49 @@ namespace HumanFactory.Manager
 
         public void OnRelease()
         {
-            // TODO - 버튼이 있으면 동작 수행
-            if (!isPressed) return;
+            if (!isPressed || !isActive) return;
             isPressed = false;
-        }
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false);
+
+			if (buildingType == BuildingType.Button)
+			{
+				switch (buttonInfo.buttonType)
+				{
+					case ButtonType.Rotate:
+                        MapManager.Instance.PadToOrigin(buttonInfo.linkedGridPos.x,
+							buttonInfo.linkedGridPos.y);
+						break;
+					case ButtonType.Toggle:
+						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+							buttonInfo.linkedGridPos.y);
+						break;
+				}
+			}
+		}
 
         public void OnPressed()
         {
-            // TODO - 버튼이 있으면 동작 수행
-            if (isPressed) {
-                // 여러 사람이 들어올수도 있음
-                return;
-            }
+            if (isPressed || !isActive) return;
             isPressed = true;
-        }
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true);
 
-
-        public void OnButtonRotate(PadType type)
-        {
-            // 버튼 누르면 바닥 회전
-            originPadType = padType;
-            padType = type;
-        }
-
-        public void OffButtonRotate()
-        {
-            padType = originPadType;
-            // TODO - 이게 버튼이면 연결된 애들도 original로 변경해야됨
-        }
-        public void OnButtonStop()
-        {
-            isBlocked = false;
-        }
-
-
-        public void OffButtonStop()
-        {
-            isBlocked = false;
+            if (buildingType == BuildingType.Button)
+            {
+                switch (buttonInfo.buttonType) {
+                    case ButtonType.Input:
+                        MapManager.Instance.AddPerson();
+                        break;
+                    case ButtonType.Rotate:
+                        MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
+                            buttonInfo.linkedGridPos.y,
+                            buttonInfo.dirType);
+                        break;
+                    case ButtonType.Toggle:
+						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+							buttonInfo.linkedGridPos.y);
+						break;
+                }
+            }
         }
 
         public void SetVisibility(InputMode mode)
@@ -194,6 +208,10 @@ namespace HumanFactory.Manager
             buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
 		}
 
+		public void ToggleActive()
+        {
+            isActive = !isActive;
+        }
 	}
 
     public class MapManager : MonoBehaviour
@@ -220,8 +238,7 @@ namespace HumanFactory.Manager
         private GunnersManagement gunnersManagement;
         private void InitGunners()
         {
-            this.AddComponent<GunnersManagement>();
-            gunnersManagement = this.GetComponent<GunnersManagement>();
+            gunnersManagement = GetComponent<GunnersManagement>();
             gunnersManagement.PlaceGunners(mapSize);
         }
  
@@ -266,9 +283,6 @@ namespace HumanFactory.Manager
             secFuncs.Add(instance.ExecuteAtOneThird);
             secFuncs.Add(instance.ExecuteAtHalfTime);
             secFuncs.Add(instance.ExecuteAtTwoThirds);
-
-            //humanControllers.Add(Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
-            //    .GetComponent<HumanController>());
         }
 
         private bool isCycleRunning = false;
@@ -488,7 +502,6 @@ namespace HumanFactory.Manager
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
         public float CycleTime { get => cycleTime; }
 
-        // TODO - Destory하고 null값 남아있음 처리 필요.
         [SerializeField]private List<HumanController> humanControllers = new List<HumanController>();
 
         private List<bool> flags = new List<bool> { false, false, false };
@@ -523,44 +536,34 @@ namespace HumanFactory.Manager
 
 
         }
-        public void AddPerson()
+        public void AddPersonWith1x()
         {
 
 			float prev = cycleTime;
 			cycleTime = 1f;
 			cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
 
-            isPersonAdd = true;
+            if (idxIn == 0)
+                isPersonAdd = true;
         }
-
-        [ContextMenu("Stop Add")]
-        public void StopAddPerson()
+        public void AddPerson()
         {
-            isPersonAdd = false;
-        }
+			isPersonAdd = true;
+		}
 
         /// <summary>
         /// 싸이클 시작할 떄 수행해야하는 애들
         /// 변수 값 초기화가 주 목적
         /// </summary>
-        private int idxin = 0; //테스트용
+        private int idxIn = 0; 
+        public int IdxIn { get => idxIn; set => idxIn = value; }
         private void InitPerCycle()
         {
             isCycleRunning = true;
+            InitNewPerson();
+            InitTeleport();
 
-            if (isPersonAdd && idxin < currentStageInfo.inputs.Length )
-            {
-                HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
-                    .GetComponent<HumanController>();
-                humanControllers.Add(tmpController);
-
-                tmpController.HumanNum = currentStageInfo.inputs[idxin];
-                idxin++;
-            }
-
-
-
-            cycleElapsedTime = 0f;
+			cycleElapsedTime = 0f;
             for (int i = 0; i < flags.Count; i++)
             {
                 flags[i] = false;
@@ -568,6 +571,7 @@ namespace HumanFactory.Manager
 
         }
         
+
         /// <summary>
         /// 매 프레임 실행하는 함수
         /// </summary>
@@ -614,33 +618,6 @@ namespace HumanFactory.Manager
         private bool ExecuteAtHalfTime()
         {
             targetPosSet.Clear();
-
-            // Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
-            foreach (var controller in humanControllers)
-            {
-                controller.UpdateCurpos();
-                tmpPos = controller.CurrentPos;
-                if (!targetPosSet.ContainsKey(tmpPos))
-                {
-                    targetPosSet[tmpPos] = new List<HumanController>();
-                }
-                targetPosSet[tmpPos].Add(controller);
-            }
-
-            // 같은 곳에 겹치는 애들만 모음
-            IEnumerable<List<HumanController>> tmpList = targetPosSet
-                .Where(item => item.Value.Count >= 2)
-                .Select(item => item.Value);
-
-            foreach (var list in tmpList)
-            {
-                list[0].SetAsOperand1();
-                for (int i = 1; i < list.Count; i++)
-                {
-                    list[0].SetOperands(list[i].SetAsOperand2());
-                }
-            }
-
             return true;
         }
 
@@ -653,12 +630,13 @@ namespace HumanFactory.Manager
 
             foreach (var controller in humanControllers)
             {
-                programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
+                programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
             }
             return true;
         }
 
-        private int idxout = 0;
+        private int idxOut = 0;
+        public int IdxOut { get => idxOut; set => idxOut = value; }
         private bool isOutputCorrect = true;
         /// <summary>
         /// 전부 경과하여 이동 완료
@@ -667,70 +645,100 @@ namespace HumanFactory.Manager
         /// </summary>
         private void FinPerCycle()
         {
-            foreach (var controller in humanControllers)
+
+            DoTeleport();
+
+            CalcDuplicatedPos();
+
+			foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
                 // TODO - 맵과 상호작용하여 연산해야됨
             }
-
             humanControllers.RemoveAll(item => item.OperandType == HumanOperandType.Operand2);
 
+			DoButtonExecution();
 
-            /*
-             * 1. 아도겐 코드임
-             * 
-             * > for, if 같이 depth가 늘어나는 경우에는 depth가 너무 깊어지지 않도록 주의해야됨
-             *   예를 들어, if(cond){~} 가 아니라 if(!coand) continue; ~ 같이 바꿀 수 있음
-             *   
-             *   
-             * 2. 바로 위에 RemoveAll이 있는 이유는 Destroy 된 애들을 전부 없애기 위함임
-             *    걔네를 List에서 없애지않고 접근하면 에러가 남
-             *    
-             *    Output은 항상 하나만 나오므로 (1) 찾고, (2) Destroy하고 (3) Erase하고 끝
-             *    break로 빠져나와야함 
-             */
-
-            for (int i = humanControllers.Count - 1; i >= 0; i--)
+			for (int i = humanControllers.Count - 1; i >= 0; i--)
             {
                 humanControllers[i].OnFinPerCycle();
 
-                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y)) //타겟 위치가 (0,-1)이 아닌 맵 밖일 때
+                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y))
                 {
                     gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
-                    Debug.Log("log: " + humanControllers[i].HumanNum);
                     humanControllers[i].HumanDyingProcess();
                     humanControllers.Remove(humanControllers[i]);
                     continue;
                 }
 
-                if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
+				if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
                 //human이 output지점 (4,4)가 아니면 스킵
 
-
-                if (idxout < currentStageInfo.outputs.Length)
+                if (idxOut < currentStageInfo.outputs.Length)
                 {
-                    if (humanControllers[i].HumanNum != currentStageInfo.outputs[idxout])
+                    if (humanControllers[i].HumanNum != currentStageInfo.outputs[idxOut])
                     {
                         isOutputCorrect = false;
                     }
-                    idxout++;
+                    idxOut++;
                 }
                 Destroy(humanControllers[i].gameObject);
                 humanControllers.Remove(humanControllers[i]);
             }
 
             // TODO - input으로 들어온 human이 맵에서 다 빠지면 답인지아닌지 출력하도록 수정해야 함, output 갯수 상관 없이
-            if (idxout >= currentStageInfo.outputs.Length) 
+            if (idxOut >= currentStageInfo.outputs.Length) 
             {
                 Debug.Log("OUTPUT : " + isOutputCorrect);
-                idxout = 0;
+                idxOut = 0;
                 isOutputCorrect = true;
             }
 
             isCycleRunning = false;
         }
 
-		#endregion
+        private void DoButtonExecution()
+        {
+
+			// Button 연산
+			foreach (var controller in humanControllers)
+			{
+				Vector2Int tmpV = controller.CurrentPos;
+				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
+				{
+                   switch(programMap[tmpV.x, tmpV.y].BuildingType)
+                    {
+                        case BuildingType.Add1:
+							controller.AddByButton();
+							break;
+                        case BuildingType.Sub1:
+							controller.SubByButton();
+							break;
+                        case BuildingType.Jump:     // DoTeleport 함수에서 진행
+						case BuildingType.Button:   // 이건 Grid의 OnPressed에서 진행
+                        default:
+                            break;
+					}
+				}
+
+			}
+		}
+
+        #endregion
+
+        public void RotatePadDir(int x, int y, PadType type)
+        {
+            programMap[x, y].SetPad(type, false);
+		}
+		public void PadToOrigin(int x, int y)
+		{
+			programMap[x, y].SetPadToOrigin();
+		}
+
+        public void ToggleButton(int x, int y)
+        {
+            programMap[x, y].ToggleActive();
+        }
 
 		private void ChangeMapVisibility(InputMode mode)
         {
@@ -743,9 +751,80 @@ namespace HumanFactory.Manager
             }
         }
 
-        #region Save/Load Data
 
-        private int currentStage = -1;
+		private void InitNewPerson()
+		{
+
+			if (isPersonAdd && idxIn < currentStageInfo.inputs.Length)
+			{
+				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
+					.GetComponent<HumanController>();
+				humanControllers.Add(tmpController);
+
+				tmpController.HumanNum = currentStageInfo.inputs[idxIn];
+				idxIn++;
+				isPersonAdd = false;
+			}
+		}
+
+        private void InitTeleport()
+        {
+			foreach (HumanController controller in humanControllers)
+            {
+                if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y)) return;
+                if (programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump
+                    && programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
+                {
+					controller.OnTeleport();
+				}
+			}
+        }
+
+        // 더해질 애들 계산
+        private void CalcDuplicatedPos()
+        {
+			// Dictionary 에 같은 좌표로 이동하는 애들끼리 모음
+			foreach (var controller in humanControllers)
+			{
+				controller.UpdateCurpos();
+				tmpPos = controller.CurrentPos;
+				if (!targetPosSet.ContainsKey(tmpPos))
+				{
+					targetPosSet[tmpPos] = new List<HumanController>();
+				}
+				targetPosSet[tmpPos].Add(controller);
+			}
+
+			// 같은 곳에 겹치는 애들만 모음
+			IEnumerable<List<HumanController>> tmpList = targetPosSet
+				.Where(item => item.Value.Count >= 2)
+				.Select(item => item.Value);
+
+			foreach (var list in tmpList)
+			{
+				list[0].SetAsOperand1();
+				for (int i = 1; i < list.Count; i++)
+				{
+					list[0].SetOperands(list[i].SetAsOperand2());
+				}
+			}
+
+		}
+
+        private void DoTeleport()
+		{
+			foreach (var controller in humanControllers)
+			{
+                if (!controller.IsTeleport) continue;
+				controller.OffTeleport(programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos);
+                programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
+			}
+		}
+
+
+		#region Save/Load Data
+
+		private int currentStage = -1;
 
         public int CurrentStage { get => currentStage; }
         
@@ -796,7 +875,16 @@ namespace HumanFactory.Manager
             Managers.Data.AddStageGridData(currentStage, gridDatas);
         }
 
-		#endregion
+        #endregion
+
+        public void ClearHumans()
+        {
+            for (int i = humanControllers.Count - 1; i >= 0; i--)
+            {
+                humanControllers[i].HumanDyingProcess();
+                humanControllers.Remove(humanControllers[i]);
+            }
+        }
 
 	}
 }
