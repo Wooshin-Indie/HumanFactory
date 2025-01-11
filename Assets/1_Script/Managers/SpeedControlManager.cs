@@ -26,7 +26,7 @@ namespace HumanFactory
 
         private void PlayGame()
         {
-            MapManager.Instance.AddPerson();
+            MapManager.Instance.AddPersonWith1x();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
             Debug.Log("게임 재생");
         }

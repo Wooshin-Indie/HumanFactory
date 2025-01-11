@@ -117,23 +117,32 @@ namespace HumanFactory.Controller
 
         }
 
-        [ContextMenu("TESTFUNC")]
-        public void EffectTestFunc()
+        public void EffectTestFunc(EffectType type)
         {
             Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
-                EffectType.Subi);
+                type);
         }
 
         public void HumanDyingProcess()
         {
-            Debug.Log("Log ::" + humanNum);
-            this.transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
-            this.GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
+            transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
+            GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
                         OnComplete(() =>
                         {
                             Destroy(this.gameObject);
                         });
         }
-        
+
+        public void AddByButton()
+        {
+            HumanNum++;
+			EffectTestFunc(EffectType.Addi);
+        }
+
+		public void SubByButton()
+		{
+			HumanNum--;
+			EffectTestFunc(EffectType.Subi);
+		}
 	}
 }
