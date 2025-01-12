@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -596,13 +595,13 @@ namespace HumanFactory.Manager
         /// </summary>
         private bool ExecuteAtOneThird()
         {
-            for (int i = 0; i < mapSize.x; i++)
+            foreach(HumanController controller in humanControllers)
             {
-                for (int j = 0; j < mapSize.y; j++)
-                {
-                    programMap[i, j].OnRelease();
-                }
+                if (controller.TargetPos == controller.PrevPos) continue;
+                if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y)) continue;
+                programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnRelease();
             }
+
             return true;
         }
 
@@ -816,6 +815,7 @@ namespace HumanFactory.Manager
 			foreach (var controller in humanControllers)
 			{
                 if (!controller.IsTeleport) continue;
+				programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnRelease();
 				controller.OffTeleport(programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos);
                 programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
 			}
@@ -879,10 +879,20 @@ namespace HumanFactory.Manager
 
         public void ClearHumans()
         {
+            isPersonAdd = false;
             for (int i = humanControllers.Count - 1; i >= 0; i--)
             {
                 humanControllers[i].HumanDyingProcess();
                 humanControllers.Remove(humanControllers[i]);
+            }
+
+            // 모든 버튼 Release
+            for (int i = 0; i < mapSize.x; i++)
+            {
+                for (int j = 0; j < mapSize.y; j++)
+                {
+                    programMap[i, j].OnRelease();
+                }
             }
         }
 
