@@ -1,6 +1,5 @@
 using DG.Tweening;
 using HumanFactory.Manager;
-using HumanFactory.Util;
 using TMPro;
 using UnityEngine;
 
