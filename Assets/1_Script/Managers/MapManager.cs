@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -289,7 +290,9 @@ namespace HumanFactory.Manager
         private bool isCircuiting = false;
         private Vector2Int circuitingButtonPos;
         public Vector2Int prevHoverPos = new Vector2Int(0, 0);
+        private bool isOneCycling = false; //1사이클씩 실행되고있는지
         public bool IsCircuiting { get => isCircuiting; }
+        public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
 		private int cycleLock = 0;
@@ -546,6 +549,16 @@ namespace HumanFactory.Manager
             if (idxIn == 0)
                 isPersonAdd = true;
         }
+        public void AddPersonWithOneCycling()
+        {
+
+            float prev = cycleTime;
+            cycleTime = 0.1f;
+            cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+
+            if (idxIn == 0)
+                isPersonAdd = true;
+        }
         public void AddPerson()
         {
 			isPersonAdd = true;
@@ -695,6 +708,9 @@ namespace HumanFactory.Manager
             }
 
             isCycleRunning = false;
+            
+            if (isOneCycling)
+                GameManagerEx.Instance.SetExeType(ExecuteType.Pause); // 게임 정지
         }
 
         private void DoButtonExecution()
