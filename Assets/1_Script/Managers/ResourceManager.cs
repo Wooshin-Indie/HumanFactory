@@ -19,15 +19,19 @@ namespace HumanFactory.Manager
         /** Audio source Paths **/
         private string bgmPath = "Sounds/BGM";
 
-        private string buildingPressedPath = "Sprites/Buildings/Pressed";
-        private string buildingReleasedPath = "Sprites/Buildings/Released";
+        private string buildingPressedOnPath = "Sprites/Buildings/Pressed_On";
+		private string buildingPressedOffPath = "Sprites/Buildings/Pressed_Off";
+		private string buildingReleasedOnPath = "Sprites/Buildings/Released_On";
+        private string buildingReleasedOffPath = "Sprites/Buildings/Released_Off";
         private string effectSpritePath = "Sprites/Effects";
 
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
         private AudioClip[] audioSources;
-        private Sprite[] buildingPressedSprites;
-        private Sprite[] buildingReleasedSprites;
+        private Sprite[] buildingPressedOnSprites;
+        private Sprite[] buildingPressedOffSprites;
+        private Sprite[] buildingReleasedOnSprites;
+        private Sprite[] buildingReleasedOffSprites;
         private Sprite[] effectSprites;
 
         public void Init()
@@ -35,8 +39,11 @@ namespace HumanFactory.Manager
             stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
             audioSources = Resources.LoadAll<AudioClip>(bgmPath);
 
-            buildingPressedSprites = Resources.LoadAll<Sprite>(buildingPressedPath);
-            buildingReleasedSprites = Resources.LoadAll<Sprite>(buildingReleasedPath);
+			buildingPressedOnSprites = Resources.LoadAll<Sprite>(buildingPressedOnPath);
+			buildingPressedOffSprites = Resources.LoadAll<Sprite>(buildingPressedOffPath);
+			buildingReleasedOnSprites = Resources.LoadAll<Sprite>(buildingReleasedOnPath);
+			buildingReleasedOffSprites = Resources.LoadAll<Sprite>(buildingReleasedOffPath);
+
             effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
 
@@ -71,11 +78,19 @@ namespace HumanFactory.Manager
             return audioSources[(int)type];
         }
 
-        public Sprite GetBuildingSprite(BuildingType type, bool isPressed)
+        public Sprite GetBuildingSprite(BuildingType type, bool isPressed, bool isActive)
         {
             if (type == BuildingType.None) return null;
-            return (isPressed ? buildingPressedSprites[(int)type] :
-                buildingReleasedSprites[(int)type]);
+            if (isActive)
+			{
+				return (isPressed ? buildingPressedOnSprites[(int)type] :
+					buildingReleasedOnSprites[(int)type]);
+			}
+            else
+            {
+                return (isPressed ? buildingPressedOffSprites[(int)type] :
+					buildingReleasedOffSprites[(int)type]);
+            }
         }
 
         public Sprite GetEffectSprite(EffectType type)
