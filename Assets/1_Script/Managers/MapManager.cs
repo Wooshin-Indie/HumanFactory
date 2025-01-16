@@ -642,6 +642,7 @@ namespace HumanFactory.Manager
 
             foreach (var controller in humanControllers)
             {
+                if (!CheckBoundary(controller.TargetPos.x, controller.TargetPos.y)) continue;
                 programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
             }
             return true;
@@ -675,16 +676,18 @@ namespace HumanFactory.Manager
             {
                 humanControllers[i].OnFinPerCycle();
 
-                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y))
+                if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y))
                 {
-                    gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
-                    humanControllers[i].HumanDyingProcess();
-                    humanControllers.Remove(humanControllers[i]);
+                    if (!CheckBoundary(humanControllers[i].CurrentPos.x, humanControllers[i].CurrentPos.y))
+                    {
+                        gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
+                        humanControllers[i].HumanDyingProcess();
+                        humanControllers.Remove(humanControllers[i]);
+                        continue;
+                    }
                     continue;
                 }
-
-				if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
-                //human이 output지점 (4,4)가 아니면 스킵
+                //human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
 
                 if (idxOut < currentStageInfo.outputs.Length)
                 {
@@ -719,7 +722,8 @@ namespace HumanFactory.Manager
 			foreach (var controller in humanControllers)
 			{
 				Vector2Int tmpV = controller.CurrentPos;
-				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
+                if (!CheckBoundary(tmpV.x, tmpV.y)) continue;
+                if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
 				{
                    switch(programMap[tmpV.x, tmpV.y].BuildingType)
                     {

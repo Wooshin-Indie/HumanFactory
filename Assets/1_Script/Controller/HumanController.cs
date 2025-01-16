@@ -106,6 +106,8 @@ namespace HumanFactory.Controller
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
             currentPos = targetPos;
 
+            if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y)) return; //그리드 밖이면 return
+
             MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 
             //
@@ -124,7 +126,8 @@ namespace HumanFactory.Controller
 
         public void HumanDyingProcess()
         {
-            transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
+            transform.DOMove(new Vector3(targetPos.x + Constants.DIR_X[currentDir], targetPos.y + Constants.DIR_Y[currentDir],
+                Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
             GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
                         OnComplete(() =>
                         {
