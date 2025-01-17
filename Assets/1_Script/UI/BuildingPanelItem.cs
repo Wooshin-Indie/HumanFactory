@@ -21,7 +21,7 @@ namespace HumanFactory.UI
             myBuildingType = (BuildingType)index;
             originalSprite = GetComponent<Image>().sprite;
 
-            itemImage.sprite = Managers.Resource.GetBuildingSprite((BuildingType)index, false);
+            itemImage.sprite = Managers.Resource.GetBuildingSprite((BuildingType)index, false, true);
             itemName.text = Enum.GetName(typeof(BuildingType), index);
 
             GetComponent<Button>().onClick.AddListener(() =>

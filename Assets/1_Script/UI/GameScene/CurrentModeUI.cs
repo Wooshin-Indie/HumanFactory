@@ -17,7 +17,16 @@ namespace HumanFactory.UI
             Managers.Input.OnModeChangedAction -= SetMode;
             Managers.Input.OnModeChangedAction += SetMode;
 
-            SetMode(InputMode.None);
+            for(int i=0; i < modes.Count; i++)
+			{
+                int t = i;
+				modes[t].GetComponent<Button>().onClick.AddListener(() =>
+				{
+					Managers.Input.OnInputModeChanged((InputMode)t);
+				});
+			}
+
+			SetMode(InputMode.None);
             gameObject.SetActive(false);
         }
 
