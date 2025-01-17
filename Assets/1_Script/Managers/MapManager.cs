@@ -694,9 +694,16 @@ namespace HumanFactory.Manager
                     {
                         isOutputCorrect = false;
                     }
-                    idxOut++;
+
+                    // HACK - 이거 수정해야됨
+                    // 아마 conflict 날 듯?
+					GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+						.GetComponent<CameraBase>().CctvUI?.InOut.SetValue(IdxOut, false, humanControllers[i].HumanNum);
+					idxOut++;
                 }
-                Destroy(humanControllers[i].gameObject);
+
+
+				Destroy(humanControllers[i].gameObject);
                 humanControllers.Remove(humanControllers[i]);
             }
 
@@ -791,6 +798,8 @@ namespace HumanFactory.Manager
 				humanControllers.Add(tmpController);
 
 				tmpController.HumanNum = currentStageInfo.inputs[idxIn];
+				GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+	                .GetComponent<CameraBase>().CctvUI?.InOut.SetValue(idxIn, true);
 				idxIn++;
 				isPersonAdd = false;
 			}
