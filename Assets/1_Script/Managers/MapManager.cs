@@ -296,7 +296,7 @@ namespace HumanFactory.Manager
         public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
-		private int cycleLock = 0;
+		private int cycleLock = 1;
 		public void LockCycle()
 		{
 			cycleLock++;
@@ -529,6 +529,7 @@ namespace HumanFactory.Manager
 
 
         private bool isPersonAdd = false;
+        public bool IsPersonAdd { get => isPersonAdd; }
 
 
         public void DoubleCycleTime()
@@ -644,6 +645,7 @@ namespace HumanFactory.Manager
 
             foreach (var controller in humanControllers)
             {
+                if (!CheckBoundary(controller.TargetPos.x, controller.TargetPos.y)) continue;
                 programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
             }
             return true;
@@ -677,16 +679,18 @@ namespace HumanFactory.Manager
             {
                 humanControllers[i].OnFinPerCycle();
 
-                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y))
+                if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y))
                 {
-                    gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
-                    humanControllers[i].HumanDyingProcess();
-                    humanControllers.Remove(humanControllers[i]);
+                    if (!CheckBoundary(humanControllers[i].CurrentPos.x, humanControllers[i].CurrentPos.y))
+                    {
+                        gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
+                        humanControllers[i].HumanDyingProcess();
+                        humanControllers.Remove(humanControllers[i]);
+                        continue;
+                    }
                     continue;
                 }
-
-				if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
-                //human이 output지점 (4,4)가 아니면 스킵
+                //human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
 
                 if (idxOut < currentStageInfo.outputs.Length)
                 {
@@ -728,6 +732,7 @@ namespace HumanFactory.Manager
             for (int i = 0; i < size; i++)
 			{
 				Vector2Int tmpV = humanControllers[i].CurrentPos;
+        if (!CheckBoundary(tmpV.x, tmpV.y)) continue;
 				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
 				{
                     if (!programMap[tmpV.x, tmpV.y].IsActive) continue;
