@@ -19,7 +19,7 @@ namespace HumanFactory
         private bool isZoomed = false;
         private GameObject recentlyInteractedUI = null;
 
-
+        public CCTVUI CctvUI { get => cctvUI; }
         public bool IsZoomed {  get { return isZoomed; } }
 
         private float originSize;

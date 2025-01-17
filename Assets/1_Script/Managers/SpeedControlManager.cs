@@ -49,12 +49,16 @@ namespace HumanFactory
             MapManager.Instance.ClearHumans();
             MapManager.Instance.IdxIn = 0;
             MapManager.Instance.IdxOut = 0;
-            GameManagerEx.Instance.SetExeType(ExecuteType.None);
+
+			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
+			GameManagerEx.Instance.SetExeType(ExecuteType.None);
         }
 
         private void OneCycleGame() // 1사이클씩 실행
         {
             MapManager.Instance.IsOneCycling = true;
+            Debug.Log("isPersonAdd:" + MapManager.Instance.IsPersonAdd + ", idxIn" + MapManager.Instance.IdxIn);
             MapManager.Instance.AddPersonWithOneCycling();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
         }

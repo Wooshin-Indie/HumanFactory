@@ -24,6 +24,7 @@ namespace HumanFactory
         Sub1,
         Jump,
         Button,
+        Double,
     }
 
     public enum CameraType

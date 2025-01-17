@@ -94,17 +94,23 @@ namespace HumanFactory.Controller
             transform.position = new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z);
         }
 
-        /// <summary>
-        /// Update targetPos when transform.position is nearby it
-        /// </summary>
-        private void UpdateTargetPos()
+		private bool isDoubled = false;
+		public bool IsDoubled { get => isDoubled; }
+		/// <summary>
+		/// Update targetPos when transform.position is nearby it
+		/// </summary>
+		private void UpdateTargetPos()
         {
-            float eulerDistance = Mathf.Abs(transform.position.x - targetPos.x) + Mathf.Abs(transform.position.y - targetPos.y);
-
+            if (isDoubled)
+            {
+                isDoubled = false;
+                return;
+            }
 
             // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
-            currentPos = targetPos;
+
+            if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y)) return; //그리드 밖이면 return
 
             MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 
@@ -116,6 +122,21 @@ namespace HumanFactory.Controller
 
         }
 
+        public void SetAsDoubled(HumanController controller)
+        {
+            isDoubled = true;
+
+            currentPos = controller.CurrentPos;
+            targetPos = controller.CurrentPos;
+            prevPos = controller.PrevPos;
+            HumanNum = controller.HumanNum;
+			MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].GetPadParameter(out currentDir);
+
+			Vector2Int dir = targetPos - prevPos;
+            targetPos = targetPos + dir;
+            prevPos = prevPos + dir;
+        }
+
         public void EffectTestFunc(EffectType type)
         {
             Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
@@ -124,7 +145,8 @@ namespace HumanFactory.Controller
 
         public void HumanDyingProcess()
         {
-            transform.DOMove(new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
+            transform.DOMove(new Vector3(targetPos.x + Constants.DIR_X[currentDir], targetPos.y + Constants.DIR_Y[currentDir],
+                Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
             GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
                         OnComplete(() =>
                         {

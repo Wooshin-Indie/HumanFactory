@@ -1,10 +1,10 @@
 using DG.Tweening;
 using HumanFactory.Controller;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -91,7 +91,8 @@ namespace HumanFactory.Manager
             buildingType = type;
             if (type != BuildingType.None)
             {
-                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+                isActive = true;
+                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false, isActive);
                 buildingSprite.color = Color.white;
             }
             else
@@ -102,7 +103,7 @@ namespace HumanFactory.Manager
         {
             if (type != BuildingType.None)
             {
-                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false);
+                buildingSprite.sprite = Managers.Resource.GetBuildingSprite(type, false, true);
                 buildingSprite.color = Constants.COLOR_INVISIBLE;
             } 
         }
@@ -116,9 +117,9 @@ namespace HumanFactory.Manager
 
         public void OnRelease()
         {
-            if (!isPressed || !isActive) return;
+            if (!isPressed) return;
             isPressed = false;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive);
 
 			if (buildingType == BuildingType.Button)
 			{
@@ -138,9 +139,9 @@ namespace HumanFactory.Manager
 
         public void OnPressed()
         {
-            if (isPressed || !isActive) return;
+            if (isPressed) return;
             isPressed = true;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive);
 
             if (buildingType == BuildingType.Button)
             {
@@ -211,6 +212,7 @@ namespace HumanFactory.Manager
 		public void ToggleActive()
         {
             isActive = !isActive;
+            buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, isPressed, isActive);
         }
 	}
 
@@ -294,7 +296,7 @@ namespace HumanFactory.Manager
         public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
-		private int cycleLock = 0;
+		private int cycleLock = 1;
 		public void LockCycle()
 		{
 			cycleLock++;
@@ -527,6 +529,7 @@ namespace HumanFactory.Manager
 
 
         private bool isPersonAdd = false;
+        public bool IsPersonAdd { get => isPersonAdd; }
 
 
         public void DoubleCycleTime()
@@ -642,6 +645,7 @@ namespace HumanFactory.Manager
 
             foreach (var controller in humanControllers)
             {
+                if (!CheckBoundary(controller.TargetPos.x, controller.TargetPos.y)) continue;
                 programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
             }
             return true;
@@ -675,16 +679,18 @@ namespace HumanFactory.Manager
             {
                 humanControllers[i].OnFinPerCycle();
 
-                if (!CheckBoundary(humanControllers[i].TargetPos.x, humanControllers[i].TargetPos.y))
+                if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y))
                 {
-                    gunnersManagement.DetectEscaped(humanControllers[i].TargetPos);
-                    humanControllers[i].HumanDyingProcess();
-                    humanControllers.Remove(humanControllers[i]);
+                    if (!CheckBoundary(humanControllers[i].CurrentPos.x, humanControllers[i].CurrentPos.y))
+                    {
+                        gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
+                        humanControllers[i].HumanDyingProcess();
+                        humanControllers.Remove(humanControllers[i]);
+                        continue;
+                    }
                     continue;
                 }
-
-				if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y - 1)) continue;
-                //human이 output지점 (4,4)가 아니면 스킵
+                //human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
 
                 if (idxOut < currentStageInfo.outputs.Length)
                 {
@@ -692,9 +698,16 @@ namespace HumanFactory.Manager
                     {
                         isOutputCorrect = false;
                     }
-                    idxOut++;
+
+                    // HACK - 이거 수정해야됨
+                    // 아마 conflict 날 듯?
+					GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+						.GetComponent<CameraBase>().CctvUI?.InOut.SetValue(IdxOut, false, humanControllers[i].HumanNum);
+					idxOut++;
                 }
-                Destroy(humanControllers[i].gameObject);
+
+
+				Destroy(humanControllers[i].gameObject);
                 humanControllers.Remove(humanControllers[i]);
             }
 
@@ -714,28 +727,40 @@ namespace HumanFactory.Manager
 
         private void DoButtonExecution()
         {
-
-			// Button 연산
-			foreach (var controller in humanControllers)
+            int size = humanControllers.Count;
+            // Button 연산
+            for (int i = 0; i < size; i++)
 			{
-				Vector2Int tmpV = controller.CurrentPos;
+				Vector2Int tmpV = humanControllers[i].CurrentPos;
+        if (!CheckBoundary(tmpV.x, tmpV.y)) continue;
 				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
 				{
-                   switch(programMap[tmpV.x, tmpV.y].BuildingType)
+                    if (!programMap[tmpV.x, tmpV.y].IsActive) continue;
+                    switch(programMap[tmpV.x, tmpV.y].BuildingType)
                     {
                         case BuildingType.Add1:
-							controller.AddByButton();
+							humanControllers[i].AddByButton();
 							break;
                         case BuildingType.Sub1:
-							controller.SubByButton();
+							humanControllers[i].SubByButton();
 							break;
-                        case BuildingType.Jump:     // DoTeleport 함수에서 진행
-						case BuildingType.Button:   // 이건 Grid의 OnPressed에서 진행
-                        default:
-                            break;
+                        case BuildingType.Double:
+
+							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone ||
+                                (programMap[tmpV.x, tmpV.y].PadType == programMap[humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y].PadType))
+                            {  // 경로가 겹치는 경우 바로 두배
+                                humanControllers[i].HumanNum *= 2;
+                            }
+                            else
+							{
+								HumanController tmpController = Instantiate(humanPrefab, new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z), Quaternion.identity)
+									.GetComponent<HumanController>();
+								tmpController.SetAsDoubled(humanControllers[i]);
+								humanControllers.Add(tmpController);
+							}
+							break;
 					}
 				}
-
 			}
 		}
 
@@ -752,6 +777,8 @@ namespace HumanFactory.Manager
 
         public void ToggleButton(int x, int y)
         {
+            // Button이면 Toggle 무시
+            if (programMap[x, y].BuildingType == BuildingType.Button) return;
             programMap[x, y].ToggleActive();
         }
 
@@ -769,7 +796,6 @@ namespace HumanFactory.Manager
 
 		private void InitNewPerson()
 		{
-
 			if (isPersonAdd && idxIn < currentStageInfo.inputs.Length)
 			{
 				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
@@ -777,6 +803,8 @@ namespace HumanFactory.Manager
 				humanControllers.Add(tmpController);
 
 				tmpController.HumanNum = currentStageInfo.inputs[idxIn];
+				GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+	                .GetComponent<CameraBase>().CctvUI?.InOut.SetValue(idxIn, true);
 				idxIn++;
 				isPersonAdd = false;
 			}
