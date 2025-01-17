@@ -294,7 +294,7 @@ namespace HumanFactory.Manager
         public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
-		private int cycleLock = 0;
+		private int cycleLock = 1;
 		public void LockCycle()
 		{
 			cycleLock++;
@@ -527,6 +527,7 @@ namespace HumanFactory.Manager
 
 
         private bool isPersonAdd = false;
+        public bool IsPersonAdd { get => isPersonAdd; }
 
 
         public void DoubleCycleTime()
