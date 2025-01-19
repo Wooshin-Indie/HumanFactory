@@ -251,6 +251,8 @@ namespace HumanFactory.Manager
         }
         private StageInfo currentStageInfo;
         public StageInfo CurrentStageInfo { get => currentStageInfo; }
+        private ChapterInfo currentChapterInfo;
+        public ChapterInfo CurrentChapterInfo { get => currentChapterInfo; }
         private MapGrid[,] programMap;
         public MapGrid[,] ProgramMap { get => programMap; }
 
@@ -933,6 +935,18 @@ namespace HumanFactory.Manager
                 programMap[data.posX, data.posY].SetStageGridInfo(data);
             }
 
+        }
+
+        private int currentChapter = -1;
+
+        public int CurrentChapter { get => currentChapter; }
+
+        public void LoadChapter(int chapterId)
+        {
+            Debug.Log($"Load Chapter : {chapterId}");
+
+            currentChapter = chapterId;
+            currentChapterInfo = Managers.Resource.GetChapterInfo(chapterId);
         }
 
         public void SaveStage()
