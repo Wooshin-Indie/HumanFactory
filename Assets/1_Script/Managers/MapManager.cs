@@ -1,6 +1,4 @@
-using DG.Tweening;
 using HumanFactory.Controller;
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +21,7 @@ namespace HumanFactory.Manager
         public int PosY { get => posY; }
         public PadType PadType { get => padType; set => padType = value; }
         public BuildingType BuildingType { get => buildingType; set => buildingType = value; }
-        public ButtonInfos ButtonInfo { get=>buttonInfo; }
+        public ButtonInfos ButtonInfo { get => buttonInfo; set => buttonInfo = value; }
 
         public Sprite BuildingSprite { get => buildingSprite.sprite; }
 
@@ -47,6 +45,7 @@ namespace HumanFactory.Manager
             arrow.color = Constants.COLOR_TRANS;
             building.sprite = null;
             building.color = Color.white;
+            buttonInfo.linkedGridPos.Set(posX, posY);
         }
 
         public void GetPadParameter(out int dir)
@@ -119,64 +118,63 @@ namespace HumanFactory.Manager
         {
             if (!isPressed) return;
             isPressed = false;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
 
-			if (buildingType == BuildingType.Button)
-			{
-				switch (buttonInfo.buttonType)
-				{
-					case ButtonType.Rotate:
-                        MapManager.Instance.PadToOrigin(buttonInfo.linkedGridPos.x,
-							buttonInfo.linkedGridPos.y);
-						break;
-					case ButtonType.Toggle:
-						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
-							buttonInfo.linkedGridPos.y);
-						break;
-				}
-			}
+
+			if (!isActive) return;
+			switch (buildingType) {
+                case BuildingType.Button:
+                    break;
+                case BuildingType.ToggleButton:
+					MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+						buttonInfo.linkedGridPos.y);
+					break;
+                case BuildingType.RotateButton:
+					MapManager.Instance.PadToOrigin(buttonInfo.linkedGridPos.x,
+						buttonInfo.linkedGridPos.y);
+					break;
+            }
 		}
 
         public void OnPressed()
         {
             if (isPressed) return;
             isPressed = true;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
 
-            if (buildingType == BuildingType.Button)
-            {
-                switch (buttonInfo.buttonType) {
-                    case ButtonType.Input:
-                        MapManager.Instance.AddPerson();
-                        break;
-                    case ButtonType.Rotate:
-                        MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
-                            buttonInfo.linkedGridPos.y,
-                            buttonInfo.dirType);
-                        break;
-                    case ButtonType.Toggle:
-						MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
-							buttonInfo.linkedGridPos.y);
-						break;
-                }
-            }
+            if (!isActive) return;
+			switch (buildingType)
+			{
+				case BuildingType.Button:
+					MapManager.Instance.AddPerson();
+					break;
+				case BuildingType.ToggleButton:
+					MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+						buttonInfo.linkedGridPos.y);
+					break;
+				case BuildingType.RotateButton:
+					MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
+						buttonInfo.linkedGridPos.y,
+						buttonInfo.dirType);
+					break;
+			}
         }
 
         public void SetVisibility(InputMode mode)
         {
-            float duration = 0.5f;
+
             switch (mode) { 
                 case InputMode.None:
-                    if(padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_ARROW, duration);
-                    buildingSprite.DOColor(Constants.COLOR_WHITE, duration);
+                    if(padType != PadType.DirNone) arrowSprite.color = Constants.COLOR_ARROW;
+                    buildingSprite.color = Constants.COLOR_WHITE;
                     break;
                 case InputMode.Pad:
-                    if (padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_ARROW, duration);
-                    buildingSprite.DOColor(Constants.COLOR_INVISIBLE, duration);
+                    if (padType != PadType.DirNone) arrowSprite.color = Constants.COLOR_ARROW;
+                    buildingSprite.color = Constants.COLOR_INVISIBLE;
                     break;
                 case InputMode.Building:
-                    if (padType != PadType.DirNone) arrowSprite.DOColor(Constants.COLOR_INVISIBLE, duration);
-                    buildingSprite.DOColor(Constants.COLOR_WHITE, duration);
+                    if (padType != PadType.DirNone) arrowSprite.color = Constants.COLOR_INVISIBLE;
+                    buildingSprite.color = Constants.COLOR_WHITE;
                     break;
             }
         }
@@ -206,13 +204,27 @@ namespace HumanFactory.Manager
 		{
 			SetPad(PadType.DirNone);
             SetBuilding(BuildingType.None);
-            buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
+            buttonInfo = new ButtonInfos(new Vector2Int(posX, posY));
 		}
 
 		public void ToggleActive()
         {
+            if (buildingType == BuildingType.None) return;
+
             isActive = !isActive;
-            buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, isPressed, isActive);
+            buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, isPressed, isActive, buttonInfo.dirType);
+        }
+
+        public void OnButtonRotate()
+        {
+            if (buttonInfo.dirType == PadType.DirNone)
+            {
+                buttonInfo.dirType = PadType.DirUp;
+            }
+            else
+                buttonInfo.dirType = (PadType)((int)buttonInfo.dirType + 1);
+
+            buildingSprite.sprite = Managers.Resource.GetBuildingSprite(BuildingType, isPressed, isActive, buttonInfo.dirType);
         }
 	}
 
@@ -366,28 +378,28 @@ namespace HumanFactory.Manager
                 buttonRect.sprite = programMap[x, y].BuildingSprite;
                 buttonRect.gameObject.SetActive(true);
                 
-                if (programMap[x, y].BuildingType != BuildingType.Button
-                && programMap[x, y].BuildingType != BuildingType.Jump)
-                {
-                    tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
-                    tileRect.gameObject.SetActive(true);
-                }
-                else if (programMap[x, y].ButtonInfo.linkedGridPos.x < 0)
-                {
-                    tileRect.gameObject.SetActive(false);
-                }
+                if (programMap[x, y].BuildingType == BuildingType.Jump
+				|| programMap[x, y].BuildingType == BuildingType.RotateButton
+				|| programMap[x, y].BuildingType == BuildingType.ToggleButton)
+				{
+					tileRect.transform.position = new Vector3(programMap[x, y].ButtonInfo.linkedGridPos.x,
+						programMap[x, y].ButtonInfo.linkedGridPos.y,
+						Constants.HUMAN_POS_Z);
+					tileRect.gameObject.SetActive(true);
+				}
                 else
                 {
-                    tileRect.transform.position = new Vector3(programMap[x, y].ButtonInfo.linkedGridPos.x,
-                        programMap[x, y].ButtonInfo.linkedGridPos.y,
-                        Constants.HUMAN_POS_Z);
-                    tileRect.gameObject.SetActive(true);
+                    tileRect.gameObject.SetActive(false);
                 }
             }
         }
         public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
         {
-            if (!CheckBoundary(x, y)) return;
+            if (!CheckBoundary(x, y))
+            {
+                isCircuiting = false;
+                return;
+            }
 
             if (isCircuiting == isSet) return;
 
@@ -401,16 +413,37 @@ namespace HumanFactory.Manager
             }
             else
             {
-                // TODO - UI 띄우기
                 if (programMap[x, y].BuildingType != BuildingType.Jump
-                    && programMap[x, y].BuildingType != BuildingType.Button) return;
+                    && programMap[x, y].BuildingType != BuildingType.ToggleButton
+                    && programMap[x, y].BuildingType != BuildingType.RotateButton) return;
 
-                // HACK : 임시로 circuiting 시험용 코드입니다.
                 isCircuiting = true;
                 circuitingButtonPos = new Vector2Int(x, y);
             }
 
-            //isCircuiting = isSet;
+        }
+
+		public void OnRightClickMapGridInNoneMode(int x, int y)
+        {
+            if (!CheckBoundary(x, y)) return;
+
+            if (programMap[x, y].BuildingType == BuildingType.ToggleButton) return;
+
+            switch(programMap[x, y].BuildingType)
+            {
+                case BuildingType.RotateButton:
+                    programMap[x, y].OnButtonRotate();
+                    break;
+                case BuildingType.Add1:
+                case BuildingType.Sub1:
+                case BuildingType.Jump:
+                case BuildingType.Double:
+                case BuildingType.Button:
+					programMap[x, y].ToggleActive();
+					break;
+				case BuildingType.ToggleButton:
+					break;
+			}
         }
 
 		private Vector2Int prevDirPad = new Vector2Int(-1, -1);
@@ -472,29 +505,39 @@ namespace HumanFactory.Manager
 		public void OnHoverMapGridInBuildingMode(int x, int y, BuildingType type)
         {
             if (!CheckBoundary(x, y))
-            {
-                programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+			{
+				if (CheckBoundary(prevHoverPos.x, prevHoverPos.y))
+					programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+                prevHoverPos.Set(x, y);
                 return;
             }
             if (prevHoverPos.x == x && prevHoverPos.y == y) return;
 
-            if (programMap[x, y].BuildingType == BuildingType.None)
-            {
+            if (CheckBoundary(prevHoverPos.x, prevHoverPos.y))
                 programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
-                programMap[x, y].PreviewBuilding(type);
-                prevHoverPos.Set(x, y);
-            }
+			if (programMap[x, y].BuildingType == BuildingType.None)
+				programMap[x, y].PreviewBuilding(type);
+            prevHoverPos.Set(x, y);
 
         }
         public void OnClickMapGridInBuildingMode(int x, int y, BuildingType type)
         {
             if (!CheckBoundary(x, y)) return;
             programMap[x, y].SetBuilding(type);
+            Managers.Input.OnInputModeChanged(InputMode.None);
         }
+        public void OnRightClickMapGridInBuildingMode(int x, int y)
+		{
+			if (!CheckBoundary(x, y)) return;
+            programMap[x, y].SetBuilding(BuildingType.None);
+            programMap[x, y].ButtonInfo = new ButtonInfos(new Vector2Int(x, y));
+		}
 
-        public void OnInputModeChanged(InputMode mode)
-        {
-            programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+
+		public void OnInputModeChanged(InputMode mode)
+		{
+			if (CheckBoundary(prevHoverPos.x, prevHoverPos.y))
+				programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
             buttonRect.gameObject.SetActive(false);
             tileRect.gameObject.SetActive(false);
             prevDirPad.Set(-1, -1);
@@ -811,8 +854,6 @@ namespace HumanFactory.Manager
 
         public void ToggleButton(int x, int y)
         {
-            // Button이면 Toggle 무시
-            if (programMap[x, y].BuildingType == BuildingType.Button) return;
             programMap[x, y].ToggleActive();
         }
 

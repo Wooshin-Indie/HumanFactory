@@ -10,8 +10,6 @@ namespace HumanFactory.UI
     {
         [SerializeField] private List<Transform> modes;
 
-        
-
         private void Start()
         {
             Managers.Input.OnModeChangedAction -= SetMode;
@@ -32,6 +30,8 @@ namespace HumanFactory.UI
 
         public void SetMode(InputMode mode)
         {
+            if (mode == InputMode.Building)
+                mode = InputMode.None;
             for (int i = 0; i < modes.Count; i++)
             {
                 ChangeMode(i, (int)mode == i);

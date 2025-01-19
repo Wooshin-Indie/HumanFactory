@@ -23,8 +23,10 @@ namespace HumanFactory
         Add1 = 0,
         Sub1,
         Jump,
-        Button,
         Double,
+        Button,
+        ToggleButton,
+        RotateButton
     }
 
     public enum CameraType
@@ -34,13 +36,6 @@ namespace HumanFactory
         Menu = 1,
         Game = 2,
         Setting = 3,
-    }
-
-    public enum ButtonType
-    {
-        Input       = 0,
-        Rotate      = 1,
-        Toggle        = 2,
     }
 
     public enum ButtonInputType

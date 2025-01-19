@@ -25,6 +25,9 @@ namespace HumanFactory.Manager
         private string buildingReleasedOffPath = "Sprites/Buildings/Released_Off";
         private string effectSpritePath = "Sprites/Effects";
 
+        private string pressedRButtonPath = "Sprites/Buildings/Pressed_On/6_RotateButton";
+        private string releasedRButtonPath = "Sprites/Buildings/Released_On/6_RotateButton";
+
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
         private ChapterInfos chapterInfos = new ChapterInfos();
@@ -33,6 +36,10 @@ namespace HumanFactory.Manager
         private Sprite[] buildingPressedOffSprites;
         private Sprite[] buildingReleasedOnSprites;
         private Sprite[] buildingReleasedOffSprites;
+
+        private Sprite[] pressedRotateButtonSprites;
+        private Sprite[] releasedRotateButtonSprites;
+
         private Sprite[] effectSprites;
 
         public void Init()
@@ -45,6 +52,9 @@ namespace HumanFactory.Manager
 			buildingPressedOffSprites = Resources.LoadAll<Sprite>(buildingPressedOffPath);
 			buildingReleasedOnSprites = Resources.LoadAll<Sprite>(buildingReleasedOnPath);
 			buildingReleasedOffSprites = Resources.LoadAll<Sprite>(buildingReleasedOffPath);
+
+			pressedRotateButtonSprites = Resources.LoadAll<Sprite>(pressedRButtonPath);
+			releasedRotateButtonSprites = Resources.LoadAll<Sprite>(releasedRButtonPath);
 
             effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
@@ -99,19 +109,23 @@ namespace HumanFactory.Manager
             return audioSources[(int)type];
         }
 
-        public Sprite GetBuildingSprite(BuildingType type, bool isPressed, bool isActive)
+        public Sprite GetBuildingSprite(BuildingType type, bool isPressed, bool isActive
+            , PadType padType = PadType.DirNone)
         {
             if (type == BuildingType.None) return null;
+
+            if (type == BuildingType.RotateButton && padType != PadType.DirNone)
+            {
+                return (isPressed ? pressedRotateButtonSprites[(int)padType]
+                    : releasedRotateButtonSprites[(int)padType]);
+            }
+
             if (isActive)
-			{
 				return (isPressed ? buildingPressedOnSprites[(int)type] :
 					buildingReleasedOnSprites[(int)type]);
-			}
             else
-            {
                 return (isPressed ? buildingPressedOffSprites[(int)type] :
 					buildingReleasedOffSprites[(int)type]);
-            }
         }
 
         public Sprite GetEffectSprite(EffectType type)

@@ -110,9 +110,17 @@ namespace HumanFactory.Manager
                     MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, false);
                 }
                 else
-                {
-                    OnClickMapGridInNoneModeAction?.Invoke(curMousePos);
-                }
+				{
+					MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, true);
+				}
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (!MapManager.Instance.IsCircuiting)
+				{
+					MapManager.Instance.OnRightClickMapGridInNoneMode(curMousePos.x, curMousePos.y);
+				}
             }
         }
 
@@ -209,6 +217,7 @@ namespace HumanFactory.Manager
 
         public void ChangeCurSelectedBuilding(BuildingType type)
         {
+            Managers.Input.OnInputModeChanged(InputMode.Building);
             currentSelectedBuilding = type;
             OnBuildingTypeChanged?.Invoke(type);
         }
@@ -227,7 +236,7 @@ namespace HumanFactory.Manager
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, BuildingType.None);
+                MapManager.Instance.OnRightClickMapGridInBuildingMode(curMousePos.x, curMousePos.y);
             }
 
         }
@@ -247,10 +256,6 @@ namespace HumanFactory.Manager
             {
                 inputMode = InputMode.Pad;
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3) && inputMode != InputMode.Building)
-            {
-                inputMode = InputMode.Building;
-            }
             else { return; }
 
             OnInputModeChanged(inputMode);
@@ -264,6 +269,11 @@ namespace HumanFactory.Manager
 
             OnBuildingTypeChanged.Invoke(BuildingType.None);
             currentSelectedBuilding = BuildingType.None;
+
+            if (MapManager.Instance.IsCircuiting)
+            {
+                MapManager.Instance.OnClickMapGridInNoneMode(-1, -1, false);
+            }
         }
 
     }
