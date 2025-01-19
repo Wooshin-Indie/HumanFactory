@@ -3,6 +3,7 @@ using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -77,12 +78,13 @@ namespace HumanFactory.UI
 
             for (int i = 0; i < stageIndexes.Length; i++)
             {
-                int idx = stageIndexes[i];
+                int idx = i;
+                int stageIdx = stageIndexes[idx];
                 stages.Add(Instantiate(stagePanelPrefab, content));
-                stages[idx].GetComponent<UIOnClickExpand>().SetStageId(idx);
+                stages[idx].GetComponent<UIOnClickExpand>().SetStageId(stageIdx);
                 stages[idx].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    OnClickStages(idx);
+                    OnClickStages(idx, stageIdx);
                 });
             }
 
@@ -104,7 +106,7 @@ namespace HumanFactory.UI
             // chapters 전부 destroy 및 remove
             ClearChapters();
 
-            MapManager.Instance.LoadChapter(index); // currnetChapterInfo 업데이트
+            MapManager.Instance.LoadChapter(index); // currentChapterInfo 업데이트
 
             LoadStagesOnPanel(); // 챕터에 해당되는 stage들 인스턴시에이트
 
@@ -119,7 +121,7 @@ namespace HumanFactory.UI
             ChapterBackButton.interactable = false;
         }
 
-        private void OnClickStages(int index)
+        private void OnClickStages(int index, int stageIdx) // index는 패널에 표시되는 리스트에서의 index, stageIdx는 실제 json에서 불러오는 stage의 index
         {
             if (typeCoroutine != null) StopCoroutine(typeCoroutine);
             stageDescript.text = "";
@@ -129,7 +131,7 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(currentExpandedPanel);
+                MapManager.Instance.LoadStage(stageIdx);
             }
             else if (currentExpandedPanel == index) // 이미 확대돼있던걸 클릭 -> 축소
             {
@@ -144,7 +146,7 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(currentExpandedPanel);
+                MapManager.Instance.LoadStage(stageIdx);
             }
         }
 
