@@ -27,6 +27,11 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
         stageName.text = Managers.Resource.GetStageInfo(id).stageName;
     }
 
+    public void SetChapterId(int id)
+    {
+        stageName.text = Managers.Resource.GetChapterInfo(id).chapterName;
+    }
+
     public void Expand()
     {
         isExpanded = true;

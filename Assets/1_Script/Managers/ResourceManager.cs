@@ -27,6 +27,7 @@ namespace HumanFactory.Manager
 
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
+        private ChapterInfos chapterInfos = new ChapterInfos();
         private AudioClip[] audioSources;
         private Sprite[] buildingPressedOnSprites;
         private Sprite[] buildingPressedOffSprites;
@@ -36,6 +37,7 @@ namespace HumanFactory.Manager
 
         public void Init()
         {
+            chapterInfos = JsonUtility.FromJson<ChapterInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
             stageInfos = JsonUtility.FromJson<StageInfos>(Resources.Load<TextAsset>(stageInfoPath).text);
             audioSources = Resources.LoadAll<AudioClip>(bgmPath);
 
@@ -62,9 +64,28 @@ namespace HumanFactory.Manager
             return ret.First();
         }
 
+        public ChapterInfo GetChapterInfo(int id)
+        {
+            var ret = from info in chapterInfos.chapterInfo
+                      where info.chapterId == id
+                      select info;
+
+            if (ret.Count() != 1)
+            {
+                Debug.LogWarning("Chapter Info Error : Check Ids in json file");
+            }
+
+            return ret.First();
+        }
+
         public int GetStageCount()
         {
             return stageInfos.stageInfo.Length;
+        }
+
+        public int GetChapterCount()
+        {
+            return chapterInfos.chapterInfo.Length;
         }
 
         public AudioClip GetBGM(BGMType type)
