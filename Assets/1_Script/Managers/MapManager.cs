@@ -712,17 +712,49 @@ namespace HumanFactory.Manager
             }
 
             // TODO - input으로 들어온 human이 맵에서 다 빠지면 답인지아닌지 출력하도록 수정해야 함, output 갯수 상관 없이
-            if (idxOut >= currentStageInfo.outputs.Length) 
-            {
-                Debug.Log("OUTPUT : " + isOutputCorrect);
-                idxOut = 0;
-                isOutputCorrect = true;
-            }
+            CheckIsStageEnded();
 
             isCycleRunning = false;
             
             if (isOneCycling)
                 GameManagerEx.Instance.SetExeType(ExecuteType.Pause); // 게임 정지
+        }
+
+
+        private bool isStageEnded = true;
+        // TODO - 이거 false되는 경우를 stop 누를 때랑 스테이지 처음 들어갈 때로 해야 할 듯, 지금 InitNewPerson에 있음
+        private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
+        {
+            if (GameManagerEx.Instance.ExeType == ExecuteType.None ||
+                humanControllers.Count != 0) return;
+
+            if (isStageEnded) return;
+
+            isStageEnded = true;
+
+            if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
+            {
+                OnSuccess();
+                // 팝업창 띄우면서 InputLock 필요
+            }
+            else
+            {
+                OnFailure();
+            }
+        }
+
+        private void OnSuccess()
+        {
+            Debug.Log("SUCCESS");
+            idxOut = 0;
+            isOutputCorrect = true;
+        }
+
+        private void OnFailure()
+        {
+            Debug.Log("FAILURE");
+            idxOut = 0;
+            isOutputCorrect = true;
         }
 
         private void DoButtonExecution()
@@ -807,6 +839,7 @@ namespace HumanFactory.Manager
 	                .GetComponent<CameraBase>().CctvUI?.InOut.SetValue(idxIn, true);
 				idxIn++;
 				isPersonAdd = false;
+                isStageEnded = false;
 			}
 		}
 
