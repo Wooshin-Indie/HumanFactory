@@ -52,6 +52,12 @@ namespace HumanFactory
     }
 
     [Serializable]
+    public class ChapterInfos
+    {
+        public ChapterInfo[] chapterInfo;
+    }
+
+    [Serializable]
     public class StageInfo
     {
         public int stageId;
@@ -59,6 +65,14 @@ namespace HumanFactory
         public int[] inputs;
         public int[] outputs;
         // TODO : 스테이지에 따라 다른 데이터를 추가해야합니다.
+    }
+
+    [Serializable]
+    public class  ChapterInfo
+    {
+        public int chapterId;
+        public string chapterName;
+        public int[] stageIndexes;
     }
     #endregion
 

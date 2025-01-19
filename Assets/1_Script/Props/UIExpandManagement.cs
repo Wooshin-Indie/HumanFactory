@@ -3,6 +3,7 @@ using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace HumanFactory.UI
     public class UIExpandManagement : MonoBehaviour
     {
         private List<GameObject> stages = new List<GameObject>();
+        private List<GameObject> chapters = new List<GameObject>();
 
         [Header("Interact Effects")]
         [SerializeField] private GameObject stagePanelPrefab;
@@ -22,6 +24,8 @@ namespace HumanFactory.UI
         [SerializeField] private TVNoiseEffect noiseEffect;
         [SerializeField] private TextMeshProUGUI stageDescript;
 
+        [Header("Panel Buttons")]
+        [SerializeField] private Button ChapterBackButton;
 
         private Tweener scrollTweener;
         private int currentExpandedPanel = -1;
@@ -30,15 +34,57 @@ namespace HumanFactory.UI
 
         private void Start()
         {
-            for (int i = 0; i < Managers.Resource.GetStageCount(); i++)
+            LoadChaptersOnPanel();
+            ChapterBackButton.onClick.AddListener(OnClickBackButton);
+            ChapterBackButton.interactable = false;
+        }
+
+        private float elapsedTime = 0f;
+        private float maxChangeTime = 5f;
+        private int tmpStagePoiter = 0;
+
+        private void Update()
+        {
+            // 자동으로 돌아가게 만듦 -> 챕터 구분 구현하느라 잠시 꺼둠
+            //if (GameManagerEx.Instance.CurrentCamType == CameraType.Main)
+            //{
+            //    elapsedTime += Time.deltaTime;
+            //    if(maxChangeTime < elapsedTime)
+            //    {
+            //        elapsedTime = 0;
+            //        OnClickStages(tmpStagePoiter);
+            //        tmpStagePoiter = (tmpStagePoiter + 1) % Managers.Resource.GetStageCount();
+            //    }
+            //}
+        }
+
+        private void LoadChaptersOnPanel()
+        {
+            for (int i = 0; i < Managers.Resource.GetChapterCount(); i++)
             {
                 int idx = i;
+                chapters.Add(Instantiate(stagePanelPrefab, content));
+                chapters[idx].GetComponent<UIOnClickExpand>().SetChapterId(idx);
+                chapters[idx].GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    OnClickChapters(idx);
+                });
+            }
+        }
+
+        private void LoadStagesOnPanel()
+        {
+            int[] stageIndexes = MapManager.Instance.CurrentChapterInfo.stageIndexes;
+
+            for (int i = 0; i < stageIndexes.Length; i++)
+            {
+                int idx = i;
+                int stageIdx = stageIndexes[idx];
                 stages.Add(Instantiate(stagePanelPrefab, content));
-                stages[idx].GetComponent<UIOnClickExpand>().SetStageId(idx);
+                stages[idx].GetComponent<UIOnClickExpand>().SetStageId(stageIdx);
                 stages[idx].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    OnClickStages(idx);
-
+                    OnClickStages(idx, stageIdx);
                 });
             }
 
@@ -52,25 +98,30 @@ namespace HumanFactory.UI
                 noiseEffect.SetPermanentNoise();
             }
         }
-        private float elapsedTime = 0f;
-        private float maxChangeTime = 5f;
-        private int tmpStagePoiter = 0;
 
-        private void Update()
+        private void OnClickChapters(int index)
         {
-            // 자동으로 돌아가게 만듦
-            if (GameManagerEx.Instance.CurrentCamType == CameraType.Main)
-            {
-                elapsedTime += Time.deltaTime;
-                if(maxChangeTime < elapsedTime)
-                {
-                    elapsedTime = 0;
-                    OnClickStages(tmpStagePoiter);
-                    tmpStagePoiter = (tmpStagePoiter + 1) % Managers.Resource.GetStageCount();
-                }
-            }
+            if (typeCoroutine != null) StopCoroutine(typeCoroutine); // 이거 왜 적은거임?
+
+            // chapters 전부 destroy 및 remove
+            ClearChapters();
+
+            MapManager.Instance.LoadChapter(index); // currentChapterInfo 업데이트
+
+            LoadStagesOnPanel(); // 챕터에 해당되는 stage들 인스턴시에이트
+
+            ChapterBackButton.interactable = true;
+            // 뒤로가기 버튼 활성화, 뒤로가기 버튼 누르면 stages 전부 destroy 및 remove, 그리고 LoadChapters, 그리고 BackButton 비활성화
         }
-        private void OnClickStages(int index)
+
+        private void OnClickBackButton()
+        {
+            ClearStages();
+            LoadChaptersOnPanel();
+            ChapterBackButton.interactable = false;
+        }
+
+        private void OnClickStages(int index, int stageIdx) // index는 패널에 표시되는 리스트에서의 index, stageIdx는 실제 json에서 불러오는 stage의 index
         {
             if (typeCoroutine != null) StopCoroutine(typeCoroutine);
             stageDescript.text = "";
@@ -80,7 +131,7 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(currentExpandedPanel);
+                MapManager.Instance.LoadStage(stageIdx);
             }
             else if (currentExpandedPanel == index) // 이미 확대돼있던걸 클릭 -> 축소
             {
@@ -95,7 +146,7 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(currentExpandedPanel);
+                MapManager.Instance.LoadStage(stageIdx);
             }
         }
 
@@ -123,6 +174,24 @@ namespace HumanFactory.UI
             // 이건 나중에 ResourceManager나 Localization에서 받아옴
             string tmpDescript = "Stage #1 - Mov\r\n\r\nThis is your first task. \r\nIt's very simple, but you must not take it lightly. \r\nThe people you see on the screen will obey your commands without question. \r\nIf you tell them to go, they will go... and if you tell them to die, they will die\r\n";
             typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, tmpDescript, 0.01f));
+        }
+
+        private void ClearChapters()
+        {
+            for (int i = chapters.Count - 1; i >= 0; i--)
+            {
+                Destroy(chapters[i]);
+                chapters.Remove(chapters[i]);
+            }
+        }
+
+        private void ClearStages()
+        {
+            for (int i = stages.Count - 1; i >= 0; i--)
+            {
+                Destroy(stages[i]);
+                stages.Remove(stages[i]);
+            }
         }
     }
 }

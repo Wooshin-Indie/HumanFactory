@@ -58,7 +58,6 @@ namespace HumanFactory
         private void OneCycleGame() // 1사이클씩 실행
         {
             MapManager.Instance.IsOneCycling = true;
-            Debug.Log("isPersonAdd:" + MapManager.Instance.IsPersonAdd + ", idxIn" + MapManager.Instance.IdxIn);
             MapManager.Instance.AddPersonWithOneCycling();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
         }
