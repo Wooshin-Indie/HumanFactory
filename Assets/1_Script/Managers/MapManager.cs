@@ -120,7 +120,9 @@ namespace HumanFactory.Manager
             isPressed = false;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
 
-            switch (buildingType) {
+
+			if (!isActive) return;
+			switch (buildingType) {
                 case BuildingType.Button:
                     break;
                 case BuildingType.ToggleButton:
@@ -140,7 +142,7 @@ namespace HumanFactory.Manager
             isPressed = true;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
 
-
+            if (!isActive) return;
 			switch (buildingType)
 			{
 				case BuildingType.Button:
@@ -818,8 +820,6 @@ namespace HumanFactory.Manager
 
         public void ToggleButton(int x, int y)
         {
-            // Button이면 Toggle 무시
-            if (programMap[x, y].BuildingType == BuildingType.Button) return;
             programMap[x, y].ToggleActive();
         }
 
