@@ -3,8 +3,10 @@ using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace HumanFactory.UI
@@ -220,8 +222,7 @@ namespace HumanFactory.UI
         private void StartTypingDescript(int index)
         {
             stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
-            // 이건 나중에 ResourceManager나 Localization에서 받아옴
-            string tmpDescript = "Stage #1 - Mov\r\n\r\nThis is your first task. \r\nIt's very simple, but you must not take it lightly. \r\nThe people you see on the screen will obey your commands without question. \r\nIf you tell them to go, they will go... and if you tell them to die, they will die\r\n";
+            string tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString("StageDescription", "0");
             typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, tmpDescript, 0.01f));
         }
 
