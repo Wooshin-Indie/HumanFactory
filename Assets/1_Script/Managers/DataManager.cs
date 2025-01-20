@@ -45,6 +45,11 @@ namespace HumanFactory.Manager
 				gameplayData.stageGridDatas.Length != Managers.Resource.GetStageCount() + 1)
             {
                 Array.Resize(ref gameplayData.stageGridDatas, Managers.Resource.GetStageCount() + 1);
+
+                for (int i = 0; i < gameplayData.stageGridDatas.Length; i++){
+                    if (gameplayData.stageGridDatas[i] == null)
+                        gameplayData.stageGridDatas[i] = new StageGridDatas();
+                }
             }
         }
         public void SaveAll()
@@ -72,14 +77,14 @@ namespace HumanFactory.Manager
             }
         }
 
-        public StageGridDatas GetGridDatas(int stageId)
+        public StageSaveData GetGridDatas(int stageId, int saveIdx)
         {
-            return gameplayData.stageGridDatas[stageId];
+            return gameplayData.stageGridDatas[stageId].saveDatas[saveIdx];
         }
 
-        public void AddStageGridData(int stageId, StageGridDatas datas)
+        public void AddStageGridData(int stageId, int saveIdx, StageSaveData datas)
         {
-            gameplayData.stageGridDatas[stageId] = datas;
+            gameplayData.stageGridDatas[stageId].saveDatas[saveIdx] = datas;
         }
 
         public void SaveClearStage(int stageId)

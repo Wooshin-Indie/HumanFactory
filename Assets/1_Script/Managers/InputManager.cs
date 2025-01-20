@@ -1,5 +1,7 @@
 using HumanFactory.Props;
+using JetBrains.Annotations;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -90,6 +92,7 @@ namespace HumanFactory.Manager
             OnGameSceneNoneMode();
             OnGameScenePadMode();
             OnGameSceneBuildingMode();
+            ShortcutBuilding();
 
             ClickOutScene();
         }
@@ -239,6 +242,17 @@ namespace HumanFactory.Manager
                 MapManager.Instance.OnRightClickMapGridInBuildingMode(curMousePos.x, curMousePos.y);
             }
 
+        }
+
+        private void ShortcutBuilding()
+        {
+            for (int i = 0; i < Constants.KEYCODE_SHORTCUT_BUILD.Length; i++)
+            {
+                if (Input.GetKeyDown(Constants.KEYCODE_SHORTCUT_BUILD[i]))
+                {
+                    ChangeCurSelectedBuilding((BuildingType)i);
+				}
+            }
         }
 
         public Action<InputMode> OnModeChangedAction { get; set; }
