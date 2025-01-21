@@ -79,6 +79,7 @@ namespace HumanFactory
 
     public enum SFXType
     {
+        UI_Hover,
 
     }
 

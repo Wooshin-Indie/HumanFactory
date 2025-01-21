@@ -1,3 +1,4 @@
+using HumanFactory;
 using HumanFactory.Manager;
 using TMPro;
 using UnityEngine;
@@ -52,6 +53,8 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Managers.Sound.PlaySfx(SFXType.UI_Hover);
+
         foreach(Transform child in transform)
         {
             if (child.GetComponent<TextMeshProUGUI>() != null)

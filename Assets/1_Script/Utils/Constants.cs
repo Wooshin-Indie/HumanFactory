@@ -20,9 +20,9 @@ namespace HumanFactory
             KeyCode.D
         };
 
-        public static string TAG_NONE = "Untagged";
-        public static string TAG_CAMERA = "MainCamera";
-        public static string TAG_PAGES = "Pages";
+        public static readonly string TAG_NONE = "Untagged";
+        public static readonly string TAG_CAMERA = "MainCamera";
+        public static readonly string TAG_PAGES = "Pages";
 
         public static readonly int LAYER_CLICKABLE = 1 << 10;
 
@@ -31,6 +31,7 @@ namespace HumanFactory
         public static Color COLOR_WHITE = new Color(1f, 1f, 1f, 1f);
         public static Color COLOR_INVISIBLE = new Color(1f, 1f, 1f, 0.3f);
 
+        public static readonly string PATH_SFX = "Sounds/SFX/";
 
     }
 }
