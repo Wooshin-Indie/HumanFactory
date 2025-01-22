@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using UnityEngine;
 
 namespace HumanFactory.Props
@@ -12,6 +13,7 @@ namespace HumanFactory.Props
 
             base.OnPointerClick();
 
+            Managers.Sound.PlaySfx(SFXType.Click);
             Camera.main.GetComponent<CameraBase>().ConvertSceneForward(transform.localPosition,
                 zoomInCameraSize,
                 forwardType);

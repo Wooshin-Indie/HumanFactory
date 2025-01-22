@@ -80,7 +80,10 @@ namespace HumanFactory
     public enum SFXType
     {
         UI_Hover,
-
+        UI_Paper,
+        Click,
+        Noise,
+        Typing
     }
 
     public enum InputMode   // InputMode in GameScene

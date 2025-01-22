@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace HumanFactory.Util.Effect
     {
         public static IEnumerator TypingCoroutine(TextMeshProUGUI tmp, string str, float deltaTime)
         {
+            Managers.Sound.PlaySfx(SFXType.Typing);
             tmp.text = "";
 
             foreach (char letter in str.ToCharArray())
@@ -15,6 +17,8 @@ namespace HumanFactory.Util.Effect
                 tmp.text += letter;
                 yield return new WaitForSeconds(deltaTime);
             }
-        }
-    }
+
+		}
+
+	}
 }

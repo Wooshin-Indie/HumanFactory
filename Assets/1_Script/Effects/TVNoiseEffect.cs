@@ -48,8 +48,9 @@ namespace HumanFactory.Effects
 		}
 
 		private IEnumerator NoiseCoroutine()
-        {
-            elapsedTime = 0f;
+		{
+			Managers.Sound.PlaySfx(SFXType.Noise, 0.3f);
+			elapsedTime = 0f;
             while (elapsedTime < maxTime)
             {
                 elapsedTime += Time.deltaTime;

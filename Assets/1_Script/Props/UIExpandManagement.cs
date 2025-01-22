@@ -3,7 +3,6 @@ using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
-using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;

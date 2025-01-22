@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -59,6 +60,7 @@ namespace HumanFactory.UI
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
+			Managers.Sound.PlaySfx(SFXType.UI_Hover);
 			foreach (Transform child in transform)
 			{
 				if (child.GetComponent<TextMeshProUGUI>() != null)

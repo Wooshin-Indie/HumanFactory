@@ -28,7 +28,7 @@ namespace HumanFactory.UI
 			OnUpdateBindings();
 		}
 
-
+		
 		private void OnUpdateBindings()
 		{
 			for(int i=0; i<keyBindingItems.Count; i++)

@@ -59,10 +59,10 @@ namespace HumanFactory.Manager
 
 
         // path들은 Constants에서 관리됩니다.
-        public void PlaySfx(SFXType sfxType)
+        public void PlaySfx(SFXType sfxType, float volume = 1f)
         {
 			audioSources[(int)SoundType.Sfx].PlayOneShot(
-                Resources.Load<AudioClip>(Constants.PATH_SFX + sfxType.ToString()));
+                Resources.Load<AudioClip>(Constants.PATH_SFX + sfxType.ToString()), volume);
 		}
 
         // TODO - 소리 바꿀때 치지직- 이런 효과음 있으면 좋을듯?
