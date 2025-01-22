@@ -1,4 +1,5 @@
 using HumanFactory.Controller;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -559,10 +560,14 @@ namespace HumanFactory.Manager
         private List<Func<bool>> secFuncs = new List<Func<bool>>();
         private float cycleElapsedTime = 0f;
 
+        /** Result Variables **/
+		int cycleCount = 0;
+		int killCount = 0;
+
 		private IEnumerator ProgramCycleCoroutine()
         {
             InitPerCycle();
-
+            cycleCount++;
             while (cycleElapsedTime < cycleTime)
             {
                 ExecutePerFrame(cycleElapsedTime, cycleTime);
@@ -589,7 +594,7 @@ namespace HumanFactory.Manager
         }
         public void AddPersonWith1x()
         {
-
+            cycleCount = killCount = 0;
 			float prev = cycleTime;
 			cycleTime = 1f;
 			cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
@@ -715,7 +720,6 @@ namespace HumanFactory.Manager
 			foreach (var controller in humanControllers)
             {
                 controller.ExecuteOperand();
-                // TODO - 맵과 상호작용하여 연산해야됨
             }
             humanControllers.RemoveAll(item => item.OperandType == HumanOperandType.Operand2);
 
@@ -732,6 +736,7 @@ namespace HumanFactory.Manager
                         gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
                         humanControllers[i].HumanDyingProcess();
                         humanControllers.Remove(humanControllers[i]);
+                        killCount++;
                         continue;
                     }
                     continue;
@@ -757,7 +762,6 @@ namespace HumanFactory.Manager
                 humanControllers.Remove(humanControllers[i]);
             }
 
-            // TODO - input으로 들어온 human이 맵에서 다 빠지면 답인지아닌지 출력하도록 수정해야 함, output 갯수 상관 없이
             CheckIsStageEnded();
 
             isCycleRunning = false;
@@ -791,7 +795,18 @@ namespace HumanFactory.Manager
 
         private void OnSuccess()
         {
-            Debug.Log("SUCCESS");
+            int btnCount = 0;
+
+            for (int i = 0; i < mapSize.x; i++)
+            {
+                for (int j = 0; j < mapSize.y; j++)
+                {
+                    btnCount += (programMap[i, j].BuildingType == BuildingType.None ? 0 : 1);
+                }
+            }
+
+            GameResultInfo info = new GameResultInfo(currentChapter, currentStage, currentSaveIdx,
+                cycleCount, btnCount, killCount);
             idxOut = 0;
             isOutputCorrect = true;
         }
@@ -810,7 +825,7 @@ namespace HumanFactory.Manager
             for (int i = 0; i < size; i++)
 			{
 				Vector2Int tmpV = humanControllers[i].CurrentPos;
-        if (!CheckBoundary(tmpV.x, tmpV.y)) continue;
+                if (!CheckBoundary(tmpV.x, tmpV.y)) continue;
 				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
 				{
                     if (!programMap[tmpV.x, tmpV.y].IsActive) continue;
@@ -1019,7 +1034,6 @@ namespace HumanFactory.Manager
                 humanControllers.Remove(humanControllers[i]);
             }
 
-            // 모든 버튼 Release
             for (int i = 0; i < mapSize.x; i++)
             {
                 for (int j = 0; j < mapSize.y; j++)
@@ -1027,7 +1041,9 @@ namespace HumanFactory.Manager
                     programMap[i, j].OnRelease();
                 }
             }
-        }
+            cycleCount = killCount = 0;
+
+		}
 
 	}
 }

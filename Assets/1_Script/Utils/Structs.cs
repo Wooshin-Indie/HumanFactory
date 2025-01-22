@@ -42,6 +42,29 @@ namespace HumanFactory
         }
     }
 
+    public class GameResultInfo
+    {
+        private int chapterIdx = 0;
+        private int stageIdx = 0;
+        private int cctvIdx = 0;
+        private int cycleCount = 0;
+        private int buttonCount = 0;
+        private int killCount = 0;
+
+        public GameResultInfo(int chapter, int stage, int cctv, int cycle, int button, int kill)
+        {
+            SetCounts(chapter, stage, cctv, cycle, button, kill);
+        }
+
+        public void SetCounts(int chapter, int stage, int cctv, int cycle, int button, int kill)
+        {
+            Debug.Log($"Chap : {chapter}, {stage}, {cctv}, Cycle: {cycle}, BtnCnt: {button}, Kill: {kill}");
+            cycleCount = cycle;
+            buttonCount = button;
+            killCount = kill;
+        }
+    }
+
     #endregion
 
     #region ResourceManager Containers

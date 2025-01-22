@@ -13,7 +13,6 @@ namespace HumanFactory.UI
 
 		private List<GameObject> values = new List<GameObject>();
 
-		// TODO : load 횟수 많아지면 pooling 구현해야될듯
 		public void PushValue(int value)
 		{
 			GameObject go = Instantiate(itemPrefab, transform);

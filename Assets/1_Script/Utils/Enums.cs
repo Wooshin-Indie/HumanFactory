@@ -62,8 +62,6 @@ namespace HumanFactory
         Sfx = 1,
     }
 
-    // HACK - 임시로 설정해둔 Enum
-    // 나중에 BGM 정하고 수정해야합니다.
     public enum BGMType
     {
         BGM_1 = 0,
