@@ -15,8 +15,12 @@ namespace HumanFactory.UI
 		[Header("Must Enable in GameScene")]
 		[SerializeField] private CurrentModeUI curModeUI;
 		[SerializeField] private InOutRevealUI inOutRevealUI;
+		[SerializeField] private GameObject leftPanelUI;
+        [SerializeField] private GameObject rightPanelUI;
+        [SerializeField] private GameObject upperPanelUI;
+        [SerializeField] private GameObject centerPanelUI;
 
-		public InOutRevealUI InOut { get => inOutRevealUI; }
+        public InOutRevealUI InOut { get => inOutRevealUI; }
 
 		private int elapsedSeconds = 34567;
 
@@ -60,7 +64,12 @@ namespace HumanFactory.UI
 					}
 					curModeUI.gameObject.SetActive(true);
 					inOutRevealUI.gameObject.SetActive(true);
-				});
+
+                    leftPanelUI.SetActive(true);
+                    rightPanelUI.SetActive(true);
+                    upperPanelUI.SetActive(true);
+                    centerPanelUI.SetActive(true);
+                });
 		}
 
 		public void LerpToWhite(float duration)
@@ -83,6 +92,11 @@ namespace HumanFactory.UI
 
 			curModeUI.gameObject.SetActive(false);
 			inOutRevealUI.gameObject.SetActive(false);
+
+			leftPanelUI.SetActive(false);
+			rightPanelUI.SetActive(false);
+			upperPanelUI.SetActive(false);
+			centerPanelUI.SetActive(false);
 		}
 
 	}
