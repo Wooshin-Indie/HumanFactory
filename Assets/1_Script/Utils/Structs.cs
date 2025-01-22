@@ -80,7 +80,6 @@ namespace HumanFactory
     [Serializable]
     public class SettingData
     {
-
         public SettingData()
         {
             sfxVolume = 1f;
@@ -93,11 +92,14 @@ namespace HumanFactory
         private float bgmVolume;
         private bool isRevealBlood;
         private int languageIndex;
+        private int[] keyBindings;
 
         public float SfxVolume { get=> sfxVolume; set=> sfxVolume = value; }
         public float BgmVolume { get=> bgmVolume; set=> bgmVolume = value; }
         public bool IsRevealBlood { get=> isRevealBlood; set=> isRevealBlood = value; }
         public int LanguageIndex { get=> languageIndex; set=> languageIndex = value; }
+        public int[] KeyBindings { get=> keyBindings; set=> keyBindings = value; }
+
         // etc...
     }
 

@@ -69,7 +69,7 @@ namespace HumanFactory.UI
                 MapManager.Instance.LoadStage(CurrentSelectedIndex, currentSaveFileIndex);
                 for (int i = 0; i < saveButtons.Count; i++)
                 {
-                    saveButtons[i].GetComponent<SaveButtonItem>().OnSelected(i == currentSaveFileIndex);
+                    saveButtons[i].GetComponent<UIItemBase>().OnSelected(i == currentSaveFileIndex);
                 }
             }
         }

@@ -128,10 +128,8 @@ namespace HumanFactory.UI
 			{
 				pages[i].SetSiblingIndex(pages.Count()-i-1);
 				pages[i].gameObject.SetActive(false);
-				Debug.Log("FALSE PAGE " + i);
 			}
 			pages[curPage].gameObject.SetActive(true);
-			Debug.Log("CUR PGE : " + curPage);
 		}
 	}
 }

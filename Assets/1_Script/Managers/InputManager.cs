@@ -147,6 +147,7 @@ namespace HumanFactory.Manager
             if (GameManagerEx.Instance.CurrentCamType != CameraType.Setting) return;
 
             ClickOutScene();
+            OnBindingKey();
         }
 
         /* Input Modules */
@@ -174,11 +175,10 @@ namespace HumanFactory.Manager
             }
         }
 
-        // HACK - 임시로 테스트하기 위한 함수
         private void ClickOutScene()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.KeyBindings[(int)ShortcutActionEnum.Back]))
             {
                 OnEscape();
 			}
@@ -246,11 +246,11 @@ namespace HumanFactory.Manager
 
         private void ShortcutBuilding()
         {
-            for (int i = 0; i < Constants.KEYCODE_SHORTCUT_BUILD.Length; i++)
+            for (int i = (int)ShortcutActionEnum.Add_Button; i < (int)ShortcutActionEnum.Back; i++)
             {
-                if (Input.GetKeyDown(Constants.KEYCODE_SHORTCUT_BUILD[i]))
+                if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.KeyBindings[i]))
                 {
-                    ChangeCurSelectedBuilding((BuildingType)i);
+                    ChangeCurSelectedBuilding((BuildingType)(i));
 				}
             }
         }
@@ -262,11 +262,11 @@ namespace HumanFactory.Manager
         private void ChangeInputMode()
         {
             if (!IsMouseInputEnabled()) return;
-            if (Input.GetKeyDown(KeyCode.Alpha1) && inputMode != InputMode.None)
+            if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.KeyBindings[(int)ShortcutActionEnum.ChangeMode_1]) && inputMode != InputMode.None)
             {
                 inputMode = InputMode.None;
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && inputMode != InputMode.Pad)
+            else if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.KeyBindings[(int)ShortcutActionEnum.ChangeMode_2]) && inputMode != InputMode.Pad)
             {
                 inputMode = InputMode.Pad;
             }
@@ -290,6 +290,59 @@ namespace HumanFactory.Manager
             }
         }
 
-    }
+        private ShortcutActionEnum selectedKey = ShortcutActionEnum.None;
+        private bool isBinding = false;
+        private Action OnEndAction { get; set; }
+
+        private void OnBindingKey()
+        {
+            if (!isBinding) return;
+
+            for (int i = (int)KeyCode.A; i <= (int)KeyCode.Z; i++)
+            {
+                if (Input.GetKeyDown((KeyCode)i))
+                {
+                    Managers.Data.ChangeBinding(selectedKey, i);
+                    EndBinding();
+                    return;
+                }
+            }
+            for (int i = (int)KeyCode.Alpha0; i <= (int)KeyCode.Alpha9; i++)
+			{
+				if (Input.GetKeyDown((KeyCode)i))
+				{
+					Managers.Data.ChangeBinding(selectedKey, i);
+					EndBinding();
+					return;
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				Managers.Data.ChangeBinding(selectedKey, (int)KeyCode.Escape);
+				EndBinding();
+				return;
+			}
+		}
+
+        public void StartBinding(ShortcutActionEnum keyEnum, Action action)
+		{
+			if (selectedKey == ShortcutActionEnum.None)
+				LockMouseInput();
+			selectedKey = keyEnum;
+            isBinding = true;
+            OnEndAction?.Invoke();
+            OnEndAction = action;
+		}
+
+        private void EndBinding()
+		{
+			selectedKey = ShortcutActionEnum.None;
+			isBinding = false;
+            ReleaseMouseInput();
+            OnEndAction?.Invoke();
+            OnEndAction = null;
+        }
+	}
 
 }

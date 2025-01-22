@@ -1,4 +1,3 @@
-using HumanFactory.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 
 namespace HumanFactory.UI
 {
-	public class SaveButtonItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+	public class UIItemBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	{
 		[SerializeField] private TextMeshProUGUI stageName;
 		[SerializeField] private Sprite selectedSprite;
@@ -32,6 +31,32 @@ namespace HumanFactory.UI
 			}
 		}
 
+		private bool isHighlighting = false;
+		public void OnHighlight()
+		{
+			isHighlighting = true;
+
+			foreach (Transform child in transform)
+			{
+				if (child.GetComponent<TextMeshProUGUI>() != null)
+					child.GetComponent<TextMeshProUGUI>().color = Color.black;
+			}
+
+			GetComponent<Image>().sprite = GetComponent<Button>().spriteState.highlightedSprite;
+		}
+
+		public void OffHighLight()
+		{
+			isHighlighting = false;
+			foreach (Transform child in transform)
+			{
+				if (child.GetComponent<TextMeshProUGUI>() != null)
+					child.GetComponent<TextMeshProUGUI>().color = Color.white;
+			}
+
+			GetComponent<Image>().sprite = originalSprite;
+		}
+
 		public void OnPointerEnter(PointerEventData eventData)
 		{
 			foreach (Transform child in transform)
@@ -43,6 +68,7 @@ namespace HumanFactory.UI
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
+			if (isHighlighting) return;
 			foreach (Transform child in transform)
 			{
 				if (child.GetComponent<TextMeshProUGUI>() != null)
