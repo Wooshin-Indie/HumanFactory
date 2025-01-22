@@ -13,8 +13,8 @@ namespace HumanFactory.UI
 		[SerializeField] private List<Image> cctvImage;
 
 		[Header("Must Enable in GameScene")]
-		[SerializeField] private CurrentModeUI curModeUI;
 		[SerializeField] private InOutRevealUI inOutRevealUI;
+		[SerializeField] private List<Transform> panels = new List<Transform>();
 
 		public InOutRevealUI InOut { get => inOutRevealUI; }
 
@@ -58,8 +58,13 @@ namespace HumanFactory.UI
 					{
 						cctvImage[i].gameObject.SetActive(false);
 					}
-					curModeUI.gameObject.SetActive(true);
+
 					inOutRevealUI.gameObject.SetActive(true);
+
+					for(int i=0; i<panels.Count; i++)
+					{
+						panels[i].gameObject.SetActive(true);	
+					}
 				});
 		}
 
@@ -81,8 +86,12 @@ namespace HumanFactory.UI
 			}
 
 
-			curModeUI.gameObject.SetActive(false);
 			inOutRevealUI.gameObject.SetActive(false);
+
+			for (int i = 0; i < panels.Count; i++)
+			{
+				panels[i].gameObject.SetActive(false);
+			}
 		}
 
 	}
