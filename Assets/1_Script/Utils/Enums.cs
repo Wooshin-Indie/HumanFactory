@@ -79,7 +79,11 @@ namespace HumanFactory
 
     public enum SFXType
     {
-
+        UI_Hover,
+        UI_Paper,
+        Click,
+        Noise,
+        Typing
     }
 
     public enum InputMode   // InputMode in GameScene
@@ -104,4 +108,18 @@ namespace HumanFactory
         Pause = 2
     }
 
+	public enum ShortcutActionEnum
+    {
+        None= -1,
+        Add_Button = 0,
+        Sub_Button,
+        Jump_Button,
+        Double_Button,
+        Input_Button,
+        Toggle_Button,
+        Rotate_Button,
+		Back = 7,
+        ChangeMode_1,
+        ChangeMode_2,
+	}
 }

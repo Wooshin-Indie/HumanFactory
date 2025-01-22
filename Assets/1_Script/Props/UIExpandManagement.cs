@@ -3,9 +3,9 @@ using HumanFactory.Effects;
 using HumanFactory.Manager;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace HumanFactory.UI
@@ -23,25 +23,75 @@ namespace HumanFactory.UI
         [Header("Additional Subjects")]
         [SerializeField] private TVNoiseEffect noiseEffect;
         [SerializeField] private TextMeshProUGUI stageDescript;
+        [SerializeField] private TextMeshProUGUI titleBanner;
 
         [Header("Panel Buttons")]
         [SerializeField] private Button ChapterBackButton;
+        [SerializeField] private List<Button> saveButtons = new List<Button>();
 
         private Tweener scrollTweener;
-        private int currentExpandedPanel = -1;
         private float scrollviewHeight;
-        public int CurrentExpandedPanel { get => currentExpandedPanel; }
 
-        private void Start()
+        private int currentExpandedPanel = -1;
+        private int currentSelectedIndex = -1;
+        private int currentSaveFileIndex = -1;
+
+        public int CurrentSelectedIndex { get => currentSelectedIndex;
+            set
+            {
+				currentSelectedIndex = value;
+                if (currentSelectedIndex < 0)
+				{
+                    noiseEffect.SetPermanentNoise();
+                    for (int i = 0; i < saveButtons.Count; i++)
+                    {
+                        saveButtons[i].gameObject.SetActive(false);
+                    }
+				}
+                else
+				{
+					for (int i = 0; i < saveButtons.Count; i++)
+					{
+						saveButtons[i].gameObject.SetActive(true);
+					}
+					CurrentSaveFileIndex = 0;
+				}
+			}
+        }
+
+        // 이게 바뀔떄마다 Stage load 됨
+        // 스테이지 선택하면 자동으로 0번 SaveFile 로드
+        public int CurrentSaveFileIndex { get => currentSaveFileIndex;
+            set
+            {
+                currentSaveFileIndex = value;
+                MapManager.Instance.LoadStage(CurrentSelectedIndex, currentSaveFileIndex);
+                for (int i = 0; i < saveButtons.Count; i++)
+                {
+                    saveButtons[i].GetComponent<UIItemBase>().OnSelected(i == currentSaveFileIndex);
+                }
+            }
+        }
+
+
+		private void Start()
         {
             LoadChaptersOnPanel();
             ChapterBackButton.onClick.AddListener(OnClickBackButton);
             ChapterBackButton.interactable = false;
-        }
 
-        private float elapsedTime = 0f;
-        private float maxChangeTime = 5f;
-        private int tmpStagePoiter = 0;
+            for (int i = 0; i < saveButtons.Count; i++)
+            {
+                int t = i;
+                saveButtons[i].onClick.AddListener(() =>
+                {
+                    noiseEffect.MakeNoise();
+					MapManager.Instance.LoadStage(CurrentSelectedIndex, t);
+                    CurrentSaveFileIndex = t; 
+				});
+            }
+            CurrentSelectedIndex = -1;
+        }
 
         private void Update()
         {
@@ -70,7 +120,8 @@ namespace HumanFactory.UI
                     OnClickChapters(idx);
                 });
             }
-        }
+
+		}
 
         private void LoadStagesOnPanel()
         {
@@ -87,17 +138,9 @@ namespace HumanFactory.UI
                     OnClickStages(idx, stageIdx);
                 });
             }
-
-            scrollviewHeight = GetComponent<RectTransform>().rect.height;
-            content.GetComponent<VerticalLayoutGroup>().padding.bottom = (int)scrollviewHeight / 2;
-            content.GetComponent<VerticalLayoutGroup>().padding.top = (int)scrollviewHeight / 2;
-
-
-            if (currentExpandedPanel == -1)
-            {
-                noiseEffect.SetPermanentNoise();
-            }
-        }
+            currentExpandedPanel = -1;
+            CurrentSelectedIndex = -1;
+		}
 
         private void OnClickChapters(int index)
         {
@@ -110,7 +153,8 @@ namespace HumanFactory.UI
 
             LoadStagesOnPanel(); // 챕터에 해당되는 stage들 인스턴시에이트
 
-            ChapterBackButton.interactable = true;
+            titleBanner.text = Managers.Resource.GetChapterInfo(index).chapterName;
+			ChapterBackButton.interactable = true;
             // 뒤로가기 버튼 활성화, 뒤로가기 버튼 누르면 stages 전부 destroy 및 remove, 그리고 LoadChapters, 그리고 BackButton 비활성화
         }
 
@@ -118,7 +162,12 @@ namespace HumanFactory.UI
         {
             ClearStages();
             LoadChaptersOnPanel();
-            ChapterBackButton.interactable = false;
+
+			currentExpandedPanel = -1;
+			CurrentSelectedIndex = -1;
+
+			titleBanner.text = "STAGES";
+			ChapterBackButton.interactable = false;
         }
 
         private void OnClickStages(int index, int stageIdx) // index는 패널에 표시되는 리스트에서의 index, stageIdx는 실제 json에서 불러오는 stage의 index
@@ -131,14 +180,14 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(stageIdx);
-            }
+				CurrentSelectedIndex = stageIdx;
+			}
             else if (currentExpandedPanel == index) // 이미 확대돼있던걸 클릭 -> 축소
             {
                 stages[index].GetComponent<UIOnClickExpand>().Reduce();
                 currentExpandedPanel = -1;
-                noiseEffect.SetPermanentNoise();
-                scrollTweener.Kill();
+				CurrentSelectedIndex = -1;
+				scrollTweener.Kill();
             }
             else if (currentExpandedPanel != index) // 확대 돼있는게 있는 상태에서 다른 패널 클릭
             {
@@ -146,7 +195,8 @@ namespace HumanFactory.UI
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
                 SetSelectedStageOnCenter(index, lerpDuration);
                 currentExpandedPanel = index;
-                MapManager.Instance.LoadStage(stageIdx);
+                CurrentSelectedIndex = stageIdx;
+
             }
         }
 
@@ -171,8 +221,7 @@ namespace HumanFactory.UI
         private void StartTypingDescript(int index)
         {
             stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
-            // 이건 나중에 ResourceManager나 Localization에서 받아옴
-            string tmpDescript = "Stage #1 - Mov\r\n\r\nThis is your first task. \r\nIt's very simple, but you must not take it lightly. \r\nThe people you see on the screen will obey your commands without question. \r\nIf you tell them to go, they will go... and if you tell them to die, they will die\r\n";
+            string tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString("StageDescription", "0");
             typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, tmpDescript, 0.01f));
         }
 

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: StageDescription
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 1074a1db554363f469a510b17b20e9b7, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 4acb356b6b5414342899738f73d54a1a, type: 2}
+  - {fileID: 11400000, guid: 0d034d9c19c13e946a5d06a1556a672e, type: 2}
+  m_Extensions:
+  - rid: 522790760952102939
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds:
+    - rid: 522790760952102939
+      type: {class: CsvExtension, ns: UnityEditor.Localization.Plugins.CSV, asm: Unity.Localization.Editor}
+      data:
+        m_Collection: {fileID: 11400000}
+        m_ColumnsList:
+        - rid: 522790760952102940
+        - rid: 522790760952102941
+        - rid: 522790760952102942
+        m_ConnectedFile: Assets/Resources/Localization/StageDesc/StageDescription.csv
+    - rid: 522790760952102940
+      type: {class: KeyIdColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_IncludeId: 1
+        m_IncludeSharedComments: 1
+        m_KeyFieldName: Key
+        m_IdFieldName: Id
+        m_CommentFieldName: Shared Comments
+    - rid: 522790760952102941
+      type: {class: LocaleColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_LocaleIdentifier:
+          m_Code: en-US
+        m_FieldName: English (United States)(en-US)
+        m_CommentFieldName: English (United States)(en-US) Comments
+        m_IncludeComments: 1
+    - rid: 522790760952102942
+      type: {class: LocaleColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_LocaleIdentifier:
+          m_Code: ko-KR
+        m_FieldName: Korean (South Korea)(ko-KR)
+        m_CommentFieldName: Korean (South Korea)(ko-KR) Comments
+        m_IncludeComments: 1

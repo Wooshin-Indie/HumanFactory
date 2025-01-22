@@ -1,4 +1,5 @@
 using DG.Tweening;
+using HumanFactory.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -42,6 +43,7 @@ namespace HumanFactory.UI
 
 		private void OnEnable()
 		{
+			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 			curPage = 0;
 			ResetChildOrder();
 			isPaging = false;
@@ -53,6 +55,8 @@ namespace HumanFactory.UI
 			
 			if (isPaging) return;
 			isPaging = true;
+
+			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 
 			int nextPage = curPage + 1;
 
@@ -91,6 +95,7 @@ namespace HumanFactory.UI
 			if (isPaging) return;
 			isPaging = true;
 
+			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 			int prevPage = curPage - 1;
 
 			Sequence seq1 = DOTween.Sequence();
@@ -128,10 +133,8 @@ namespace HumanFactory.UI
 			{
 				pages[i].SetSiblingIndex(pages.Count()-i-1);
 				pages[i].gameObject.SetActive(false);
-				Debug.Log("FALSE PAGE " + i);
 			}
 			pages[curPage].gameObject.SetActive(true);
-			Debug.Log("CUR PGE : " + curPage);
 		}
 	}
 }

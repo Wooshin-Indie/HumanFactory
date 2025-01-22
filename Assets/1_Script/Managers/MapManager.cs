@@ -327,18 +327,19 @@ namespace HumanFactory.Manager
 
 		#endregion
 		private void Update()
-        {
-            if (!isCycleRunning)
+		{
+			// HACK : 저장 타이밍 따로 정해줘야됨
+			if (Input.GetKeyDown(KeyCode.S))
+			{
+				SaveStage();
+			}
+
+			if (!isCycleRunning)
             {
                 if (!IsCycleEnabled()) return;
                 StartCoroutine(ProgramCycleCoroutine());
             }
 
-            // HACK : 저장 타이밍 따로 정해줘야됨
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                SaveStage();
-            }
 
         }
 
@@ -947,15 +948,15 @@ namespace HumanFactory.Manager
 		private int currentStage = -1;
 
         public int CurrentStage { get => currentStage; }
-        
+
+        private int currentSaveIdx = -1;
 
 
-        public void LoadStage(int stageId)
+        public void LoadStage(int stageId, int saveIdx)
         {
-            Debug.Log($"Load Stage : {stageId}");
-
             currentStage = stageId;
-            currentStageInfo = Managers.Resource.GetStageInfo(stageId);
+            currentSaveIdx = saveIdx;
+			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
 			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
 
@@ -967,8 +968,7 @@ namespace HumanFactory.Manager
 				}
 			}
 
-
-			StageGridDatas tmpGridData = Managers.Data.GetGridDatas(stageId);
+			StageSaveData tmpGridData = Managers.Data.GetGridDatas(stageId, saveIdx);
             if (tmpGridData == null) return;
 
             foreach (var data in tmpGridData.gridDatas)
@@ -992,9 +992,10 @@ namespace HumanFactory.Manager
 
         public void SaveStage()
 		{
+            Debug.Log("SAVED");
 			Debug.Log($"Save Stage : {currentStage}");
 
-			StageGridDatas gridDatas = new StageGridDatas();
+			StageSaveData gridDatas = new StageSaveData();
 
             for (int i = 0; i < mapSize.x; i++)
             {
@@ -1004,7 +1005,7 @@ namespace HumanFactory.Manager
                 }
             }
 
-            Managers.Data.AddStageGridData(currentStage, gridDatas);
+            Managers.Data.AddStageGridData(currentStage, currentSaveIdx, gridDatas);
         }
 
         #endregion

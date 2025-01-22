@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.Localization.PropertyVariants.TrackedProperties;
 
 namespace HumanFactory.Manager
 {
@@ -26,7 +27,10 @@ namespace HumanFactory.Manager
         /** Properties (for outer uses) **/
         public SettingData BasicSettingData { get { return settingData; } }
 
-        public void Init()
+        public Action OnUpdateKeyBindings { get; set; }
+
+
+		public void Init()
         {
             settingDataPath = Application.persistentDataPath + "/SettingData.json";
             playDataPath = Application.persistentDataPath + "/PlayData.json";
@@ -41,10 +45,17 @@ namespace HumanFactory.Manager
             LoadData<SettingData>(ref settingData, settingDataPath);
             LoadData<GameplayData>(ref gameplayData, playDataPath);
 
+            InitSettingData();
+
             if (gameplayData.stageGridDatas == null ||
 				gameplayData.stageGridDatas.Length != Managers.Resource.GetStageCount() + 1)
             {
                 Array.Resize(ref gameplayData.stageGridDatas, Managers.Resource.GetStageCount() + 1);
+
+                for (int i = 0; i < gameplayData.stageGridDatas.Length; i++){
+                    if (gameplayData.stageGridDatas[i] == null)
+                        gameplayData.stageGridDatas[i] = new StageGridDatas();
+                }
             }
         }
         public void SaveAll()
@@ -72,14 +83,14 @@ namespace HumanFactory.Manager
             }
         }
 
-        public StageGridDatas GetGridDatas(int stageId)
+        public StageSaveData GetGridDatas(int stageId, int saveIdx)
         {
-            return gameplayData.stageGridDatas[stageId];
+            return gameplayData.stageGridDatas[stageId].saveDatas[saveIdx];
         }
 
-        public void AddStageGridData(int stageId, StageGridDatas datas)
+        public void AddStageGridData(int stageId, int saveIdx, StageSaveData datas)
         {
-            gameplayData.stageGridDatas[stageId] = datas;
+            gameplayData.stageGridDatas[stageId].saveDatas[saveIdx] = datas;
         }
 
         public void SaveClearStage(int stageId)
@@ -94,5 +105,29 @@ namespace HumanFactory.Manager
             Managers.Sound.BgmVolume = settingData.BgmVolume;
             Managers.Sound.SfxVolume = settingData.SfxVolume;
         }
-    }
+
+        private void InitSettingData()
+        {
+            if (settingData.KeyBindings == null)
+			{
+				settingData.KeyBindings = new int[Enum.GetValues(typeof(ShortcutActionEnum)).Length-1];
+                for (int i = 0; i < settingData.KeyBindings.Length; i++)
+				{
+					settingData.KeyBindings[i] = (int)Constants.KEYCODE_SHORTCUT_DEFAULT[i];
+                }
+            }
+        }
+        public void ChangeBinding(ShortcutActionEnum selectedAction, int keycode)
+        {
+            for (int i = 0; i < settingData.KeyBindings.Length; i++)
+            {
+                if (settingData.KeyBindings[i] == keycode)
+                {
+                    settingData.KeyBindings[i] = 0;
+                }
+            }
+            settingData.KeyBindings[(int)selectedAction] = keycode;
+            OnUpdateKeyBindings.Invoke();
+        }
+	}
 }
