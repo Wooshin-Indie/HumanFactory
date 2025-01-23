@@ -341,7 +341,6 @@ namespace HumanFactory.Manager
                 StartCoroutine(ProgramCycleCoroutine());
             }
 
-
         }
 
 		#region Screen Interact
@@ -354,7 +353,7 @@ namespace HumanFactory.Manager
         {
             return (x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y);
         }
-        public void OnHoverMapGridInNoneMode(int x, int y)
+        public BuildingType OnHoverMapGridInNoneMode(int x, int y)
         {
             if (isCircuiting)
             {
@@ -366,13 +365,14 @@ namespace HumanFactory.Manager
                 else
                     tileRect.gameObject.SetActive(false);
 
-                return;
+                return BuildingType.None;
             }
 
             if (!CheckBoundary(x, y) || programMap[x, y].BuildingType == BuildingType.None)
             {
                 buttonRect.gameObject.SetActive(false);
                 tileRect.gameObject.SetActive(false);
+                return BuildingType.None;
             }
             else
             {
@@ -393,8 +393,10 @@ namespace HumanFactory.Manager
                 {
                     tileRect.gameObject.SetActive(false);
                 }
-            }
+                return programMap[x, y].BuildingType;
+			}
         }
+
         public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
         {
             if (!CheckBoundary(x, y))

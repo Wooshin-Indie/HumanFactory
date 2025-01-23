@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ namespace HumanFactory.UI
 
 		[Header("Must Enable in GameScene")]
 		[SerializeField] private InOutRevealUI inOutRevealUI;
-		[SerializeField] private List<Transform> panels = new List<Transform>();
+		[SerializeField] private List<PopUpUIBase> panels = new List<PopUpUIBase>();
 
 		public InOutRevealUI InOut { get => inOutRevealUI; }
 
@@ -22,6 +23,11 @@ namespace HumanFactory.UI
 
 		private void Start()
 		{
+			for (int i = 0; i < panels.Count; i++)
+			{
+				panels[i].CloseWindow();
+			}
+
 			StartCoroutine(TimerCoroutine());
 		}
 
@@ -90,7 +96,7 @@ namespace HumanFactory.UI
 
 			for (int i = 0; i < panels.Count; i++)
 			{
-				panels[i].gameObject.SetActive(false);
+				panels[i].CloseWindow();
 			}
 		}
 
