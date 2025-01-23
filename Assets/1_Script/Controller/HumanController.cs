@@ -61,7 +61,7 @@ namespace HumanFactory.Controller
                     HumanNum = operandsResult;
                     break;
                 case HumanOperandType.Operand2:
-                    Destroy(gameObject);       //HACK - Destory가 아니라 좀 더 일찍 스르륵 사라지게 할 수도
+                    Destroy(gameObject);
                     break;
             }
         }
@@ -79,7 +79,6 @@ namespace HumanFactory.Controller
 
         private void Awake()
         {
-            // HACK - must set appropriate pos after instantiate
             prevPos = new Vector2Int(0, -1);
             currentPos = new Vector2Int(0, -1);
             targetPos = new Vector2Int(0, 0);

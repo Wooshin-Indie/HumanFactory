@@ -95,18 +95,23 @@ namespace HumanFactory.UI
 
         private void Update()
         {
-            // 자동으로 돌아가게 만듦 -> 챕터 구분 구현하느라 잠시 꺼둠
-            //if (GameManagerEx.Instance.CurrentCamType == CameraType.Main)
-            //{
-            //    elapsedTime += Time.deltaTime;
-            //    if(maxChangeTime < elapsedTime)
-            //    {
-            //        elapsedTime = 0;
-            //        OnClickStages(tmpStagePoiter);
-            //        tmpStagePoiter = (tmpStagePoiter + 1) % Managers.Resource.GetStageCount();
-            //    }
-            //}
-        }
+			// 자동으로 돌아가게 만듦 -> 챕터 구분 구현하느라 잠시 꺼둠
+			//if (GameManagerEx.Instance.CurrentCamType == CameraType.Main)
+			//{
+			//    elapsedTime += Time.deltaTime;
+			//    if(maxChangeTime < elapsedTime)
+			//    {
+			//        elapsedTime = 0;
+			//        OnClickStages(tmpStagePoiter);
+			//        tmpStagePoiter = (tmpStagePoiter + 1) % Managers.Resource.GetStageCount();
+			//    }
+			//}
+
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				Managers.Sound.PlaySfx(SFXType.Typing, 1f, 1.2f, 4f);
+			}
+		}
 
         private void LoadChaptersOnPanel()
         {

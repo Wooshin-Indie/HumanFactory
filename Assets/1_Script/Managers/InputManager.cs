@@ -1,7 +1,5 @@
 using HumanFactory.Props;
-using JetBrains.Annotations;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -99,23 +97,19 @@ namespace HumanFactory.Manager
 
         // UI 켜지는 함수 넣어둬야됨
         public Action<Vector2Int> OnClickMapGridInNoneModeAction { get; set; }
+        public Action<bool, BuildingType> OnHoverInNoneModeAction { get; set; }
 
         private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
-            MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y);
+
+			OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting,
+                MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y));
 
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                if (MapManager.Instance.IsCircuiting)
-                {
-                    MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, false);
-                }
-                else
-				{
-					MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, true);
-				}
+                MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, !MapManager.Instance.IsCircuiting);
             }
 
             if (Input.GetMouseButtonDown(1))
