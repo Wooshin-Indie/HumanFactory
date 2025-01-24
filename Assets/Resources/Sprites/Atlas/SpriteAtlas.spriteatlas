@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: a61d4d48bf81faa4abd80b0e82769455, type: 3}
+    - {fileID: 2800000, guid: 184553d1e8d4dde47bde160db8a2dfb8, type: 3}
+    - {fileID: 2800000, guid: c9782731ecfc05c44a5e7ea5f4d868cd, type: 3}
+    - {fileID: 2800000, guid: 116d2d10b6fd2624d8eaed114b3548cb, type: 3}
+    - {fileID: 5920769771027675184, guid: da2188315245009458834cdcad537e10, type: 2}
+    - {fileID: -3583212030741049237, guid: e62122305da6d584fbb06eb1f78dc534, type: 2}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 116d2d10b6fd2624d8eaed114b3548cb: 21300000
+    - c9782731ecfc05c44a5e7ea5f4d868cd: 21300000
+    - 184553d1e8d4dde47bde160db8a2dfb8: 21300000
+    - a61d4d48bf81faa4abd80b0e82769455: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 116d2d10b6fd2624d8eaed114b3548cb, type: 3}
+  - {fileID: 21300000, guid: c9782731ecfc05c44a5e7ea5f4d868cd, type: 3}
+  - {fileID: 21300000, guid: 184553d1e8d4dde47bde160db8a2dfb8, type: 3}
+  - {fileID: 21300000, guid: a61d4d48bf81faa4abd80b0e82769455, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - BG
+  - panel1
+  - LeftBanner-2
+  - LeftBanner
+  m_RenderDataMap: {}
+  m_Tag: SpriteAtlas
+  m_IsVariant: 0

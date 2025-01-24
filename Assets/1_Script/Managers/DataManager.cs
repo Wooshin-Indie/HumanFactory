@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.IO;
 using System;
-using UnityEngine.Localization.PropertyVariants.TrackedProperties;
 
 namespace HumanFactory.Manager
 {
@@ -28,7 +27,7 @@ namespace HumanFactory.Manager
         public SettingData BasicSettingData { get { return settingData; } }
 
         public Action OnUpdateKeyBindings { get; set; }
-
+        public Action<SettingData> OnUpdateBasicSettings { get; set; }
 
 		public void Init()
         {
@@ -104,6 +103,7 @@ namespace HumanFactory.Manager
         {
             Managers.Sound.BgmVolume = settingData.BgmVolume;
             Managers.Sound.SfxVolume = settingData.SfxVolume;
+            Managers.Sound.MasterVolume = settingData.MasterVolume;
         }
 
         private void InitSettingData()
@@ -128,6 +128,11 @@ namespace HumanFactory.Manager
             }
             settingData.KeyBindings[(int)selectedAction] = keycode;
             OnUpdateKeyBindings.Invoke();
+        }
+
+        public void UpdateBasicSettingChanges()
+        {
+            OnUpdateBasicSettings.Invoke(settingData);
         }
 	}
 }

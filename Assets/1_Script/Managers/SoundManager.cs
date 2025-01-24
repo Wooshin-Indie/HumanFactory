@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Localization.SmartFormat.GlobalVariables;
 
 namespace HumanFactory.Manager
 {
@@ -17,26 +18,40 @@ namespace HumanFactory.Manager
 
         private int currentBGM = (int)BGMType.None;
 
+		private float masterVolume = 1f;
+		private float sfxVolume = 1f;
+		private float bgmVolume = 1f;
 
-        /** Properties **/
-        public float SfxVolume
+
+		/** Properties **/
+		public float SfxVolume
         {
-            get { return audioSources[(int)SoundType.Sfx].volume; }
+            get { return sfxVolume; }
             set
             {
-				audioSources[(int)SoundType.Sfx].volume = value;
+				sfxVolume = value;
                 Managers.Data.BasicSettingData.SfxVolume = value;
             }
         }
         public float BgmVolume
         {
-            get { return audioSources[(int)SoundType.Bgm].volume; }
+            get { return bgmVolume; }
             set
             {
-				audioSources[(int)SoundType.Bgm].volume = value;
+				bgmVolume = value;
+				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
                 Managers.Data.BasicSettingData.BgmVolume = value;
             }
         }
+        public float MasterVolume { 
+			get => masterVolume; 
+			set 
+			{
+				masterVolume = value;
+				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
+				Managers.Data.BasicSettingData.MasterVolume = value;
+			} 
+		}
         public int CurrentBGM { get { return currentBGM; } }
 
         private GameObject root;
@@ -116,30 +131,31 @@ namespace HumanFactory.Manager
             PlaySfx(sfxType, 1f);
 		}
 
-		// path들은 Constants에서 관리됩니다.
 		public void PlaySfx(SFXType sfxType, float volume)
         {
-			audioSources[(int)SoundType.Sfx].PlayOneShot(GetAudioClip(sfxType) , volume);
+			audioSources[(int)SoundType.Sfx].PlayOneShot(GetAudioClip(sfxType) , volume * sfxVolume * masterVolume);
 		}
 
-        public void PlaySfx(SFXType sfxType, float volume, float pitch)
+        public AudioSource PlaySfx(SFXType sfxType, float volume, float pitch)
 		{
 			AudioSource audioSource = Pop();
             audioSource.clip = GetAudioClip(sfxType);
             audioSource.pitch = pitch;
-			audioSource.volume = volume;
+			audioSource.volume = volume * masterVolume * sfxVolume;
 			audioSource.Play();
             PushAfterDelay(audioSource, audioSource.clip.length);
+            return audioSource;
 		}
 
-        public void PlaySfx(SFXType sfxType, float volume, float pitch, float duration)
+        public AudioSource PlaySfx(SFXType sfxType, float volume, float pitch, float duration)
 		{
 			AudioSource audioSource = Pop();
 			audioSource.clip = GetAudioClip(sfxType);
 			audioSource.pitch = pitch;
-			audioSource.volume = volume;
+			audioSource.volume = volume * masterVolume * sfxVolume;
 			audioSource.Play();
 			PushAfterDelay(audioSource, Mathf.Min(audioSource.clip.length, duration));
+            return audioSource;
 		}
 
         private AudioClip GetAudioClip(SFXType type)

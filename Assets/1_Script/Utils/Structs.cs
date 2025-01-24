@@ -107,16 +107,19 @@ namespace HumanFactory
         {
             sfxVolume = 1f;
             bgmVolume = 1f;
+            masterVolume = 1f;
             languageIndex = 0;
             isRevealBlood = true;
         }
 
+        private float masterVolume;
         private float sfxVolume;
         private float bgmVolume;
         private bool isRevealBlood;
         private int languageIndex;
         private int[] keyBindings;
 
+        public float MasterVolume { get=> masterVolume; set=> masterVolume= value; }
         public float SfxVolume { get=> sfxVolume; set=> sfxVolume = value; }
         public float BgmVolume { get=> bgmVolume; set=> bgmVolume = value; }
         public bool IsRevealBlood { get=> isRevealBlood; set=> isRevealBlood = value; }
