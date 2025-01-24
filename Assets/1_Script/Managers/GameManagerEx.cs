@@ -124,11 +124,10 @@ namespace HumanFactory
 
         [SerializeField] private SuccessPopupUI successUI;
 
-        public void OnStageSuccess(int stageId)
+        public void OnStageSuccess(GameResultInfo info)
         {
-            successUI.SetStageInfos();
+            successUI.SetStageInfos(info);
             successUI.gameObject.SetActive(true);
-
         }
 
         public void OnStageFail(int stageId)
@@ -137,10 +136,6 @@ namespace HumanFactory
             // 모두 다 초기화하기 - 
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K)) OnStageSuccess(1);
-        }
 
         #endregion
 

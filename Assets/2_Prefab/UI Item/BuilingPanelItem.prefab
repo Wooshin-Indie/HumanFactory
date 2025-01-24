@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.5
-  m_fontSizeBase: 27.5
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e46ae79ddd36c6b4dbd486bfd20338fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4ca9a0cff94c5ee469546da2cf49c406, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -336,7 +336,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 95eb5dcea05375e4a8ac9ad62319a554, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: e46ae79ddd36c6b4dbd486bfd20338fd, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: d7f020a7d6a7eef4bb8e37c54d1154c3, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:

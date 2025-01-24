@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -814,6 +815,9 @@ namespace HumanFactory.Manager
 
             GameResultInfo info = new GameResultInfo(currentChapter, currentStage, currentSaveIdx,
                 cycleCount, btnCount, killCount);
+            Debug.Log("Chapter, Stage : " + info.ChapterIdx.ToString() + ", " + info.StageIdx.ToString());
+            GameManagerEx.Instance.OnStageSuccess(info);
+
             idxOut = 0;
             isOutputCorrect = true;
         }

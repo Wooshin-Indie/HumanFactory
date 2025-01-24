@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace HumanFactory
@@ -51,6 +52,12 @@ namespace HumanFactory
         private int buttonCount = 0;
         private int killCount = 0;
 
+        public int ChapterIdx { get { return chapterIdx; } }
+        public int StageIdx { get { return stageIdx; } }
+        public int CctvIdx { get { return cctvIdx; } }
+        public int CycleCount { get { return cycleCount; } }
+        public int ButtonCount { get { return buttonCount; } }
+        public int KillCount { get { return killCount; } }
         public GameResultInfo(int chapter, int stage, int cctv, int cycle, int button, int kill)
         {
             SetCounts(chapter, stage, cctv, cycle, button, kill);
@@ -59,6 +66,9 @@ namespace HumanFactory
         public void SetCounts(int chapter, int stage, int cctv, int cycle, int button, int kill)
         {
             Debug.Log($"Chap : {chapter}, {stage}, {cctv}, Cycle: {cycle}, BtnCnt: {button}, Kill: {kill}");
+            chapterIdx = chapter;
+            stageIdx = stage;
+            cctvIdx = cctv;
             cycleCount = cycle;
             buttonCount = button;
             killCount = kill;
