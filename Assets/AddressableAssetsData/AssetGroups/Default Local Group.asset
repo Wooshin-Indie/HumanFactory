@@ -16,7 +16,17 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 6382ad3a84f68594a8ecc5cacc76cf0c
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 1cfe37c69e9ac9141b3a4f547721b654
+    m_Address: Assets/0_Scenes/GameScene/Cube Profile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de8b578680f7026439d7dbd969e55cb2
+    m_Address: Assets/0_Scenes/GameScene/MonitorProfile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ea7d01988577047498e9e10b9355d9b2, type: 2}
   m_SchemaSet:

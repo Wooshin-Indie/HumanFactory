@@ -11,13 +11,22 @@ namespace HumanFactory.UI
         public override void Awake()
         {
             base.Awake();
-            volumeSlider.onValueChanged.AddListener((value) =>
-            {
-                OnValueChanged(value);
-            });
         }
 
-        public override void PopupWindow()
+		public override void Start()
+		{
+            base.Start();
+			volumeSlider.onValueChanged.AddListener((value) =>
+			{
+				OnValueChanged(value);
+				Managers.Data.UpdateBasicSettingChanges();
+			});
+
+			Managers.Data.OnUpdateBasicSettings -= OnValueChangeFromOuter;
+			Managers.Data.OnUpdateBasicSettings += OnValueChangeFromOuter;
+		}
+
+		public override void PopupWindow()
         {
             volumeSlider.value = Managers.Data.BasicSettingData.BgmVolume;
             base.PopupWindow();
@@ -27,6 +36,11 @@ namespace HumanFactory.UI
         private void OnValueChanged(float value)
         {
             Managers.Sound.BgmVolume = value;
+        }
+
+        private void OnValueChangeFromOuter(SettingData data)
+        {
+            volumeSlider.value = data.BgmVolume;
         }
     }
 }

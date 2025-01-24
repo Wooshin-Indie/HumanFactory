@@ -180,6 +180,7 @@ namespace HumanFactory.Manager
 
         public void OnEscape()
         {
+            Managers.Sound.PlaySfx(SFXType.Back, 0.8f, 1.7f);
 			LockMouseInput();
 			Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
 

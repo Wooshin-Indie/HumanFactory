@@ -226,8 +226,7 @@ namespace HumanFactory.UI
         private void StartTypingDescript(int index)
         {
             stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
-            string tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString("StageDescription", "0");
-            typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, tmpDescript, 0.01f));
+            typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, "0", 0.01f));
         }
 
         private void ClearChapters()

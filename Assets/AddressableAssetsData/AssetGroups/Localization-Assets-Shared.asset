@@ -22,6 +22,16 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e5c9d24f36c7fd408a3ed40cab08301
+    m_Address: Assets/Resources/Localization/UIs/MenuUI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1eca6140c547064dac9cb31487b3f0f
+    m_Address: Assets/Resources/Localization/UIs/SettingUI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: ea7d01988577047498e9e10b9355d9b2, type: 2}
   m_SchemaSet:

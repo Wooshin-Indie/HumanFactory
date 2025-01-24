@@ -128,7 +128,7 @@ namespace HumanFactory.Manager
                 case BuildingType.Button:
                     break;
                 case BuildingType.ToggleButton:
-					MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+					MapManager.Instance.ToggleButtonInGame(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
                 case BuildingType.RotateButton:
@@ -151,7 +151,7 @@ namespace HumanFactory.Manager
 					MapManager.Instance.AddPerson();
 					break;
 				case BuildingType.ToggleButton:
-					MapManager.Instance.ToggleButton(buttonInfo.linkedGridPos.x,
+					MapManager.Instance.ToggleButtonInGame(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
 				case BuildingType.RotateButton:
@@ -209,10 +209,15 @@ namespace HumanFactory.Manager
             buttonInfo = new ButtonInfos(new Vector2Int(posX, posY));
 		}
 
-		public void ToggleActive()
+		public void ToggleActive(bool isIngame)
         {
-            if (buildingType == BuildingType.None) return;
+            if (buildingType == BuildingType.None || buildingType == BuildingType.ToggleButton) return;
 
+            if (isIngame && isPressed)
+			{
+				if (isActive)   OnRelease();
+				else            OnPressed();
+			}
             isActive = !isActive;
             buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, isPressed, isActive, buttonInfo.dirType);
         }
@@ -444,7 +449,7 @@ namespace HumanFactory.Manager
                 case BuildingType.Jump:
                 case BuildingType.Double:
                 case BuildingType.Button:
-					programMap[x, y].ToggleActive();
+					programMap[x, y].ToggleActive(false);
 					break;
 				case BuildingType.ToggleButton:
 					break;
@@ -874,9 +879,9 @@ namespace HumanFactory.Manager
 			programMap[x, y].SetPadToOrigin();
 		}
 
-        public void ToggleButton(int x, int y)
+        public void ToggleButtonInGame(int x, int y)
         {
-            programMap[x, y].ToggleActive();
+            programMap[x, y].ToggleActive(true);
         }
 
 		private void ChangeMapVisibility(InputMode mode)
