@@ -126,7 +126,7 @@ namespace HumanFactory
 
         public void OnStageSuccess(GameResultInfo info)
         {
-            //successUI.SetStageInfos(info);
+            successUI.SetStageInfos(info);
             successUI.gameObject.SetActive(true);
             Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);
         }

@@ -30,6 +30,7 @@ namespace HumanFactory.UI
 			});
 			goMainButton.onClick.AddListener(() =>
 			{
+				Debug.Log("!!");
 				Managers.Input.ReleaseMouseInput();
 				CloseWindow();
 				Managers.Input.OnEscape();
