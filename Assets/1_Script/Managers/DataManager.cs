@@ -25,6 +25,7 @@ namespace HumanFactory.Manager
 
         /** Properties (for outer uses) **/
         public SettingData BasicSettingData { get { return settingData; } }
+        public GameplayData GamePlayData { get { return gameplayData; } }
 
         public Action OnUpdateKeyBindings { get; set; }
         public Action<SettingData> OnUpdateBasicSettings { get; set; }
@@ -92,10 +93,10 @@ namespace HumanFactory.Manager
             gameplayData.stageGridDatas[stageId].saveDatas[saveIdx] = datas;
         }
 
-        public void SaveClearStage(int stageId)
+        public void SaveClearStage(int stageId, StageResultData data)
         {
             Debug.Log($"Stage: {stageId} Clear!");
-            // TODO : GameplayData 에 진행상황 bool 배열로 저장해둬야합니다.
+            gameplayData.stageGridDatas[stageId].resultDatas.UpdateData(data);
         }
 
         // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.

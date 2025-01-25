@@ -48,16 +48,15 @@ namespace HumanFactory
         private int chapterIdx = 0;
         private int stageIdx = 0;
         private int cctvIdx = 0;
-        private int cycleCount = 0;
-        private int buttonCount = 0;
-        private int killCount = 0;
+        StageResultData stageResultData;
 
         public int ChapterIdx { get { return chapterIdx; } }
         public int StageIdx { get { return stageIdx; } }
         public int CctvIdx { get { return cctvIdx; } }
-        public int CycleCount { get { return cycleCount; } }
-        public int ButtonCount { get { return buttonCount; } }
-        public int KillCount { get { return killCount; } }
+        public int CycleCount { get { return stageResultData.CycleCount; } }
+        public int ButtonCount { get { return stageResultData.ButtonCount; } }
+        public int KillCount { get { return stageResultData.KillCount; } }
+        public StageResultData ResultData { get => stageResultData; }
         public GameResultInfo(int chapter, int stage, int cctv, int cycle, int button, int kill)
         {
             SetCounts(chapter, stage, cctv, cycle, button, kill);
@@ -69,11 +68,40 @@ namespace HumanFactory
             chapterIdx = chapter;
             stageIdx = stage;
             cctvIdx = cctv;
+            stageResultData = new StageResultData(cycle, button, kill);
+        }
+    }
+
+    public class StageResultData
+    {
+        private int cycleCount = -1;
+        private int buttonCount = -1;
+        private int killCount = -1;
+
+        public int CycleCount { get { return cycleCount; } }
+        public int ButtonCount { get { return buttonCount; } }
+        public int KillCount { get { return killCount; } }
+
+        public StageResultData(int cycle, int button, int kill)
+        {
             cycleCount = cycle;
             buttonCount = button;
             killCount = kill;
         }
-    }
+
+        public void UpdateData(StageResultData data)
+        {
+            cycleCount = (cycleCount < 0) ? data.cycleCount : Mathf.Min(data.cycleCount, cycleCount);
+			buttonCount = (buttonCount < 0) ? data.buttonCount : Mathf.Min(data.buttonCount, buttonCount);
+			killCount = (killCount < 0) ? data.killCount : Mathf.Min(data.killCount, killCount);
+        }
+
+		public override string ToString()
+		{
+            return $"CYCLE : {cycleCount}, BUTTON: {buttonCount}, KILL :{killCount}";
+		}
+	}
+
 
     #endregion
 
@@ -165,6 +193,7 @@ namespace HumanFactory
             }
         }
 		public List<StageSaveData> saveDatas = new List<StageSaveData>(new StageSaveData[5]);
+        public StageResultData resultDatas = new StageResultData(-1, -1, -1);
 	}
 
     [Serializable]
@@ -172,5 +201,6 @@ namespace HumanFactory
     {
         public StageGridDatas[] stageGridDatas;
     }
-    #endregion
+
+	#endregion
 }

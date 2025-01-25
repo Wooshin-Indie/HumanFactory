@@ -54,6 +54,7 @@ namespace HumanFactory.UI
 					{
 						saveButtons[i].gameObject.SetActive(true);
 					}
+                    Debug.Log("SAVE CHALL : " + Managers.Data.GamePlayData.stageGridDatas[currentSelectedIndex].resultDatas.ToString());
 					CurrentSaveFileIndex = 0;
 				}
 			}

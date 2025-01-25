@@ -35,5 +35,9 @@ namespace HumanFactory
             KeyCode.Alpha1,
             KeyCode.Alpha2
 		};
+
+        public static readonly string TABLE_STAGE = "StageDescription";
+        public static readonly string TABLE_SETTINGUI = "SettingUI";
+        public static readonly string TABLE_MENUUI = "MenuUI";
 	}
 }

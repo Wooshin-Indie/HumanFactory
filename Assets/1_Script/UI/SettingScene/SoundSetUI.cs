@@ -30,6 +30,8 @@ namespace HumanFactory.UI
 
 			Managers.Data.OnUpdateBasicSettings -= OnValueChangedFromOuter;
 			Managers.Data.OnUpdateBasicSettings += OnValueChangedFromOuter;
+
+			OnValueChangedFromOuter(Managers.Data.BasicSettingData);
 		}
 
 		private void OnValueChangedFromOuter(SettingData data)

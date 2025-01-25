@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 namespace HumanFactory.UI
@@ -32,7 +33,11 @@ namespace HumanFactory.UI
 				settingButtons[i].GetComponent<UIItemBase>().OnSelected(i == index);
 				if (i == index)
 				{
-					titleText.text = settingButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+					titleText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+					{
+						TableReference = Constants.TABLE_SETTINGUI,
+						TableEntryReference = i.ToString()
+					};
 					settingPanels[i].gameObject.SetActive(true);
 				}
 				else

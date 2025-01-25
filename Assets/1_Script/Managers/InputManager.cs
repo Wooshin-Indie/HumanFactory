@@ -24,12 +24,14 @@ namespace HumanFactory.Manager
         #region MouseInputLock
         private int mouseInputLock = 0;
         public void LockMouseInput()
-        {
-            mouseInputLock++;
+		{
+			Debug.Log("MOUSE LOCK");
+			mouseInputLock++;
         }
         public void ReleaseMouseInput()
-        {
-            if (mouseInputLock > 0)
+		{
+			Debug.Log("MOUSE RELEASE");
+			if (mouseInputLock > 0)
                 mouseInputLock--;
             else
                 Debug.LogError("Error : Release Mouse Input dosen't expected!");
@@ -103,8 +105,8 @@ namespace HumanFactory.Manager
         {
             if (inputMode != InputMode.None) return;
 
-			OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting,
-                MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y));
+            BuildingType type = MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y);
+			OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting, type);
 
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))

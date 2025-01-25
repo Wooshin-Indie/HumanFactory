@@ -815,17 +815,19 @@ namespace HumanFactory.Manager
 
             GameResultInfo info = new GameResultInfo(currentChapter, currentStage, currentSaveIdx,
                 cycleCount, btnCount, killCount);
-            Debug.Log("Chapter, Stage : " + info.ChapterIdx.ToString() + ", " + info.StageIdx.ToString());
             GameManagerEx.Instance.OnStageSuccess(info);
+			GameManagerEx.Instance.SetExeType(ExecuteType.None);
 
-            idxOut = 0;
+			idxOut = 0;
             isOutputCorrect = true;
+            isOneCycling = false;
         }
 
         private void OnFailure()
         {
             Debug.Log("FAILURE");
-            idxOut = 0;
+			GameManagerEx.Instance.SetExeType(ExecuteType.None);
+			idxOut = 0;
             isOutputCorrect = true;
         }
 
