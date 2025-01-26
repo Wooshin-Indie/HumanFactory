@@ -9,7 +9,7 @@ namespace HumanFactory
 
         [SerializeField] private Button playButton; // 재생 버튼
         [SerializeField] private Button pauseButton; // 일시정지 버튼
-        [SerializeField] private Button speedUp2Button; // 배속 버튼
+        [SerializeField] private Button doubleButton; // 배속 버튼
         [SerializeField] private Button stopButton; // 정지 버튼
         [SerializeField] private Button oneCycleButton; // 1사이클 실행 버튼
 
@@ -18,7 +18,7 @@ namespace HumanFactory
             // 버튼에 이벤트 리스너 추가
             playButton.onClick.AddListener(PlayGame);
             pauseButton.onClick.AddListener(PauseGame);
-            speedUp2Button.onClick.AddListener(SpeedUp2Game);
+            doubleButton.onClick.AddListener(DoubleGame);
             stopButton.onClick.AddListener(StopGame);
             oneCycleButton.onClick.AddListener(OneCycleGame);
 
@@ -39,7 +39,7 @@ namespace HumanFactory
 			GameManagerEx.Instance.SetExeType(ExecuteType.Pause);
         }
 
-        private void SpeedUp2Game() // 게임 2배속
+        private void DoubleGame() // 게임 2배속
         {
             MapManager.Instance.DoubleCycleTime();
         }
