@@ -44,12 +44,10 @@ namespace HumanFactory.UI
             if (isActive)
             {
                 modes[index].GetComponent<Image>().color = Constants.COLOR_WHITE;
-                modes[index].GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_WHITE;
             }
             else
             {
                 modes[index].GetComponent<Image>().color = Constants.COLOR_INVISIBLE;
-                modes[index].GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_INVISIBLE;
             }
         }
 

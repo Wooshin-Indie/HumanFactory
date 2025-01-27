@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 5653957099798748027}
   - component: {fileID: 3765449430820890524}
   - component: {fileID: 7415518417562222483}
+  - component: {fileID: 3471929285771653057}
   m_Layer: 0
   m_Name: BuilingPanelItem
   m_TagString: Untagged
@@ -265,7 +266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 104, y: -59.35}
+  m_AnchoredPosition: {x: 108.349976, y: -59.350006}
   m_SizeDelta: {x: 216.7, y: 118.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3731083258495378759
@@ -296,7 +297,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4ca9a0cff94c5ee469546da2cf49c406, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc0acf410ac754647bcb97186a4ed839, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -337,7 +338,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 95eb5dcea05375e4a8ac9ad62319a554, type: 3}
     m_PressedSprite: {fileID: 21300000, guid: d7f020a7d6a7eef4bb8e37c54d1154c3, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 97efaa33f77fe104ab8206aa87de3ccd, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -365,3 +366,23 @@ MonoBehaviour:
   itemImage: {fileID: 6770902780045035786}
   itemName: {fileID: 7013084860676207892}
   selectedSprite: {fileID: 21300000, guid: bfb38cd376d6b9f4a8e0af2787255809, type: 3}
+--- !u!114 &3471929285771653057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8453550747021730792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 216.7
+  m_PreferredHeight: 118.7
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1

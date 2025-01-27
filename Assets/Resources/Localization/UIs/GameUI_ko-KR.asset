@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameUI_ko-KR
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: 29b89205e39fdbf4e835ed3e9eeb3934, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2103354187776
+    m_Localized: "\uBC84\uD2BC \uC120\uD0DD"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2226956132352
+    m_Localized: "\uD68C\uC804"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2286196482048
+    m_Localized: "ON/OFF \uC81C\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2524554584064
+    m_Localized: "\uBC29\uD5A5 \uC124\uC815"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2549674270720
+    m_Localized: "\uBC29\uD5A5 \uC0AD\uC81C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2693845082112
+    m_Localized: "\uBC84\uD2BC \uC0AD\uC81C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2662895312896
+    m_Localized: "\uBC84\uD2BC \uC124\uC815"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3202555437056
+    m_Localized: "\uD0C0\uAC9F \uC124\uC815"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4537543680000
+    m_Localized: ' '
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

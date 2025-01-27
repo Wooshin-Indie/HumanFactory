@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace HumanFactory
@@ -125,6 +124,7 @@ namespace HumanFactory
         public string stageName;
         public int[] inputs;
         public int[] outputs;
+        public int[] enableBuildings;
         // TODO : 스테이지에 따라 다른 데이터를 추가해야합니다.
     }
 

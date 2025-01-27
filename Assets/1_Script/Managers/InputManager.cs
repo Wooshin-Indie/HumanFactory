@@ -278,7 +278,7 @@ namespace HumanFactory.Manager
 			OnModeChangedAction?.Invoke(inputMode);
             MapManager.Instance.OnInputModeChanged(inputMode);
 
-            OnBuildingTypeChanged.Invoke(BuildingType.None);
+            OnBuildingTypeChanged?.Invoke(BuildingType.None);
             currentSelectedBuilding = BuildingType.None;
 
             if (MapManager.Instance.IsCircuiting)
