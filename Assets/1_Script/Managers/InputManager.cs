@@ -1,5 +1,6 @@
 using HumanFactory.Props;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -217,7 +218,10 @@ namespace HumanFactory.Manager
 
         public void ChangeCurSelectedBuilding(BuildingType type)
         {
-            Managers.Input.OnInputModeChanged(InputMode.Building);
+            if (MapManager.Instance.CurrentStageInfo == null) return;
+            if (!MapManager.Instance.CurrentStageInfo.enableBuildings.Contains((int)type)) return;
+
+            OnInputModeChanged(InputMode.Building);
             currentSelectedBuilding = type;
             OnBuildingTypeChanged?.Invoke(type);
         }
