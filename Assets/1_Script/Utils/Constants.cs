@@ -39,5 +39,11 @@ namespace HumanFactory
         public static readonly string TABLE_STAGE = "StageDescription";
         public static readonly string TABLE_SETTINGUI = "SettingUI";
         public static readonly string TABLE_MENUUI = "MenuUI";
-	}
+        public static readonly string TABLE_GAMEUI = "GameUI";
+
+        public static readonly string ANIM_PARAM_IDLE = "IsIdle";
+        public static readonly string ANIM_PARAM_WALK = "IsWalk";
+        public static readonly string ANIM_PARAM_FIRE = "IsFire";
+        public static readonly string ANIM_PARAM_DIE = "IsDead";
+    }
 }

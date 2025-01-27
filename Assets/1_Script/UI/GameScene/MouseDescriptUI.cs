@@ -1,6 +1,7 @@
 using HumanFactory.Manager;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 
 namespace HumanFactory.UI
 {
@@ -18,70 +19,100 @@ namespace HumanFactory.UI
             Managers.Input.OnHoverInNoneModeAction += OnHoverInNoneMode;
         }
 
-        private void OnHoverInNoneMode(bool isCircuiting, BuildingType type)
-        {
-            if (isCircuiting)
+        private string prevLeftKey = "";
+        private string prevRightKey = "";
+		private void OnHoverInNoneMode(bool isCircuiting, BuildingType type)
+		{
+            string leftKey = "Empty";
+            string rightKey = "Empty";
+			
+			if (isCircuiting)
             {
-                LeftMouseText.text = "Set Target";
-                RightMouseText.text = "";
-                return;
+                leftKey = "MouseCircuitLeft";
+                rightKey = "Empty";
             }
+            else
+            {
+				switch (type)
+				{
+					case BuildingType.ToggleButton:
+						leftKey = "MouseNoneLeft";
+						rightKey = "Empty";
+						break;
+					case BuildingType.RotateButton:
+						leftKey = "MouseNoneLeft";
+						rightKey = "MouseNoneRight0";
+						break;
+					case BuildingType.Jump:
+					case BuildingType.Sub1:
+					case BuildingType.Add1:
+					case BuildingType.Button:
+					case BuildingType.Double:
+						leftKey = "MouseNoneLeft";
+						rightKey = "MouseNoneRight1";
+						break;
+					default:
+						leftKey = "MouseNoneLeft";
+						rightKey = "Empty";
+						break;
+				}
+			}
 
-            switch (type)
+			if (leftKey != prevLeftKey)
+			{
+				LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+				{
+					TableReference = Constants.TABLE_GAMEUI,
+					TableEntryReference = leftKey
+				};
+
+				prevLeftKey = leftKey;
+			}
+
+			if (rightKey != prevRightKey)
             {
-                case BuildingType.ToggleButton:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "";
-                    break;
-                case BuildingType.RotateButton:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Rotate";
-                    break;
-                case BuildingType.Jump:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Toggle ON/OFF";
-                    break;
-                case BuildingType.Sub1:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Toggle ON/OFF";
-                    break;
-                case BuildingType.Add1:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Toggle ON/OFF";
-                    break;
-                case BuildingType.Button:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Toggle ON/OFF";
-                    break;
-                case BuildingType.Double:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "Toggle ON/OFF";
-                    break;
-                default:
-                    LeftMouseText.text = "Select Button";
-                    RightMouseText.text = "";
-                    break;
-            }
-        }
+				RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+				{
+					TableReference = Constants.TABLE_GAMEUI,
+					TableEntryReference = rightKey
+				};
+				prevRightKey = rightKey;
+			}
+		}
 
         private void OnModeChanged(InputMode mode)
         {
-            switch (mode)
+			string leftKey = "Empty";
+			string rightKey = "Empty";
+
+			switch (mode)
             {
                 case InputMode.None:
-                    LeftMouseText.text = "Select";
-                    RightMouseText.text = "";
+					leftKey = "MouseNoneLeft";
+					rightKey = "Empty";
                     break;
                 case InputMode.Pad:
-                    LeftMouseText.text = "Set Direction";
-                    RightMouseText.text = "Clear Direction";
+					leftKey = "MousePadLeft";
+					rightKey = "MousePadRight";
                     break;
                 case InputMode.Building:
-                    LeftMouseText.text = "Set Button";
-                    RightMouseText.text = "Remove Button";
+					leftKey = "MouseBuildingLeft";
+					rightKey = "MouseBuildingRight";
                     break;
             }
-            return;
+
+
+			LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+			{
+				TableReference = Constants.TABLE_GAMEUI,
+				TableEntryReference = leftKey
+			};
+			RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+			{
+				TableReference = Constants.TABLE_GAMEUI,
+				TableEntryReference = rightKey
+			};
+			return;
         }
 
     }

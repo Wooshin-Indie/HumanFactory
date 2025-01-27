@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29b89205e39fdbf4e835ed3e9eeb3934
+    m_Address: Assets/Resources/Localization/UIs/GameUI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e5c9d24f36c7fd408a3ed40cab08301
     m_Address: Assets/Resources/Localization/UIs/MenuUI Shared Data.asset
     m_ReadOnly: 1
