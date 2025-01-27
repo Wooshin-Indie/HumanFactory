@@ -32,13 +32,16 @@ namespace HumanFactory
             Init();
 
             ConvertUIRaycaster(CameraType.Main);
-        }
+
+            Cursor.SetCursor(mouseTexture, new Vector2(0, 0),CursorMode.ForceSoftware);
+		}
         #endregion
 
         // Camera : Main, Menu, Game 순
         [SerializeField] private List<Camera> cameras;
         [SerializeField] private List<RenderTexture> renderTextures;
 
+        [SerializeField] private Texture2D mouseTexture;
         public List<Camera> Cameras { get { return cameras; } }
 
 
@@ -105,6 +108,8 @@ namespace HumanFactory
         private List<GraphicRaycaster> raycasters
             = new List<GraphicRaycaster>(Enum.GetNames(typeof(CameraType)).Length);
 
+        public List<GraphicRaycaster> RayCasters { get { return raycasters; } }
+
         private void ConvertUIRaycaster(CameraType type)
         {
             for (int i = 0; i < raycasters.Count; i++)
@@ -140,7 +145,7 @@ namespace HumanFactory
 
         #endregion
 
-        private ExecuteType exeType = ExecuteType.None;
+        [SerializeField] private ExecuteType exeType = ExecuteType.None;
         public ExecuteType ExeType { get => exeType; }
 
         public void SetExeType(ExecuteType type)
