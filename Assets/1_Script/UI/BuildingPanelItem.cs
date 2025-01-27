@@ -32,7 +32,12 @@ namespace HumanFactory.UI
             Managers.Input.OnBuildingTypeChanged += OnTypeChanged;
         }
 
-        public void OnTypeChanged(BuildingType type)
+		private void OnDestroy()
+		{
+            Managers.Input.OnBuildingTypeChanged -= OnTypeChanged;
+		}
+
+		public void OnTypeChanged(BuildingType type)
         {
             if(type != myBuildingType)  // 다른애가 선택됨
             {

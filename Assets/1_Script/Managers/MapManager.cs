@@ -1,4 +1,5 @@
 using HumanFactory.Controller;
+using HumanFactory.UI;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -793,7 +794,6 @@ namespace HumanFactory.Manager
             if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
             {
                 OnSuccess();
-                // 팝업창 띄우면서 InputLock 필요
             }
             else
             {
@@ -818,9 +818,11 @@ namespace HumanFactory.Manager
             GameManagerEx.Instance.OnStageSuccess(info);
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
 
+            idxIn = 0;
 			idxOut = 0;
-            isOutputCorrect = true;
-            isOneCycling = false;
+			isOutputCorrect = true;
+			isPersonAdd = false;
+			isOneCycling = false;
         }
 
         private void OnFailure()
@@ -985,6 +987,8 @@ namespace HumanFactory.Manager
             currentStage = stageId;
             currentSaveIdx = saveIdx;
 			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
+
+            GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
 
 			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
 
