@@ -30,12 +30,13 @@ namespace HumanFactory.UI
                 Managers.Input.ChangeCurSelectedBuilding((BuildingType)index);
             });
 
-            Managers.Input.OnBuildingTypeChanged += OnTypeChanged;
+			Managers.Input.OnBuildingTypeChanged -= OnTypeChanged;
+			Managers.Input.OnBuildingTypeChanged += OnTypeChanged;
         }
 
 		private void OnDestroy()
 		{
-            Managers.Input.OnBuildingTypeChanged -= OnTypeChanged;
+			Managers.Input.OnBuildingTypeChanged -= OnTypeChanged;
 		}
 
 		public void OnTypeChanged(BuildingType type)

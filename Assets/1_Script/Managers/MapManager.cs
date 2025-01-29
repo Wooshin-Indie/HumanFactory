@@ -642,6 +642,10 @@ namespace HumanFactory.Manager
                 flags[i] = false;
             }
 
+            foreach(HumanController controllers in humanControllers)
+            {
+                controllers.OnInitPerCycle();
+            }
         }
         
 
@@ -988,7 +992,10 @@ namespace HumanFactory.Manager
 
             GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
 
-			// TODO : StageInfo에 따라 Map Width라던지 전부 setting 해야됨
+            // HACK - 여기 Width가 고정되어있지 않다면 2.5f를 StageInfo에서 받아서 처리해야됨 (지금은 없음)
+            GameManagerEx.Instance.Cameras[(int)CameraType.Game].transform.localPosition = new Vector3(2f, 2f,Constants.CAMERA_POS_Z);
+
+            Debug.Log("LOAD STAGE");
 
 			for (int i = 0; i < mapSize.x; i++)
 			{

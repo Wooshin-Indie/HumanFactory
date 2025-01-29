@@ -1,5 +1,7 @@
 using DG.Tweening;
 using HumanFactory.Manager;
+using HumanFactory.Util;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -70,10 +72,26 @@ namespace HumanFactory.Controller
             operandType = HumanOperandType.None;
         }
 
+        public void OnInitPerCycle()
+		{
+			// Animation 속도 조절 (한 싸이클마다만 함)
+			GetComponent<Animator>().speed = 1 / MapManager.Instance.CycleTime;
+
+		}
+
         public void OnFinPerCycle()
-        {
-            UpdateTargetPos();
-            UnsetOperand();
+		{
+			UpdateTargetPos();
+
+			if (prevPos == targetPos)
+			{
+				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_IDLE);
+			}
+			else
+			{
+				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_WALK);
+			}
+			UnsetOperand();
         }
 
 
@@ -116,7 +134,17 @@ namespace HumanFactory.Controller
             //
             grid.GetPadParameter(out currentDir);
 
-			prevPos = targetPos;
+            switch (currentDir) {
+                case (int)PadType.DirLeft:
+                    GetComponent<SpriteRenderer>().flipX = true;
+                    break;
+                case (int)PadType.DirRight:
+					GetComponent<SpriteRenderer>().flipX = false;
+					break;
+            }
+
+
+            prevPos = targetPos;
 			targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
 
         }

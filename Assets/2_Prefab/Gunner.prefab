@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4511075594515429972}
   - component: {fileID: 7758795937155313602}
   - component: {fileID: 7847610431466603464}
+  - component: {fileID: 1135173383275332349}
   m_Layer: 0
   m_Name: Gunner
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.01, y: 4.12, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 416fff47eaec4fe41b06eece4b75fc54, type: 3}
+  m_Sprite: {fileID: -4992557679239002840, guid: a735b56f2f703644b8a18c071faaf900, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,3 +98,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0648c2a105344404e91203fd45e484dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1135173383275332349
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6814348511074643581}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 23471a9145365804fa55a48f508d4521, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
