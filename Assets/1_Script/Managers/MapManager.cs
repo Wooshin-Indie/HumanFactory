@@ -1,5 +1,6 @@
 using HumanFactory.Controller;
 using HumanFactory.UI;
+using HumanFactory.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -342,7 +343,14 @@ namespace HumanFactory.Manager
 
 			if (!isCycleRunning)
             {
-                if (!IsCycleEnabled()) return;
+                if (!IsCycleEnabled())
+                {
+					foreach (HumanController controller in humanControllers)
+					{
+						controller.GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_IDLE);
+					}
+					return;
+                }
                 StartCoroutine(ProgramCycleCoroutine());
             }
 
@@ -401,7 +409,7 @@ namespace HumanFactory.Manager
                 return programMap[x, y].BuildingType;
 			}
         }
-
+        
         public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
         {
             if (!CheckBoundary(x, y))
@@ -558,8 +566,15 @@ namespace HumanFactory.Manager
 
 		[Header("Game Cycle")]
         [SerializeField, Range(0.5f, 2.0f)] private float cycleTime;
-        public float CycleTime { get => cycleTime; }
-
+        public float CycleTime
+        {
+            get => cycleTime; 
+            set
+            {
+                gunnersManagement.SetCycleTime(value);
+                cycleTime = value;
+            }
+        }
         [SerializeField]private List<HumanController> humanControllers = new List<HumanController>();
 
         private List<bool> flags = new List<bool> { false, false, false };
@@ -575,9 +590,9 @@ namespace HumanFactory.Manager
         {
             InitPerCycle();
             cycleCount++;
-            while (cycleElapsedTime < cycleTime)
+            while (cycleElapsedTime < CycleTime)
             {
-                ExecutePerFrame(cycleElapsedTime, cycleTime);
+                ExecutePerFrame(cycleElapsedTime, CycleTime);
                 yield return null;
                 cycleElapsedTime += Time.deltaTime;
             }
@@ -592,19 +607,19 @@ namespace HumanFactory.Manager
 
         public void DoubleCycleTime()
         {
-            float prev = cycleTime;
-            cycleTime = 0.5f;
+            float prev = CycleTime;
+            CycleTime = 0.5f;
 
-            cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+            cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 
         }
         public void AddPersonWith1x()
         {
             cycleCount = killCount = 0;
-			float prev = cycleTime;
-			cycleTime = 1f;
-			cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+			float prev = CycleTime;
+			CycleTime = 1f;
+			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
             if (idxIn == 0)
                 isPersonAdd = true;
@@ -612,9 +627,9 @@ namespace HumanFactory.Manager
         public void AddPersonWithOneCycling()
         {
 
-            float prev = cycleTime;
-            cycleTime = 0.1f;
-            cycleElapsedTime = cycleElapsedTime * (cycleTime / prev);
+            float prev = CycleTime;
+            CycleTime = 0.1f;
+            cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
             if (idxIn == 0)
                 isPersonAdd = true;
@@ -656,7 +671,7 @@ namespace HumanFactory.Manager
         {
             for (int i = 0; i < flags.Count; i++)
             {
-                if (flags[i] || !(cycleElapsedTime > cycleTime * timeSections[i])) continue;
+                if (flags[i] || !(cycleElapsedTime > CycleTime * timeSections[i])) continue;
                 flags[i] = secFuncs[i].Invoke();
                 // Action에 대해서 이친구는 리턴값이 없는 함수를 저장하는 자료형
                 // bool return 을 해야해 -> Func<T1, T2, T3> 
@@ -1049,6 +1064,7 @@ namespace HumanFactory.Manager
 
         public void ClearHumans()
         {
+            gunnersManagement.ClearHumans();
             isPersonAdd = false;
             for (int i = humanControllers.Count - 1; i >= 0; i--)
             {

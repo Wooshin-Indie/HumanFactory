@@ -25,7 +25,6 @@ namespace HumanFactory.UI
 			}
 
 			SetMode(InputMode.None);
-            gameObject.SetActive(false);
         }
 
         public void SetMode(InputMode mode)

@@ -52,5 +52,23 @@ namespace HumanFactory.Controller
 			}
         }
 
-    }
+		public void ClearHumans()
+		{
+			gunners[0].Shoot(false);
+			gunners[1].Shoot(true);
+			gunners[2].Shoot(false);
+			gunners[3].Shoot(true);
+		}
+
+		// Gunners anim 속도 변경
+		public void SetCycleTime(float cycleTime)
+		{
+			foreach (Gunner gunner in gunners)
+			{
+				gunner.GetComponent<Animator>().speed = 1 / cycleTime;
+			}
+		}
+
+
+	}
 }

@@ -1,7 +1,6 @@
 using DG.Tweening;
 using HumanFactory.Manager;
 using HumanFactory.Util;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -76,13 +75,7 @@ namespace HumanFactory.Controller
 		{
 			// Animation 속도 조절 (한 싸이클마다만 함)
 			GetComponent<Animator>().speed = 1 / MapManager.Instance.CycleTime;
-
-		}
-
-        public void OnFinPerCycle()
-		{
-			UpdateTargetPos();
-
+            
 			if (prevPos == targetPos)
 			{
 				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_IDLE);
@@ -91,6 +84,13 @@ namespace HumanFactory.Controller
 			{
 				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_WALK);
 			}
+
+		}
+
+        public void OnFinPerCycle()
+		{
+			UpdateTargetPos();
+
 			UnsetOperand();
         }
 
@@ -172,9 +172,21 @@ namespace HumanFactory.Controller
 
         public void HumanDyingProcess()
         {
-            transform.DOMove(new Vector3(targetPos.x + Constants.DIR_X[currentDir], targetPos.y + Constants.DIR_Y[currentDir],
-                Constants.HUMAN_POS_Z), MapManager.Instance.CycleTime);
-            GetComponent<SpriteRenderer>().DOFade(0, MapManager.Instance.CycleTime).
+            numTMP.gameObject.SetActive(false);
+
+			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_DIE);
+            RuntimeAnimatorController rac = GetComponent<Animator>().runtimeAnimatorController;
+            float duration = 0f;
+            for (int i = 0; i < rac.animationClips.Length; i++)
+            {
+                if (rac.animationClips[i].name == "Human_Die")
+                {
+                    duration = rac.animationClips[i].length*MapManager.Instance.CycleTime;
+                    break;
+                }
+            }
+
+            GetComponent<SpriteRenderer>().DOFade(0f, duration).SetEase(Ease.InQuint).
                         OnComplete(() =>
                         {
                             Destroy(this.gameObject);

@@ -1,8 +1,6 @@
 using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.UI {
@@ -33,6 +31,7 @@ namespace HumanFactory.UI {
                     // 있으면 없애야됨
                     if (items.ContainsKey(i))
 					{
+                        items[i].Clear();
 						Destroy(items[i].gameObject);
 						items.Remove(i);
 					}

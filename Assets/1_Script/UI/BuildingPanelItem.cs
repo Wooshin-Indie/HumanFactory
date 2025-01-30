@@ -35,13 +35,18 @@ namespace HumanFactory.UI
         }
 
 		private void OnDestroy()
+        {
+            Clear();
+		}
+
+        public void Clear()
 		{
 			Managers.Input.OnBuildingTypeChanged -= OnTypeChanged;
 		}
 
 		public void OnTypeChanged(BuildingType type)
         {
-            if(type != myBuildingType)  // 다른애가 선택됨
+            if (type != myBuildingType)  // 다른애가 선택됨
             {
                 if (isSelected)
                 {
