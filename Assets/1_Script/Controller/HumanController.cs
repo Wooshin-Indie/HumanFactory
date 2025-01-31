@@ -170,7 +170,7 @@ namespace HumanFactory.Controller
                 type);
         }
 
-        public void HumanDyingProcess()
+        public void HumanDyingProcessWithBox()
         {
             numTMP.gameObject.SetActive(false);
 
@@ -192,6 +192,32 @@ namespace HumanFactory.Controller
                             Destroy(this.gameObject);
                         });
         }
+
+        public void HumanDyingProcessWithoutBox()
+		{
+			numTMP.gameObject.SetActive(false);
+
+			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_RUN); 
+            
+			RuntimeAnimatorController rac = GetComponent<Animator>().runtimeAnimatorController;
+			float duration = 0f;
+			for (int i = 0; i < rac.animationClips.Length; i++)
+			{
+				if (rac.animationClips[i].name == "Run_All")
+				{
+					duration = rac.animationClips[i].length * MapManager.Instance.CycleTime;
+					break;
+				}
+			}
+
+			transform.DOMove(new Vector3(targetPos.x + 2* Constants.DIR_X[currentDir], targetPos.y + 2* Constants.DIR_Y[currentDir],
+				Constants.HUMAN_POS_Z), duration*0.45f);
+			GetComponent<SpriteRenderer>().DOFade(0f, duration).SetEase(Ease.InQuint).
+						OnComplete(() =>
+						{
+							Destroy(this.gameObject);
+						});
+		}
 
         [SerializeField]
         private bool isTeleport = false;

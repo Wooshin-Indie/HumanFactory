@@ -45,5 +45,6 @@ namespace HumanFactory
         public static readonly string ANIM_PARAM_WALK = "IsWalk";
         public static readonly string ANIM_PARAM_FIRE = "IsFire";
         public static readonly string ANIM_PARAM_DIE = "IsDead";
+        public static readonly string ANIM_PARAM_RUN = "IsRun";
     }
 }

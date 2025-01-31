@@ -760,7 +760,7 @@ namespace HumanFactory.Manager
                     if (!CheckBoundary(humanControllers[i].CurrentPos.x, humanControllers[i].CurrentPos.y))
                     {
                         gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
-                        humanControllers[i].HumanDyingProcess();
+                        humanControllers[i].HumanDyingProcessWithoutBox();
                         humanControllers.Remove(humanControllers[i]);
                         killCount++;
                         continue;
@@ -1064,11 +1064,13 @@ namespace HumanFactory.Manager
 
         public void ClearHumans()
         {
-            gunnersManagement.ClearHumans();
+            if (humanControllers.Count > 0)
+                gunnersManagement.ClearHumans();
+
             isPersonAdd = false;
             for (int i = humanControllers.Count - 1; i >= 0; i--)
             {
-                humanControllers[i].HumanDyingProcess();
+                humanControllers[i].HumanDyingProcessWithBox();
                 humanControllers.Remove(humanControllers[i]);
             }
 
