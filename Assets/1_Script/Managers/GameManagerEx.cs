@@ -44,6 +44,7 @@ namespace HumanFactory
         [SerializeField] private Texture2D mouseTexture;
         public List<Camera> Cameras { get { return cameras; } }
 
+        [SerializeField] private Material scanlineMat;
 
         private CameraType currentCamType = CameraType.Main;
         public CameraType CurrentCamType { get => currentCamType; }
@@ -124,6 +125,24 @@ namespace HumanFactory
             }
         }
 
+        /// <summary>
+        /// Scanline Shader Graph Toggle 함수
+        /// </summary>
+        public void SetScanlineMaterial(bool isActive)
+        {
+            if (isActive)
+			{
+				scanlineMat.SetFloat("_Blur_Offset", 0.001f);
+				scanlineMat.SetFloat("_Scan_Lines_Speed", 0.003f);
+				scanlineMat.SetFloat("_NumberOfScanLines", 400f);
+			}
+            else
+			{
+				scanlineMat.SetFloat("_Blur_Offset", 0f);
+				scanlineMat.SetFloat("_Scan_Lines_Speed", 0f);
+				scanlineMat.SetFloat("_NumberOfScanLines", 0f);
+			}
+        }
 
         #region Success/Fail
 

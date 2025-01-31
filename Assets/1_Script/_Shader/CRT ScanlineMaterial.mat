@@ -41,5 +41,5 @@ Material:
     - _NumberOfScanLines: 400
     - _Scan_Lines_Speed: 0.003
     m_Colors:
-    - _Color: {r: 2.5095155, g: 3.523293, b: 2.675193, a: 1}
+    - _Color: {r: 2.5009093, g: 3.4205985, b: 2.6681256, a: 1}
   m_BuildTextureStacks: []
