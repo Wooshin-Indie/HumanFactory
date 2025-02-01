@@ -3,6 +3,8 @@ using HumanFactory.Manager;
 using UnityEngine.UI;
 using TMPro;
 using UnityEditor;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Settings;
 
 namespace HumanFactory.UI
 {
@@ -30,7 +32,6 @@ namespace HumanFactory.UI
 			});
 			goMainButton.onClick.AddListener(() =>
 			{
-				Debug.Log("!!");
 				Managers.Input.ReleaseMouseInput();
 				CloseWindow();
 				Managers.Input.OnEscape();
@@ -47,9 +48,10 @@ namespace HumanFactory.UI
 		/// <summary>
 		/// 여러가지 정보들을 전달해서 UI에 띄웁니다.
 		/// </summary>
-		public void SetStageInfos(GameResultInfo info)
+		public void SetSuccessPopupInfos(GameResultInfo info)
         {
             stageInfo.text = info.ChapterIdx.ToString() + " - " + info.StageIdx.ToString();
+
             challenge0.text = info.CycleCount + "/" + "100";
             challenge1.text = info.ButtonCount + "/" + "200";
             challenge2.text = info.KillCount + "/" + "300";
@@ -62,5 +64,5 @@ namespace HumanFactory.UI
             Managers.Input.LockMouseInput();    // 풀어주는건 OK버튼에서
 		}
 
-	}
+    }
 }

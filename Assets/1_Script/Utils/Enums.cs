@@ -83,7 +83,8 @@ namespace HumanFactory
         Noise,
         Typing,
         Back,
-        Shot
+        Shot,
+        Writing
     }
 
     public enum InputMode   // InputMode in GameScene
