@@ -1,6 +1,7 @@
 using DG.Tweening;
 using HumanFactory.Effects;
 using HumanFactory.Manager;
+using HumanFactory.Util;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
 using TMPro;
@@ -54,8 +55,7 @@ namespace HumanFactory.UI
 					{
 						saveButtons[i].gameObject.SetActive(true);
 					}
-                    Debug.Log("SAVE CHALL : " + Managers.Data.GamePlayData.stageGridDatas[currentSelectedIndex].resultDatas.ToString());
-					CurrentSaveFileIndex = 0;
+                    CurrentSaveFileIndex = 0;
 				}
 			}
         }
@@ -159,7 +159,7 @@ namespace HumanFactory.UI
 
             LoadStagesOnPanel(); // 챕터에 해당되는 stage들 인스턴시에이트
 
-            titleBanner.text = Managers.Resource.GetChapterInfo(index).chapterName;
+            titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, $"Chapter_{index}");
 			ChapterBackButton.interactable = true;
             // 뒤로가기 버튼 활성화, 뒤로가기 버튼 누르면 stages 전부 destroy 및 remove, 그리고 LoadChapters, 그리고 BackButton 비활성화
         }
@@ -172,7 +172,7 @@ namespace HumanFactory.UI
 			currentExpandedPanel = -1;
 			CurrentSelectedIndex = -1;
 
-			titleBanner.text = "STAGES";
+			titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, "Stage");
 			ChapterBackButton.interactable = false;
         }
 

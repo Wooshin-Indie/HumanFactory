@@ -26,6 +26,102 @@ MonoBehaviour:
     m_Localized: Challenges
     m_Metadata:
       m_Items: []
+  - m_Id: 3088613272051712
+    m_Localized: Chapter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3088770310987776
+    m_Localized: Chapter 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091079984177152
+    m_Localized: Chapter 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314496
+    m_Localized: Chapter 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314497
+    m_Localized: Chapter 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314498
+    m_Localized: Chapter 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314499
+    m_Localized: Chapter 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314500
+    m_Localized: Chapter 6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314501
+    m_Localized: Chapter 7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314502
+    m_Localized: Chapter 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314505
+    m_Localized: Stage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314506
+    m_Localized: Stage 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314507
+    m_Localized: Stage 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314508
+    m_Localized: Stage 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314509
+    m_Localized: Stage 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314510
+    m_Localized: Stage 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314511
+    m_Localized: Stage 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314512
+    m_Localized: Stage 6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314513
+    m_Localized: Stage 7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314514
+    m_Localized: Stage 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314515
+    m_Localized: Stage 9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314516
+    m_Localized: Stage 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314517
+    m_Localized: Stage 11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3091080030314518
+    m_Localized: Stage 12
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

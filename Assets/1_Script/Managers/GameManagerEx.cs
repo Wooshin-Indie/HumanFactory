@@ -32,8 +32,7 @@ namespace HumanFactory
             Init();
 
             ConvertUIRaycaster(CameraType.Main);
-
-            Cursor.SetCursor(mouseTexture, new Vector2(0, 0),CursorMode.ForceSoftware);
+			Cursor.SetCursor(mouseTexture, new Vector2(0, 0),CursorMode.ForceSoftware);
 		}
         #endregion
 
@@ -112,7 +111,9 @@ namespace HumanFactory
         public List<GraphicRaycaster> RayCasters { get { return raycasters; } }
 
         private void ConvertUIRaycaster(CameraType type)
-        {
+		{
+			SetScanlineMaterial(type != CameraType.Main);
+
             for (int i = 0; i < raycasters.Count; i++)
             {
                 if (raycasters[i] == null) continue;
@@ -128,20 +129,9 @@ namespace HumanFactory
         /// <summary>
         /// Scanline Shader Graph Toggle 함수
         /// </summary>
-        public void SetScanlineMaterial(bool isActive)
+        private void SetScanlineMaterial(bool isActive)
         {
-            if (isActive)
-			{
-				scanlineMat.SetFloat("_Blur_Offset", 0.001f);
-				scanlineMat.SetFloat("_Scan_Lines_Speed", 0.003f);
-				scanlineMat.SetFloat("_NumberOfScanLines", 400f);
-			}
-            else
-			{
-				scanlineMat.SetFloat("_Blur_Offset", 0f);
-				scanlineMat.SetFloat("_Scan_Lines_Speed", 0f);
-				scanlineMat.SetFloat("_NumberOfScanLines", 0f);
-			}
+            scanlineMat.SetInt("_IsActive", (isActive) ? 1 : 0);
         }
 
         #region Success/Fail
