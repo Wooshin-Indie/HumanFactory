@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Localization.Components;
+using TMPro;
 
 namespace HumanFactory.Util
 {
@@ -15,8 +17,16 @@ namespace HumanFactory.Util
 			{
 				anim.SetBool(parameters[i].name, false);
 			}
-
 			anim.SetBool(param, true);
+		}
+
+		public static void SetLocalizedString(this TextMeshProUGUI tmp, string table, string key)
+		{
+			tmp.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+			{
+				TableReference = table,
+				TableEntryReference = key
+			};
 		}
 	}
 }

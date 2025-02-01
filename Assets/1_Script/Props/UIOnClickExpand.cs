@@ -1,5 +1,6 @@
 using HumanFactory;
 using HumanFactory.Manager;
+using HumanFactory.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,12 +26,12 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void SetStageId(int id)
     {
-        stageName.text = Managers.Resource.GetStageInfo(id).stageName;
+        stageName.SetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{id}");
     }
 
     public void SetChapterId(int id)
-    {
-        stageName.text = Managers.Resource.GetChapterInfo(id).chapterName;
+	{
+		stageName.SetLocalizedString(Constants.TABLE_MENUUI, $"Chapter_{id}");
     }
 
     public void Expand()
