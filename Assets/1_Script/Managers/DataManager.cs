@@ -93,10 +93,12 @@ namespace HumanFactory.Manager
             gameplayData.stageGridDatas[stageId].saveDatas[saveIdx] = datas;
         }
 
-        public void SaveClearStage(int stageId, StageResultData data)
+        public Action OnSaveClearStage { get; set; }
+		public void SaveClearStage(int stageId, StageResultData data)
         {
             Debug.Log($"Stage: {stageId} Clear!");
             gameplayData.stageGridDatas[stageId].resultDatas.UpdateData(data);
+            OnSaveClearStage.Invoke();
         }
 
         // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.

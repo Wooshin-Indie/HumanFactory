@@ -1,3 +1,4 @@
+using DG.Tweening;
 using HumanFactory.Controller;
 using HumanFactory.UI;
 using HumanFactory.Util;
@@ -268,7 +269,38 @@ namespace HumanFactory.Manager
             Init();
             InitGunners();
         }
-        private StageInfo currentStageInfo;
+
+        private int currentMapIdx;
+        public int CurrentMapIdx
+        {
+            get => currentMapIdx;
+            set
+            {
+                OnCurrentMapIdxSet(value);
+            }
+        }
+
+        float[,] mapIdxPos = new float[4, 2]
+        {
+            {2f, 2f},
+            {10f, 2f},
+            {2f, 10f},
+            {10f, 10f}
+        };
+
+        public Action<int> OnCurrentMapIdxAction { get; set; }
+		private void OnCurrentMapIdxSet(int idx)
+		{
+			currentMapIdx = idx;
+            OnCurrentMapIdxAction.Invoke(idx);
+			GameManagerEx.Instance.Cameras[(int)CameraType.Game].transform.DOLocalMove(new Vector3(mapIdxPos[idx, 0], mapIdxPos[idx, 1], Constants.CAMERA_POS_Z) ,0.5f)
+                .SetEase(Ease.OutQuart);
+		}
+
+
+
+
+		private StageInfo currentStageInfo;
         public StageInfo CurrentStageInfo { get => currentStageInfo; }
         private ChapterInfo currentChapterInfo;
         public ChapterInfo CurrentChapterInfo { get => currentChapterInfo; }
@@ -276,7 +308,6 @@ namespace HumanFactory.Manager
         public MapGrid[,] ProgramMap { get => programMap; }
 
         [SerializeField] private Vector2Int mapSize;
-        public Vector2Int MapSize { get => mapSize; }
         [SerializeField] private GameObject arrowPrefab;
         [SerializeField] private GameObject humanPrefab;
         [SerializeField] private GameObject gunnerPrefab;
@@ -1006,9 +1037,7 @@ namespace HumanFactory.Manager
 			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
             GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
-
-            // HACK - 여기 Width가 고정되어있지 않다면 2.5f를 StageInfo에서 받아서 처리해야됨 (지금은 없음)
-            GameManagerEx.Instance.Cameras[(int)CameraType.Game].transform.localPosition = new Vector3(2f, 2f,Constants.CAMERA_POS_Z);
+            CurrentMapIdx = 0;
 
             Debug.Log("LOAD STAGE");
 

@@ -47,5 +47,8 @@ namespace HumanFactory
         public static readonly string ANIM_PARAM_FIRE = "IsFire";
         public static readonly string ANIM_PARAM_DIE = "IsDead";
         public static readonly string ANIM_PARAM_RUN = "IsRun";
+
+        public static readonly Color COLOR_RED = new Color(.7f, 0f, 0f);
+        public static readonly Color COLOR_GREEN = new Color(.16f, .5f, 0f);
     }
 }
