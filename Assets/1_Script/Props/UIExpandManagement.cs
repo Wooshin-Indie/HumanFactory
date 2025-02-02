@@ -6,7 +6,6 @@ using HumanFactory.Util.Effect;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace HumanFactory.UI
@@ -25,6 +24,7 @@ namespace HumanFactory.UI
         [SerializeField] private TVNoiseEffect noiseEffect;
         [SerializeField] private TextMeshProUGUI stageDescript;
         [SerializeField] private TextMeshProUGUI titleBanner;
+        [SerializeField] private ChallengeContentUI challengeUI;
 
         [Header("Panel Buttons")]
         [SerializeField] private Button ChapterBackButton;
@@ -48,6 +48,7 @@ namespace HumanFactory.UI
                     {
                         saveButtons[i].gameObject.SetActive(false);
                     }
+                    challengeUI.ClearInfo();
 				}
                 else
 				{
@@ -55,7 +56,8 @@ namespace HumanFactory.UI
 					{
 						saveButtons[i].gameObject.SetActive(true);
 					}
-                    CurrentSaveFileIndex = 0;
+                    challengeUI.SetStageInfo(value);
+					CurrentSaveFileIndex = 0;
 				}
 			}
         }
@@ -92,6 +94,15 @@ namespace HumanFactory.UI
 				});
             }
             CurrentSelectedIndex = -1;
+
+            Managers.Data.OnSaveClearStage -= OnSaveClearStage;
+            Managers.Data.OnSaveClearStage += OnSaveClearStage;
+
+		}
+
+        private void OnSaveClearStage()
+        {
+            CurrentSelectedIndex = CurrentSelectedIndex;
         }
 
         private void Update()
