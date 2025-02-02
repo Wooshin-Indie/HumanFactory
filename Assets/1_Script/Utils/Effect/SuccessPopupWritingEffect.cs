@@ -7,23 +7,30 @@ using UnityEngine.Localization.Settings;
 
 namespace HumanFactory.Util.Effect
 {
-    public static class SuccessPopupWritingEffect
+    public class SuccessPopupWritingEffect
     {
         private static AudioSource tmpSource = null;
-        public static IEnumerator SuccessPopupWritingCoroutine(TextMeshProUGUI tmp, string key, float deltaTime)
+
+        public static IEnumerator SuccessPopupWritingx(TextMeshProUGUI txtComponent, string key, float deltaTime)
 		{
 			string tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, key);
 			tmpSource?.Stop();
             tmpSource = Managers.Sound.PlaySfx(SFXType.Writing, 1.3f, 1.0f);
-            tmp.text = "";
+            txtComponent.text = "";
 
             foreach (char letter in tmpDescript.ToCharArray())
             {
-                tmp.text += letter;
-                yield return new WaitForSeconds(deltaTime);
+                txtComponent.text += letter;
+
+                float elapsedTime = 0f;
+                while (elapsedTime > deltaTime)
+                {
+                    elapsedTime += Time.deltaTime;
+                    yield return null; // 다음 프레임까지 대기
+                }
             }
 
-            tmp.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            txtComponent.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
             {
                 TableReference = Constants.TABLE_SUCCESSPOPUPUI,
 				TableEntryReference = key

@@ -19,15 +19,38 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 191143866368
-    m_Localized: Total Cycle
+    m_Localized: a. Total Cycle
     m_Metadata:
       m_Items: []
   - m_Id: 323809701888
-    m_Localized: Died
+    m_Localized: c. Died
     m_Metadata:
       m_Items: []
   - m_Id: 356420415488
-    m_Localized: Structures Used
+    m_Localized: b. Structures Used
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347374275784704
+    m_Localized: ' Area Evaluation Report'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348101249331200
+    m_Localized: 'The total cycle is expected in the near future.
+
+      The cost
+      for the structures will be reduced.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348033230303232
+    m_Localized: 3. Comment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347958076764160
+    m_Localized: 2. Records
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349399189286912
+    m_Localized: '1. Area '
     m_Metadata:
       m_Items: []
   references:
