@@ -16,15 +16,35 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: dc2c383d82b35ba4b9f36920bc41e5d5
   m_Entries:
   - m_Id: 191143866368
-    m_Key: Challenge_Cycle
+    m_Key: Success_Chal0Text
     m_Metadata:
       m_Items: []
   - m_Id: 356420415488
-    m_Key: Challenge_Structures
+    m_Key: Success_Chal1Text
     m_Metadata:
       m_Items: []
   - m_Id: 323809701888
-    m_Key: Challenge_Died
+    m_Key: Success_Chal2Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347374275784704
+    m_Key: Success_TitleText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349399189286912
+    m_Key: Success_AreaText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347958076764160
+    m_Key: Success_RecordsText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348033230303232
+    m_Key: Success_CommentText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348101249331200
+    m_Key: Success_Comments
     m_Metadata:
       m_Items: []
   m_Metadata:

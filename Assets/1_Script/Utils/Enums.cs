@@ -84,6 +84,7 @@ namespace HumanFactory
         Typing,
         Back,
         Shot,
+        Stamp,
         Writing
     }
 

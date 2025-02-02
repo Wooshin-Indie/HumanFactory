@@ -140,8 +140,8 @@ namespace HumanFactory
 
         public void OnStageSuccess(GameResultInfo info)
         {
-            successUI.SetSuccessPopupInfos(info);
             successUI.gameObject.SetActive(true);
+            successUI.SetSuccessPopupInfos(info);
             Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);
         }
 

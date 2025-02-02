@@ -2,6 +2,7 @@ using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HumanFactory.UI {
     public class BuildingPanelUI : MonoBehaviour
@@ -12,11 +13,81 @@ namespace HumanFactory.UI {
         [SerializeField] private GameObject buildingItemPrefab;
         private Dictionary<int, BuildingPanelItem> items = new Dictionary<int, BuildingPanelItem>();
 
+        [Header("MapConverButtons")]
+        [SerializeField] private List<Button> convertButtons = new List<Button>();
+        // Up, Right, Down, Left 순
+
         private string[] buildingTypes;
 
         private void Start()
         {
             buildingTypes = Enum.GetNames(typeof(BuildingType));
+
+            MapManager.Instance.OnCurrentMapIdxAction -= OnCurrnentMapSet;
+            MapManager.Instance.OnCurrentMapIdxAction += OnCurrnentMapSet;
+           
+            for (int i = 0; i < convertButtons.Count; i++)
+            {
+                int t = i;
+                convertButtons[i].onClick.AddListener(() =>
+                {
+                    MapManager.Instance.CurrentMapIdx = (GetMapIdx(MapManager.Instance.CurrentMapIdx, t));
+                });
+            }
+            MapManager.Instance.CurrentMapIdx = 0;
+        }
+
+        private void OnCurrnentMapSet(int idx)
+		{
+			for (int i = 0; i < convertButtons.Count; i++)
+			{
+                convertButtons[i].gameObject.SetActive(false);
+			}
+			switch (idx)
+            {
+                case 0:
+                    convertButtons[0].gameObject.SetActive(true);
+                    convertButtons[1].gameObject.SetActive(true);
+                    break;
+                case 1:
+					convertButtons[0].gameObject.SetActive(true);
+					convertButtons[3].gameObject.SetActive(true);
+					break;
+                case 2:
+					convertButtons[1].gameObject.SetActive(true);
+					convertButtons[2].gameObject.SetActive(true);
+					break;
+                case 3:
+					convertButtons[2].gameObject.SetActive(true);
+					convertButtons[3].gameObject.SetActive(true);
+					break;
+            }
+        }
+
+        private int GetMapIdx(int idx, int dir)
+        {
+            switch (idx)
+			{
+				case 0:
+                    if (dir == 0) return 2;
+                    if (dir == 1) return 1;
+					break;
+				case 1:
+					if (dir == 0) return 3;
+					if (dir == 3) return 0;
+					break;
+				case 2:
+					if (dir == 1) return 3;
+					if (dir == 2) return 0;
+					break;
+				case 3:
+					if (dir == 2) return 1;
+					if (dir == 3) return 2;
+					break;
+			}
+
+            Debug.LogError("GetMapIdx : Wrong Return value");
+            return 0;
         }
 
 		public void SetBanner()
