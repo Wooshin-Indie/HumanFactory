@@ -51,6 +51,10 @@ MonoBehaviour:
     m_Key: Empty
     m_Metadata:
       m_Items: []
+  - m_Id: 2413144054816768
+    m_Key: MouseCircuitRight
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

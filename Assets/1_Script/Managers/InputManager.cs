@@ -117,10 +117,7 @@ namespace HumanFactory.Manager
 
             if (Input.GetMouseButtonDown(1))
             {
-                if (!MapManager.Instance.IsCircuiting)
-				{
-					MapManager.Instance.OnRightClickMapGridInNoneMode(curMousePos.x, curMousePos.y);
-				}
+                MapManager.Instance.OnRightClickMapGridInNoneMode(curMousePos.x, curMousePos.y);
             }
         }
 
@@ -254,12 +251,15 @@ namespace HumanFactory.Manager
                     ChangeCurSelectedBuilding((BuildingType)(i));
 				}
             }
+
+            if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.KeyBindings[(int)ShortcutActionEnum.Zoom_Map]))
+            {
+                MapManager.Instance.ToggleZoomMap();
+            }
         }
 
         public Action<InputMode> OnModeChangedAction { get; set; }
 
-        // TODO - GameScene에서 UI 띄우는 함수 필요,
-        // none일떄는 시뮬레이션 실행하는 UI 도 띄워줘야됨
         private void ChangeInputMode()
         {
             if (!IsMouseInputEnabled()) return;
