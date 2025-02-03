@@ -33,7 +33,8 @@ namespace HumanFactory
 			KeyCode.D,
 			KeyCode.Escape,
             KeyCode.Alpha1,
-            KeyCode.Alpha2
+            KeyCode.Alpha2,
+            KeyCode.Z
 		};
 
         public static readonly string TABLE_STAGE = "StageDescription";

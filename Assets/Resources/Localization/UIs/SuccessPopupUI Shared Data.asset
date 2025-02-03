@@ -47,6 +47,18 @@ MonoBehaviour:
     m_Key: Success_Comments
     m_Metadata:
       m_Items: []
+  - m_Id: 691421861240832
+    m_Key: Challenge_Cycle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691423249555456
+    m_Key: Challenge_Structures
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691424231022592
+    m_Key: Challenge_Died
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

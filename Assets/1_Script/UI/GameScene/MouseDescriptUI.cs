@@ -29,7 +29,7 @@ namespace HumanFactory.UI
 			if (isCircuiting)
             {
                 leftKey = "MouseCircuitLeft";
-                rightKey = "Empty";
+                rightKey = "MouseCircuitRight";
             }
             else
             {
