@@ -85,7 +85,9 @@ namespace HumanFactory
         Back,
         Shot,
         Stamp,
-        Writing
+        Writing,
+        Typewriting,
+        Checkbox
     }
 
     public enum InputMode   // InputMode in GameScene
