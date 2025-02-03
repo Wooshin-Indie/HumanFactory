@@ -125,5 +125,6 @@ namespace HumanFactory
 		Back = 7,
         ChangeMode_1,
         ChangeMode_2,
+        Zoom_Map
 	}
 }

@@ -52,6 +52,18 @@ MonoBehaviour:
       \uC608\uC815"
     m_Metadata:
       m_Items: []
+  - m_Id: 691421861240832
+    m_Localized: "\uCD1D \uC2F8\uC774\uD074"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691423249555456
+    m_Localized: "\uC0AC\uC6A9\uD55C \uAD6C\uC870\uBB3C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691424231022592
+    m_Localized: "\uC0AC\uC0C1\uC790"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

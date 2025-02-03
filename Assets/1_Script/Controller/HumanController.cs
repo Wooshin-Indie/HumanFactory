@@ -127,7 +127,7 @@ namespace HumanFactory.Controller
             // 점하고 가까울때만 실행
             transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
 
-            if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y)) return; //그리드 밖이면 return
+            if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y, MapManager.Instance.IsMapExpanded)) return; //그리드 밖이면 return
 
             MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 

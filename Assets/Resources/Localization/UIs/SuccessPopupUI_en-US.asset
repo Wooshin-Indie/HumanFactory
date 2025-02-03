@@ -53,6 +53,18 @@ MonoBehaviour:
     m_Localized: '1. Area '
     m_Metadata:
       m_Items: []
+  - m_Id: 691421861240832
+    m_Localized: Total Cycle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691423249555456
+    m_Localized: Structures Used
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691424231022592
+    m_Localized: Died
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
