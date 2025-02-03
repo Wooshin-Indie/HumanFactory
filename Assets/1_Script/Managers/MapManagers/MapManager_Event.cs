@@ -65,10 +65,13 @@ namespace HumanFactory.Manager
 		};
 		private bool IsAbleToLink(Vector2Int start, Vector2Int end)
 		{
-			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump) return false;
 
 			int quad1 = GetMapIdxFromPos(start.x, start.y, IsMapExpanded);
 			int quad2 = GetMapIdxFromPos(end.x, end.y, IsMapExpanded);
+
+			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump)
+				return quad1 == quad2;
+
 			if (quad1 < 0 || quad2 < 0) return false;
 
 			for (int i = 0; i < linkableIndices.GetLength(0); i++)
