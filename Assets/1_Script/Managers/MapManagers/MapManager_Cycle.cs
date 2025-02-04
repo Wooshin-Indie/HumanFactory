@@ -200,36 +200,7 @@ namespace HumanFactory.Manager
 			for (int i = humanControllers.Count - 1; i >= 0; i--)
 			{
 				humanControllers[i].OnFinPerCycle();
-
-				if (!(humanControllers[i].CurrentPos.x == mapSize.x - 1 && humanControllers[i].CurrentPos.y == mapSize.y))
-				{
-					if (!CheckBoundary(humanControllers[i].CurrentPos.x, humanControllers[i].CurrentPos.y, isMapExpanded))
-					{
-						gunnersManagement.DetectEscaped(humanControllers[i].CurrentPos);
-						humanControllers[i].HumanDyingProcessWithoutBox();
-						humanControllers.Remove(humanControllers[i]);
-						killCount++;
-						continue;
-					}
-					continue;
-				}
-				//human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
-
-				if (idxOut < currentStageInfo.outputs.Length)
-				{
-					if (humanControllers[i].HumanNum != currentStageInfo.outputs[idxOut])
-					{
-						isOutputCorrect = false;
-					}
-
-					GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
-						.GetComponent<CameraBase>().CctvUI?.InOut.SetValue(IdxOut, false, humanControllers[i].HumanNum);
-					idxOut++;
-				}
-
-
-				Destroy(humanControllers[i].gameObject);
-				humanControllers.Remove(humanControllers[i]);
+				CheckOutOfRange(i);
 			}
 
 			CheckIsStageEnded();
@@ -237,7 +208,45 @@ namespace HumanFactory.Manager
 			isCycleRunning = false;
 
 			if (isOneCycling)
+			{
 				GameManagerEx.Instance.SetExeType(ExecuteType.Pause); // 게임 정지
+			}
+		}
+
+		private void CheckOutOfRange(int idx)
+		{
+			Vector2Int exitPos = (!isMapExpanded) ? new Vector2Int(mapSize.x - 1, mapSize.y) :
+				new Vector2Int(2 * mapSize.x + mapInterval.x - 1, 2 * mapSize.y + mapInterval.y);
+
+			if (!(humanControllers[idx].CurrentPos.x == exitPos.x && humanControllers[idx].CurrentPos.y == exitPos.y))		// 출구가 아닌 경우
+			{
+				if (!CheckBoundary(humanControllers[idx].CurrentPos.x, humanControllers[idx].CurrentPos.y, isMapExpanded))	// 맵 밖으로 나간경우
+				{
+					int mapIdx = GetMapIdxFromPos(humanControllers[idx].PrevPos.x, humanControllers[idx].PrevPos.y, isMapExpanded);
+					gunnersManagement.DetectEscaped(humanControllers[idx].CurrentPos - humanControllers[idx].PrevPos, mapIdx, isMapExpanded);
+					humanControllers[idx].HumanDyingProcessWithoutBox();
+					humanControllers.Remove(humanControllers[idx]);
+					killCount++;
+					return;
+				}
+				return;
+			}
+			//human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
+
+			if (idxOut < currentStageInfo.outputs.Length)
+			{
+				if (humanControllers[idx].HumanNum != currentStageInfo.outputs[idxOut])
+				{
+					isOutputCorrect = false;
+				}
+
+				GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+					.GetComponent<CameraBase>().CctvUI?.InOut.SetValue(IdxOut, false, humanControllers[idx].HumanNum);
+				idxOut++;
+			}
+
+			Destroy(humanControllers[idx].gameObject);
+			humanControllers.Remove(humanControllers[idx]);
 		}
 
 

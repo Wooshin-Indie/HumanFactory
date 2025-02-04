@@ -2,9 +2,11 @@ using DG.Tweening;
 using HumanFactory.Controller;
 using HumanFactory.UI;
 using HumanFactory.Util;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace HumanFactory.Manager
 {
@@ -42,7 +44,7 @@ namespace HumanFactory.Manager
             InitGunners();
         }
 
-		#region For Map Expension
+		#region Map Expension
 		private int currentMapIdx;
         public int CurrentMapIdx
         {
@@ -61,6 +63,10 @@ namespace HumanFactory.Manager
             {10f, 9f}
         };
         private Vector2Int mapInterval = new Vector2Int(3, 2);
+        public Vector2Int MapInterval
+        {
+            get => mapInterval;
+        }
         private bool isMapExpanded = false;
         public bool IsMapExpanded { get => isMapExpanded; }
 
@@ -69,13 +75,13 @@ namespace HumanFactory.Manager
         private float zoomOutOrthoSize = 8.5f;
         private Vector2 zoomOutPos = new Vector2(6f, 5.5f);
 
-		public Action<int> OnCurrentMapIdxAction { get; set; }
+		public Action<int, bool> OnCurrentMapIdxAction { get; set; }
 
         // -1 이 zoom out 임
 		private void OnCurrentMapIdxSet(int idx)
 		{
 			currentMapIdx = idx;
-            OnCurrentMapIdxAction.Invoke(idx);
+            OnCurrentMapIdxAction.Invoke(idx, isMapExpanded);
             if(idx < 0)
 			{
 				GameManagerEx.Instance.Cameras[(int)CameraType.Game].transform.DOLocalMove(new Vector3(zoomOutPos.x, zoomOutPos.y, Constants.CAMERA_POS_Z), 0.5f)
@@ -128,9 +134,10 @@ namespace HumanFactory.Manager
             tileRect.gameObject.SetActive(false);
             currentStageInfo = Managers.Resource.GetStageInfo(0);
 
-            programMap = new MapGrid[mapSize.x * 2 +mapInterval.x, mapSize.y * 2 + mapInterval.y];
+			programMap = new MapGrid[mapSize.x * 2 +mapInterval.x, mapSize.y * 2 + mapInterval.y];
+			InitTilemap();
 
-            for (int i = 0; i < mapSize.x * 2 + mapInterval.x; i++)
+			for (int i = 0; i < mapSize.x * 2 + mapInterval.x; i++)
             {
                 for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
                 {
@@ -303,13 +310,17 @@ namespace HumanFactory.Manager
 
         public void LoadStage(int stageId, int saveIdx)
         {
+            /** Load Datas **/
             currentStage = stageId;
             currentSaveIdx = saveIdx;
 			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
+            /** Set Datas **/
             GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
-            CurrentMapIdx = 0; 
-			isMapExpanded = true;
+			isMapExpanded = currentStageInfo.isExpanded;
+			SetTilemap(isMapExpanded);
+            gunnersManagement.LoadGunners(isMapExpanded);
+			CurrentMapIdx = 0; 
 
 			Debug.Log("LOAD STAGE");
 
@@ -329,6 +340,64 @@ namespace HumanFactory.Manager
                 programMap[data.posX, data.posY].SetStageGridInfo(data);
             }
 
+        }
+
+        [Header("Tilemap")]
+        [SerializeField] private Tilemap gameTilemap;
+        [SerializeField] private Tile inTile;
+        [SerializeField] private Tile outTile;
+        [SerializeField] private int tilemapMargin;
+
+
+        private void InitTilemap()
+        {
+            for(int i=-tilemapMargin;i < mapSize.x *2 + mapInterval.x + tilemapMargin; i++)
+            {
+                for(int j=-tilemapMargin;j < mapSize.y *2 + mapInterval.y + tilemapMargin; j++)
+                {
+                    gameTilemap.SetTile(new Vector3Int(i, j, 0), outTile);
+                }
+            }
+        }
+
+        private void SetTilemap(bool isExpanded)
+		{
+
+            int[,] mapOffsets = new int[4, 2]
+            {
+                {0, 0},
+                {mapSize.x + mapInterval.x, 0},
+                {0, mapSize.y + mapInterval.y},
+                {mapSize.x + mapInterval.x, mapSize.y + mapInterval.y}
+            };
+
+            if (isExpanded)
+            {
+                for (int t = 0; t < mapOffsets.GetLength(0); t++)
+				{
+					for (int i = 0; i < mapSize.x; i++)
+					{
+						for (int j = 0; j < mapSize.y; j++)
+						{
+							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0), inTile);
+						}
+					}
+				}
+			}
+            else
+			{
+				for (int t = 0; t < mapOffsets.GetLength(0); t++)
+				{
+					for (int i = 0; i < mapSize.x; i++)
+					{
+						for (int j = 0; j < mapSize.y; j++)
+						{
+							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0),
+								(t == 0) ? inTile : outTile);
+						}
+					}
+				}
+			}
         }
 
         private int currentChapter = -1;

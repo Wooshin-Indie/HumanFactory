@@ -126,6 +126,7 @@ namespace HumanFactory
         public int[] outputs;
         public int[] enableBuildings;
         public int[] challenges;
+        public bool isExpanded;
     }
 
     [Serializable]

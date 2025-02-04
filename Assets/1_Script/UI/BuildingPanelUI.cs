@@ -37,12 +37,13 @@ namespace HumanFactory.UI {
             MapManager.Instance.CurrentMapIdx = 0;
         }
 
-        private void OnCurrnentMapSet(int idx)
+        private void OnCurrnentMapSet(int idx, bool isMapExpanded)
 		{
 			for (int i = 0; i < convertButtons.Count; i++)
 			{
                 convertButtons[i].gameObject.SetActive(false);
 			}
+            if (!isMapExpanded) return;
 			switch (idx)
             {
                 case 0:

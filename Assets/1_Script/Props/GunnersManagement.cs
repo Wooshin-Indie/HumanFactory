@@ -10,54 +10,128 @@ namespace HumanFactory.Controller
         private List<Gunner> gunners = new List<Gunner>();
         public List<Gunner> Gunners { get => gunners; set => gunners = value; }
 
+		public Vector2[] expandPos;		// 확장되었을 때, 9명의 위치
+		public Vector2[] originPos;		// 확장되지 않을 때, 4명의 위치
+
         public void PlaceGunners(Vector2Int mapSize)
         {
-            gunners.Add(Instantiate(gunnerPrefab, new Vector3(-1f, mapSize.y - 0.5f, Constants.HUMAN_POS_Z), Quaternion.identity).
-                GetComponent<Gunner>()); //왼쪽 위
-			gunners[0].gameObject.GetComponent<SpriteRenderer>().flipX = true;
+			Vector2 interval = MapManager.Instance.MapInterval;
+			expandPos = new Vector2[9]
+			{
+				new Vector2(-1, -1),
+				new Vector2(mapSize.x -0.5f + interval.x /2, -1),
+				new Vector2(mapSize.x * 2 + interval.x, -1),
+				new Vector2(-1, mapSize.y + interval.y/2 -1),
+				new Vector2(mapSize.x -0.5f + interval.x /2,  mapSize.y + interval.y/2 -1),
+				new Vector2(mapSize.x * 2 + interval.x,  mapSize.y + interval.y/2 -1),
+				new Vector2(-1,2 * mapSize.y + interval.y - 0.5f),
+				new Vector2(mapSize.x -0.5f + interval.x /2, 2 * mapSize.y + interval.y - 0.5f),
+				new Vector2(mapSize.x * 2 + interval.x, 2 * mapSize.y + interval.y - 0.5f),
+			};
 
-			gunners.Add(Instantiate(gunnerPrefab, new Vector3(mapSize.x, mapSize.y - 0.5f, Constants.HUMAN_POS_Z), Quaternion.identity).
-                GetComponent<Gunner>()); //오른쪽 위
+			originPos = new Vector2[4]
+			{
+				new Vector2(-1, -1),
+				new Vector2(mapSize.x, -1),
+				new Vector2(-1, mapSize.y - 0.5f),
+				new Vector2(mapSize.x, mapSize.y-0.5f)
+			};
 
-			gunners.Add(Instantiate(gunnerPrefab, new Vector3(-1f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity).
-                GetComponent<Gunner>()); //왼쪽 아래
-			gunners[2].gameObject.GetComponent<SpriteRenderer>().flipX = true;
-
-			gunners.Add(Instantiate(gunnerPrefab, new Vector3(mapSize.x, -1f, Constants.HUMAN_POS_Z), Quaternion.identity).
-                GetComponent<Gunner>()); //오른쪽 아래
+			for(int i=0; i<expandPos.Length; i++)
+			{
+				gunners.Add(Instantiate(gunnerPrefab, new Vector3(expandPos[i].x, expandPos[i].y, Constants.HUMAN_POS_Z), Quaternion.identity).
+					GetComponent<Gunner>());
+			}
 		}
 
-        public void DetectEscaped(Vector2Int humanPos)
-        {
+		public void LoadGunners(bool isExpanded)
+		{
+			if (!isExpanded)
+			{
+				for (int i = 0; i < gunners.Count; i++)
+				{
+					if (i < originPos.Length)
+					{
+						gunners[i].gameObject.SetActive(true);
+						gunners[i].transform.position = new Vector3(originPos[i].x, originPos[i].y, Constants.HUMAN_POS_Z);
+					}
+					else
+					{
+						gunners[i].gameObject.SetActive(false);
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < expandPos.Length; i++)
+				{
+					gunners[i].gameObject.SetActive(true);
+					gunners[i].transform.position = new Vector3(expandPos[i].x, expandPos[i].y, Constants.HUMAN_POS_Z);
+				}
+			}
+		}
 
-			if (humanPos.x >= MapManager.Instance.ProgramMap.GetLength(0)) //오른쪽 탈출
-			{
-				gunners[1].Shoot(false);
-				gunners[3].Shoot(false);
+		int[] idxOffset = new int[4] {0, 1, 3, 4};
+
+        public void DetectEscaped(Vector2Int dir, int idx, bool isExpanded)
+		{
+			if (idx < 0) {
+				Debug.LogError("Wrong Idx!");
+				return;
 			}
-			else if (humanPos.y >= MapManager.Instance.ProgramMap.GetLength(1)) //위쪽 탈출
+
+			if (isExpanded)
 			{
-				gunners[0].Shoot(false);
-				gunners[1].Shoot(true);
+				switch (dir)
+				{
+					case var _ when dir.x > 0:      // 오른쪽
+						gunners[1 + idxOffset[idx]].Shoot(false);
+						gunners[4 + idxOffset[idx]].Shoot(false);
+						break;
+					case var _ when dir.x < 0:      // 왼쪽
+						gunners[0 + idxOffset[idx]].Shoot(true);
+						gunners[3 + idxOffset[idx]].Shoot(true);
+						break;
+					case var _ when dir.y > 0:      // 위쪽
+						gunners[3 + idxOffset[idx]].Shoot(false);
+						gunners[4 + idxOffset[idx]].Shoot(true);
+						break;
+					case var _ when dir.y < 0:      // 아래쪽
+						gunners[0 + idxOffset[idx]].Shoot(false);
+						gunners[1 + idxOffset[idx]].Shoot(true);
+						break;
+				}
 			}
-			else if (humanPos.x < 0) //왼쪽 탈출
+			else
 			{
-				gunners[0].Shoot(true);
-				gunners[2].Shoot(true);
-			}
-			else if (humanPos.y < 0) //아래쪽 탈출
-			{
-				gunners[2].Shoot(false);
-				gunners[3].Shoot(true);
+				switch (dir)
+				{
+					case var _ when dir.x > 0:      // 오른쪽
+						gunners[1].Shoot(false);
+						gunners[3].Shoot(false);
+						break;
+					case var _ when dir.x < 0:      // 왼쪽
+						gunners[0].Shoot(true);
+						gunners[2].Shoot(true);
+						break;
+					case var _ when dir.y > 0:      // 위쪽
+						gunners[2].Shoot(false);
+						gunners[3].Shoot(true);
+						break;
+					case var _ when dir.y < 0:      // 아래쪽
+						gunners[0].Shoot(false);
+						gunners[1].Shoot(true);
+						break;
+				}
 			}
         }
 
 		public void ClearHumans()
 		{
-			gunners[0].Shoot(false);
-			gunners[1].Shoot(true);
-			gunners[2].Shoot(false);
-			gunners[3].Shoot(true);
+			for (int i = 0; i < gunners.Count; i++)
+			{
+				gunners[i].GetComponent<SpriteRenderer>().flipX = false;
+			}
 		}
 
 		// Gunners anim 속도 변경
