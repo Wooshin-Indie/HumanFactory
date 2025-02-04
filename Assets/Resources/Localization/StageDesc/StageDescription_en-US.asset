@@ -19,10 +19,18 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 148934352896
-    m_Localized: "Stage #1 - Mov\nThis is your first task. \nIt's very simple, but
-      you must not take it lightly. \nThe people you see on the screen will obey
-      your commands without question. \nIf you tell them to go, they will go... and
-      if you tell them to die, they will die\n"
+    m_Localized: "Stage #1 - Mov\r\nThis is your first task. \r\nIt's very simple,
+      but you must not take it lightly. \r\nThe people you see on the screen will
+      obey your commands without question. \r\nIf you tell them to go, they will
+      go... and if you tell them to die, they will die\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5434196641046531
+    m_Localized: 'Access Denied
+
+
+      You do not have the required permissions
+      to access this CCTV.'
     m_Metadata:
       m_Items: []
   references:

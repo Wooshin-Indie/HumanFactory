@@ -19,6 +19,22 @@ MonoBehaviour:
     m_Key: 0
     m_Metadata:
       m_Items: []
+  - m_Id: 5434196641046528
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5434196641046529
+    m_Key: New Entry 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5434196641046530
+    m_Key: New Entry 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5434196641046531
+    m_Key: Unlock
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

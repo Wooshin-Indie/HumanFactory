@@ -7,16 +7,44 @@ namespace HumanFactory.Props
     {
         [SerializeField] private CameraType forwardType;
 
+        private bool isBlocked = false;
+        public bool IsBlocked { get => isBlocked; }
+
         public override void OnPointerClick()
-        {
+		{
+			if (isBlocked) return;
 
-
-            base.OnPointerClick();
+			Managers.Input.LockMouseInput();
+			base.OnPointerClick();
 
             Managers.Sound.PlaySfx(SFXType.Click);
             Camera.main.GetComponent<CameraBase>().ConvertSceneForward(transform.localPosition,
                 zoomInCameraSize,
                 forwardType);
         }
-    }
+
+		public override void OnPointerEnter()
+		{
+            if (isBlocked)
+            {
+                OnPointerExit();
+                return;
+            }
+
+			base.OnPointerEnter();
+		}
+
+		public override void OnPointerExit()
+		{
+            if (isBlocked) return;
+
+			base.OnPointerExit();
+		}
+
+		public void BlockClick(bool isBlock)
+        {
+            isBlocked = isBlock;
+		}
+
+	}
 }

@@ -137,5 +137,12 @@ namespace HumanFactory.Manager
         {
             OnUpdateBasicSettings.Invoke(settingData);
         }
+
+        public bool IsAbleToAccessStage(int idx)
+        {
+            int preIdx = Managers.Resource.GetStageInfo(idx).prerequisite;
+            return preIdx < 0 ? 
+                true : gameplayData.stageGridDatas[preIdx].resultDatas.CycleCount >= 0;
+        }
 	}
 }

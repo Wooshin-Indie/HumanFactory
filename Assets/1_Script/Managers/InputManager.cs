@@ -159,7 +159,6 @@ namespace HumanFactory.Manager
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    LockMouseInput();
                     prevScreen?.OnPointerClick();
                 }
             }

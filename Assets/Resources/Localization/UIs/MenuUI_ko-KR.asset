@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: ko-KR
   m_SharedData: {fileID: 11400000, guid: 6e5c9d24f36c7fd408a3ed40cab08301, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1752275295744032774
   m_TableData:
   - m_Id: 101672935424
     m_Localized: "\uB3C4\uC804\uACFC\uC81C"
@@ -122,6 +123,17 @@ MonoBehaviour:
     m_Localized: "\uC2A4\uD14C\uC774\uC9C0 12"
     m_Metadata:
       m_Items: []
+  - m_Id: 4348261983707136
+    m_Localized: "\uC811\uADFC \uC81C\uD55C\n\n\uD544\uC694 \uC870\uAC74 : {StageKey}"
+    m_Metadata:
+      m_Items:
+      - rid: 1752275295744032774
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1752275295744032774
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 4348261983707136

@@ -127,6 +127,10 @@ MonoBehaviour:
     m_Key: Stage_12
     m_Metadata:
       m_Items: []
+  - m_Id: 4348261983707136
+    m_Key: Challenge_AccessDenied
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

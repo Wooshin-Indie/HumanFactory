@@ -1,5 +1,6 @@
 using HumanFactory.Manager;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace HumanFactory.Controller
@@ -126,11 +127,21 @@ namespace HumanFactory.Controller
 			}
         }
 
-		public void ClearHumans()
+		public void ClearHumans(bool isExpanded)
 		{
-			for (int i = 0; i < gunners.Count; i++)
+			if (!isExpanded)
 			{
-				gunners[i].GetComponent<SpriteRenderer>().flipX = false;
+				for (int i = 0; i < originPos.Length; i++)
+				{
+					gunners[i].Shoot(i / 2 != 0);
+				}
+			}
+			else
+			{
+				for (int i = 0; i < expandPos.Length; i++)
+				{
+					gunners[i].Shoot(i % 3 == 2);
+				}
 			}
 		}
 

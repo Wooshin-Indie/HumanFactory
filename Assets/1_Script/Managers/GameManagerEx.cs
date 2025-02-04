@@ -183,7 +183,14 @@ namespace HumanFactory
             exeType = type;
         }
 
-    }
+        public void BlockAllUIs()
+		{
+			for (int i = 0; i < raycasters.Count; i++)
+				raycasters[i].enabled = false;
+		}
+
+
+	}
 }
 
  

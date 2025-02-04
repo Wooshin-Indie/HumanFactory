@@ -435,7 +435,7 @@ namespace HumanFactory.Manager
         public void ClearHumans()
         {
             if (humanControllers.Count > 0)
-                gunnersManagement.ClearHumans();
+                gunnersManagement.ClearHumans(isMapExpanded);
 
             isPersonAdd = false;
             for (int i = humanControllers.Count - 1; i >= 0; i--)
@@ -452,7 +452,7 @@ namespace HumanFactory.Manager
                 }
             }
             cycleCount = killCount = 0;
-
+            CycleTime = 1f;
 		}
 
 	}

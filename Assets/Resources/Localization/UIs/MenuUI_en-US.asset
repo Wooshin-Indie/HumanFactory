@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en-US
   m_SharedData: {fileID: 11400000, guid: 6e5c9d24f36c7fd408a3ed40cab08301, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1752275295744032779
   m_TableData:
   - m_Id: 13139566592
     m_Localized: Stage Description
@@ -122,6 +123,20 @@ MonoBehaviour:
     m_Localized: Stage 12
     m_Metadata:
       m_Items: []
+  - m_Id: 4348261983707136
+    m_Localized: 'Access Denied
+
+
+      Requirement : {StageKey}'
+    m_Metadata:
+      m_Items:
+      - rid: 1752275295744032779
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1752275295744032779
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 4348261983707136

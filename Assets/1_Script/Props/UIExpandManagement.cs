@@ -1,6 +1,7 @@
 using DG.Tweening;
 using HumanFactory.Effects;
 using HumanFactory.Manager;
+using HumanFactory.Props;
 using HumanFactory.Util;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace HumanFactory.UI
         [SerializeField] private TextMeshProUGUI stageDescript;
         [SerializeField] private TextMeshProUGUI titleBanner;
         [SerializeField] private ChallengeContentUI challengeUI;
+        [SerializeField] private RectTransform accessDeniedPanel;
 
         [Header("Panel Buttons")]
         [SerializeField] private Button ChapterBackButton;
@@ -36,6 +38,8 @@ namespace HumanFactory.UI
         private int currentExpandedPanel = -1;
         private int currentSelectedIndex = -1;
         private int currentSaveFileIndex = -1;
+
+        private ClickableScreen clickableScreen;
 
         public int CurrentSelectedIndex { get => currentSelectedIndex;
             set
@@ -56,6 +60,17 @@ namespace HumanFactory.UI
 					{
 						saveButtons[i].gameObject.SetActive(true);
 					}
+
+					if (Managers.Data.IsAbleToAccessStage(value))
+					{
+						accessDeniedPanel.gameObject.SetActive(false);
+						clickableScreen.BlockClick(false);
+					}
+					else
+					{
+						accessDeniedPanel.gameObject.SetActive(true);
+						clickableScreen.BlockClick(true);
+					}
                     challengeUI.SetStageInfo(value);
 					CurrentSaveFileIndex = 0;
 				}
@@ -69,6 +84,7 @@ namespace HumanFactory.UI
             {
                 currentSaveFileIndex = value;
                 MapManager.Instance.LoadStage(CurrentSelectedIndex, currentSaveFileIndex);
+
                 for (int i = 0; i < saveButtons.Count; i++)
                 {
                     saveButtons[i].GetComponent<UIItemBase>().OnSelected(i == currentSaveFileIndex);
@@ -76,7 +92,10 @@ namespace HumanFactory.UI
             }
         }
 
-
+		private void Awake()
+		{
+            clickableScreen = noiseEffect.GetComponent<ClickableScreen>();
+		}
 		private void Start()
         {
             LoadChaptersOnPanel();
@@ -195,7 +214,7 @@ namespace HumanFactory.UI
             if (currentExpandedPanel == -1) // 아무것도 확대 안돼있음
             {
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
-                SetSelectedStageOnCenter(index, lerpDuration);
+                SetSelectedStageOnCenter(index, stageIdx, lerpDuration);
                 currentExpandedPanel = index;
 				CurrentSelectedIndex = stageIdx;
 			}
@@ -210,7 +229,7 @@ namespace HumanFactory.UI
             {
                 stages[currentExpandedPanel].GetComponent<UIOnClickExpand>().Reduce();
                 stages[index].GetComponent<UIOnClickExpand>().Expand();
-                SetSelectedStageOnCenter(index, lerpDuration);
+                SetSelectedStageOnCenter(index, stageIdx, lerpDuration);
                 currentExpandedPanel = index;
                 CurrentSelectedIndex = stageIdx;
 
@@ -220,7 +239,7 @@ namespace HumanFactory.UI
         // 선택된(확장된) 스테이지가 가운데 오도록 합니다.
         // Content 의 AnchoredPosition.y를 움직이며, (0, content.height - scollview.height) 범위를 갖습니다.
         // Expand 한 후에 호출되기 때문에, 각 Item의 height 의 절반만큼 조정해줍니다
-        private void SetSelectedStageOnCenter(int index, float duration)
+        private void SetSelectedStageOnCenter(int index, int stageIdx, float duration)
         {
             noiseEffect.MakeNoise();
             float maxPosition = content.GetComponent<RectTransform>().rect.height - scrollviewHeight + 200;
@@ -230,15 +249,22 @@ namespace HumanFactory.UI
 
             scrollTweener = content.GetComponent<RectTransform>().DOAnchorPosY(setPosition, duration);
 
-
-            StartTypingDescript(index);
+            StartTypingDescript(stageIdx);
         }
 
         private Coroutine typeCoroutine = null;
         private void StartTypingDescript(int index)
         {
             stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
-            typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, "0", 0.01f));
+            if (Managers.Data.IsAbleToAccessStage(index))
+			{
+                // TODO - Type Coroutine Key값 바꿔줘야됨
+				typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, "0", 0.01f));
+			}
+            else
+            {
+                typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, "Unlock", 0.01f));
+            }
         }
 
         private void ClearChapters()

@@ -127,7 +127,8 @@ namespace HumanFactory
         public int[] enableBuildings;
         public int[] challenges;
         public bool isExpanded;
-    }
+        public int prerequisite;
+	}
 
     [Serializable]
     public class  ChapterInfo

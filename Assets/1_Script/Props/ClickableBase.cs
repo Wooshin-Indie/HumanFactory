@@ -12,12 +12,12 @@ namespace HumanFactory.Props
             outline.SetActive(false);
         }
 
-        public void OnPointerEnter()
+        public virtual void OnPointerEnter()
         {
             outline.SetActive(true);
         }
 
-        public void OnPointerExit()
+        public virtual void OnPointerExit()
         {
             outline.SetActive(false);
         }

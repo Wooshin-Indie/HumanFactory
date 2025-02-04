@@ -1,23 +1,35 @@
 using HumanFactory.Manager;
 using HumanFactory.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace HumanFactory.UI
 {
     public class ChallengeContentUI : MonoBehaviour
     {
-
+        [Header("Challenges")]
+        [SerializeField] private Transform challengesParent;
         [SerializeField] private List<TextMeshProUGUI> itemNameTexts = new List<TextMeshProUGUI>();
         [SerializeField] private List<TextMeshProUGUI> itemScoreTexts = new List<TextMeshProUGUI>();
 		[SerializeField] private List<TextMeshProUGUI> graphNameTexts = new List<TextMeshProUGUI>();
 		[SerializeField] private List<Image> scoreGraphs = new List<Image>();
         [SerializeField] private List<Image> maxGraphs = new List<Image>();
 
-        private string[] keys =
+
+        [Header("Prerequisite")]
+        [SerializeField] private Transform prerequisiteParent;
+        [SerializeField] private TextMeshProUGUI preText;
+
+		private string[] keys =
         {
             "Challenge_Cycle",
             "Challenge_Structures",
@@ -27,12 +39,46 @@ namespace HumanFactory.UI
 
 		public void ClearInfo()
         {
-            gameObject.SetActive(false);
+            SetActiveChallengeUIs(false);
+			SetActivePrerequisiteUIs(false);
         }
+
+        private void SetActiveChallengeUIs(bool isActive)
+        {
+            challengesParent.gameObject.SetActive(isActive);
+		}
+
+        private void SetActivePrerequisiteUIs(bool isActive)
+		{
+			prerequisiteParent.gameObject.SetActive(isActive);
+		}
 
         public void SetStageInfo(int index)
 		{
+            if (!Managers.Data.IsAbleToAccessStage(index))   // 접근불가
+            {
+                SetActiveChallengeUIs(false);
+				SetActivePrerequisiteUIs(true);
+
+				LocalizedString localizedString = new UnityEngine.Localization.LocalizedString
+				{
+					TableReference = Constants.TABLE_MENUUI,
+					TableEntryReference = "Challenge_AccessDenied"
+				};
+				localizedString.Arguments = new object[]
+				{
+					new { StageKey =
+					LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Stage_"+ Managers.Resource.GetStageInfo(index).prerequisite) }
+				};
+
+				preText.GetComponent<LocalizeStringEvent>().StringReference = localizedString;
+
+				return;
+            }
+
 			this.gameObject.SetActive(true);
+            SetActiveChallengeUIs(true);
+            SetActivePrerequisiteUIs(false);
             StageResultData resultData = Managers.Data.GamePlayData.stageGridDatas[index].resultDatas;
             StageInfo info = Managers.Resource.GetStageInfo(index);
             int[] counts = {

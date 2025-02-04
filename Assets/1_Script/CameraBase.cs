@@ -36,7 +36,8 @@ namespace HumanFactory
         /// </summary>
         public void ConvertSceneForward(Vector2 destPos, float destSize, CameraType forwardType)
         {
-            if (GameManagerEx.Instance.CurrentCamType == CameraType.Game) return;
+            GameManagerEx.Instance.BlockAllUIs();
+			if (GameManagerEx.Instance.CurrentCamType == CameraType.Game) return;
 
             // Position 움직이면서 Camera Size도 증가(ZoomIn)
             Vector3 dest = new Vector3(destPos.x, destPos.y, Constants.CAMERA_POS_Z);
