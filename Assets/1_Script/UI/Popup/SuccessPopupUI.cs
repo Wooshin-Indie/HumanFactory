@@ -12,9 +12,7 @@ namespace HumanFactory.UI
     public class SuccessPopupUI : PopUpUIBase
     {
         [Header("Buttons")]
-        [SerializeField] private Button continueButton;
-        [SerializeField] private Button goMainButton;
-        [SerializeField] private Button nextStageButton;
+        [SerializeField] private List<Button> buttons = new List<Button>();
         [Header("PopupScripts")]
         [SerializeField] TextMeshProUGUI titleText;
         [SerializeField] TextMeshProUGUI areaText;
@@ -32,35 +30,49 @@ namespace HumanFactory.UI
         public override void Awake()
         {
             base.Awake();
-            continueButton.onClick.AddListener(() =>
+            buttons[0].onClick.AddListener(() => // Continue Button
             {
                 Managers.Input.ReleaseMouseInput();
                 CloseWindow();
             });
-            goMainButton.onClick.AddListener(() =>
+            buttons[1].onClick.AddListener(() => // Main Menu Button
             {
                 Managers.Input.ReleaseMouseInput();
                 CloseWindow();
                 Managers.Input.OnEscape();
             });
-            nextStageButton.onClick.AddListener(() =>
+            buttons[2].onClick.AddListener(() => // Next Stage Button
             {
                 Managers.Input.ReleaseMouseInput();
                 CloseWindow();
                 MapManager.Instance.LoadStage(MapManager.Instance.CurrentStage + 1, 0); // 다음 스테이지 호출
             });
+
+            
         }
 
         private Coroutine typeCoroutine = null;
         /// <summary>
         /// 여러가지 정보들을 전달해서 UI에 띄웁니다.
         /// </summary>
-        public void SetSuccessPopupInfos(GameResultInfo info)
+        public void SetSuccessPopupInfos(GameResultInfo resultInfo)
         {
-            RemoveSuccessPopup();
+            RemoveSuccessPopupContents();
+            InactivateButtons();
 
             if (typeCoroutine != null) StopCoroutine(typeCoroutine);
-            typeCoroutine = StartCoroutine(SuccessPopupWriting(info, 0.03f));
+            typeCoroutine = StartCoroutine(SuccessPopupWriting(resultInfo, 0.03f));
+
+            this.GetComponent<Button>().enabled = true;
+            this.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                StopCoroutine(typeCoroutine);
+                typewritingSource?.Stop();
+                handwritingSource?.Stop();
+
+                SkipSuccessPopupUIAnimation(resultInfo);
+                this.GetComponent<Button>().enabled = false;
+            });
         }
 
         public override void PopupWindow()
@@ -70,7 +82,7 @@ namespace HumanFactory.UI
         }
 
 
-        private void RemoveSuccessPopup()
+        private void RemoveSuccessPopupContents()
         {
             titleText.text = "";
             areaText.text = "";
@@ -92,10 +104,25 @@ namespace HumanFactory.UI
             stamp.gameObject.SetActive(false);
         }
 
+        private void ActivateButtons()
+        {
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                buttons[i].gameObject.SetActive(true);
+            }
+        }
+
+        private void InactivateButtons()
+        {
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                buttons[i].gameObject.SetActive(false);
+            }
+        }
+
         private static AudioSource typewritingSource = null;
-        private static AudioSource writingSource = null;
+        private static AudioSource handwritingSource = null;
         private static AudioSource checkboxSource = null; // 체크박스 체크할 때
-        private static AudioSource stampSource = null; // 도장 찍을 때
         public IEnumerator SuccessPopupWriting(GameResultInfo resultInfo, float deltaTime)
         {
             string[] chalTextKeys =
@@ -128,7 +155,7 @@ namespace HumanFactory.UI
                 yield return new WaitForSeconds(deltaTime);
             }
 
-            for (int i = 0; i < chalTextKeys.Length; i++)
+            for (int i = 0; i < chalTextKeys.Length; i++) // 각 challenge 머리말 출력
             {
                 tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, chalTextKeys[i]);
                 foreach (char letter in tmpDescript.ToCharArray())
@@ -151,7 +178,7 @@ namespace HumanFactory.UI
             yield return new WaitForSeconds(0.5f);
 
             // 손글쓰기 시작
-            writingSource = Managers.Sound.PlaySfx(SFXType.Writing, 1.3f, 1.0f);
+            handwritingSource = Managers.Sound.PlaySfx(SFXType.Writing, 1.3f, 1.0f);
 
             int[] counts = { resultInfo.CycleCount, resultInfo.ButtonCount, resultInfo.KillCount };
             StageInfo stageInfo = Managers.Resource.GetStageInfo(resultInfo.StageIdx);
@@ -183,11 +210,72 @@ namespace HumanFactory.UI
                 yield return new WaitForSeconds(deltaTime);
             }
 
-            writingSource.Stop();
-            writingSource = null;
+            handwritingSource.Stop();
+            handwritingSource = null;
 
             yield return new WaitForSeconds(0.5f);
 
+
+            ActivateStamp(resultInfo);
+            this.GetComponent<Button>().enabled = false;
+
+            yield return new WaitForSeconds(0.3f);
+
+            ActivateButtons();
+        }
+
+        private void SkipSuccessPopupUIAnimation(GameResultInfo resultInfo)
+        {
+            // 타이틀 출력
+            titleText.text = resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString() 
+                + LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_TitleText");
+
+            // Area 항목 머리말 출력
+            areaText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_AreaText")
+                + resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString();
+
+            // Records 항목 머리말 출력
+            recordsText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_RecordsText");
+
+            // 각 challenge 머리말 출력
+            string[] chalTextKeys =
+                {"Success_Chal0Text", "Success_Chal1Text", "Success_Chal2Text",};
+            for (int i = 0; i < chalTextKeys.Length; i++)
+            {
+                chalTexts[i].text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, chalTextKeys[i]);
+            }
+
+            // Comment 항목 머리말 출력
+            commentText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_CommentText");
+
+            int[] counts = { resultInfo.CycleCount, resultInfo.ButtonCount, resultInfo.KillCount };
+            StageInfo stageInfo = Managers.Resource.GetStageInfo(resultInfo.StageIdx);
+
+            bool isChallengePassed = false;
+            for (int i = 0; i < 3; i++)  // 기록(점수) 출력 및 체크박스 활성화
+            {
+                if (counts[i] <= stageInfo.challenges[i]) isChallengePassed = true;
+
+                chalRecords[i].text = $"{counts[i]}/{stageInfo.challenges[i]}";
+                if (isChallengePassed)
+                {
+                    checkBoxes[i].sprite = checkedBox;
+                }
+                isChallengePassed = false;
+            }
+
+            // Comments 내용 출력
+            comments.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_Comments");
+
+            ActivateStamp(resultInfo);
+            ActivateButtons();
+        }
+
+
+        private static AudioSource stampSource = null; // 도장 찍을 때
+        private void ActivateStamp(GameResultInfo resultInfo)
+        {
+            StageInfo stageInfo = Managers.Resource.GetStageInfo(resultInfo.StageIdx);
 
             stampSource = Managers.Sound.PlaySfx(SFXType.Stamp, 1.0f, 1.0f);
             stamp.gameObject.SetActive(true);
