@@ -138,6 +138,13 @@ namespace HumanFactory.UI
                 }
             }
 
+            tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_CommentText");
+            foreach (char letter in tmpDescript.ToCharArray()) // Comment 항목 머리말 출력
+            {
+                commentText.text += letter;
+                yield return new WaitForSeconds(deltaTime);
+            }
+
             typewritingSource.Stop();
             typewritingSource = null;
 
