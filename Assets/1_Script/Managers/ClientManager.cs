@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
@@ -11,18 +10,17 @@ namespace HumanFactory.Manager
 	/// </summary>
 	public class ClientManager
 	{
-
-		void Init()
+		public void Init()
 		{
-			StartClient();
+
 		}
 
-		void StartClient()
+		public void SendMessage()
 		{
-			TcpClient client = new TcpClient("", 12345);
+			TcpClient client = new TcpClient(Constants.IP_ADDR_INHO, Constants.PORT_VM_TCP);
 			NetworkStream stream = client.GetStream();
 
-			string data = "";
+			string data = "HELLO SERVER!";
 			byte[] buffer = Encoding.UTF8.GetBytes(data);
 			stream.Write(buffer, 0, buffer.Length);
 

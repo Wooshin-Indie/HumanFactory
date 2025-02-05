@@ -51,5 +51,11 @@ namespace HumanFactory
 
         public static readonly Color COLOR_RED = new Color(.7f, 0f, 0f);
         public static readonly Color COLOR_GREEN = new Color(.16f, .5f, 0f);
+
+        /** TCP Server Port **/
+        public static readonly int PORT_VM_TCP = 61392;
+        public static readonly int PORT_LAP_TCP = 61393;
+        public static readonly string IP_ADDR_INHO = "122.35.235.70";
+
     }
 }

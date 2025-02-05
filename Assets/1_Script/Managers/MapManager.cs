@@ -2,7 +2,6 @@ using DG.Tweening;
 using HumanFactory.Controller;
 using HumanFactory.UI;
 using HumanFactory.Util;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

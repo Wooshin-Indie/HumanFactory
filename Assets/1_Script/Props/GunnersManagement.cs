@@ -1,6 +1,5 @@
 using HumanFactory.Manager;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace HumanFactory.Controller

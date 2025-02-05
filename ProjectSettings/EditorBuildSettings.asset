@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/0_Scenes/GameScene.unity
     guid: 8c1e2c3e22d88a74fb84fe4512bf43fb
   - enabled: 0
-    path: Assets/0_Scenes/MainScene.unity
-    guid: 5e9682778cd5bc7438a9606ad008014f
+    path: Assets/0_Scenes/Headless.unity
+    guid: 1ec6bf496f8d33644a8d9868619618b0
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e65124a16e6c5b749a36e6afcfa53b92, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: 56f364eb1728fe341b1562c587099e6d, type: 2}

@@ -21,6 +21,7 @@ namespace HumanFactory.Manager
         private InputManager _input  = new InputManager();
         private SoundManager _sound = new SoundManager();
         private EffectManager _effect = new EffectManager();
+        private ClientManager _client = new ClientManager();
         
         /** Properties **/
         public static ResourceManager Resource { get { return Instance._resource; } }
@@ -28,6 +29,7 @@ namespace HumanFactory.Manager
         public static InputManager Input { get { return Instance._input; } }
         public static SoundManager Sound { get { return Instance._sound; } }
         public static EffectManager Effect { get { return Instance._effect; } } 
+        public static ClientManager Client { get { return Instance._client; } } 
 
 
         public void Init()
@@ -48,6 +50,7 @@ namespace HumanFactory.Manager
             s_instance._data.Init();
 
             s_instance._effect.Init();
+            s_instance._client.Init();
         }
 
 
