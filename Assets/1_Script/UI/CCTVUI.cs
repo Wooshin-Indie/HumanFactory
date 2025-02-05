@@ -1,8 +1,8 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +19,6 @@ namespace HumanFactory.UI
 
 		public InOutRevealUI InOut { get => inOutRevealUI; }
 
-		private int elapsedSeconds = 34567;
 
 		private void Start()
 		{
@@ -30,12 +29,12 @@ namespace HumanFactory.UI
 
 			StartCoroutine(TimerCoroutine());
 		}
-
+		
 		private IEnumerator TimerCoroutine()
 		{
 			while (true)
 			{
-				timeText.text = FormatTime(elapsedSeconds++);
+				timeText.text = DateTime.Now.ToString("hh:mm:ss");
 				yield return new WaitForSeconds(1f);
 			}
 		}

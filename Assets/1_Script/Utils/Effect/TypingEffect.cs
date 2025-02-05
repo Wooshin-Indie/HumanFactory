@@ -10,6 +10,13 @@ namespace HumanFactory.Util.Effect
     public static class TypingEffect
     {
         private static AudioSource tmpSource = null;
+
+        public static void StopTypingSound()
+        {
+            tmpSource?.Stop();
+            tmpSource = null;
+        }
+
         public static IEnumerator TypingCoroutine(TextMeshProUGUI tmp, string key, float deltaTime)
 		{
 			string tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_STAGE, key);

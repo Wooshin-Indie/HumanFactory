@@ -53,6 +53,12 @@ namespace HumanFactory.UI
                         saveButtons[i].gameObject.SetActive(false);
                     }
                     challengeUI.ClearInfo();
+                    if (typeCoroutine != null)
+                    {
+                        StopCoroutine(typeCoroutine);
+						TypingEffect.StopTypingSound();
+					}
+                    stageDescript.text = "";
 				}
                 else
 				{
@@ -180,8 +186,11 @@ namespace HumanFactory.UI
 
         private void OnClickChapters(int index)
         {
-            if (typeCoroutine != null) StopCoroutine(typeCoroutine); // 이거 왜 적은거임?
-
+            if (typeCoroutine != null)
+            {
+                StopCoroutine(typeCoroutine); // 이거 왜 적은거임?
+                TypingEffect.StopTypingSound();
+            }
             // chapters 전부 destroy 및 remove
             ClearChapters();
 
@@ -208,7 +217,11 @@ namespace HumanFactory.UI
 
         private void OnClickStages(int index, int stageIdx) // index는 패널에 표시되는 리스트에서의 index, stageIdx는 실제 json에서 불러오는 stage의 index
         {
-            if (typeCoroutine != null) StopCoroutine(typeCoroutine);
+            if (typeCoroutine != null)
+            {
+                StopCoroutine(typeCoroutine);
+				TypingEffect.StopTypingSound();
+			}
             stageDescript.text = "";
 
             if (currentExpandedPanel == -1) // 아무것도 확대 안돼있음

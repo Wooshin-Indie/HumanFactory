@@ -267,6 +267,7 @@ namespace HumanFactory.Manager
 			isOutputCorrect = true;
 			isPersonAdd = false;
 			isOneCycling = false;
+            CycleTime = 1f;
         }
         private void OnFailure()
         {
