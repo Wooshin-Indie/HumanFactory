@@ -7,6 +7,7 @@ namespace HumanFactory
 
     #region MapInfos
 
+    [System.Serializable]
     public class ButtonInfos
     {
         public Vector2Int linkedGridPos;
@@ -173,6 +174,7 @@ namespace HumanFactory
     public class StageGridData
     {
         public int posX, posY;
+        public bool isActive;
         public PadType padtype;
         public BuildingType buildingType;
         public ButtonInfos buttonInfos;
@@ -202,7 +204,22 @@ namespace HumanFactory
     public class GameplayData 
     {
         public StageGridDatas[] stageGridDatas;
-    }
+
+		public override string ToString()
+		{
+            foreach (var data in stageGridDatas)
+            {
+                foreach(var item in data.saveDatas)
+                {
+                    foreach (var grid in item.gridDatas)
+                    {
+                        Debug.Log($"GRID : ({grid.posX}, {grid.posY}), {grid.padtype}, {grid.buildingType}");
+                    }
+                }
+            }
+            return base.ToString();
+		}
+	}
 
 	#endregion
 }

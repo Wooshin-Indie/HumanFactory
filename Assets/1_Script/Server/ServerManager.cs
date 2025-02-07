@@ -1,5 +1,6 @@
 using HumanFactory.Util;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -29,16 +30,18 @@ namespace HumanFactory.Server
 		}
 		#endregion
 
-		private void StartServer()
+		private void Awake()
+		{
+			Init();
+			Task.Run(() => StartServer());
+		}
+
+		private async void StartServer()
 		{
 			TcpListener listener = new TcpListener(IPAddress.Any, Constants.PORT_VM_TCP);
 			listener.Start();
-
-			Task.Run(() => StartIterative(listener));		
-		}
-
-		private async void StartIterative(TcpListener listener)
-		{
+			
+			Debug.Log("Server Started!");
 			while (true)
 			{
 				TcpClient client = await listener.AcceptTcpClientAsync();
@@ -52,14 +55,19 @@ namespace HumanFactory.Server
 		{
 			try
 			{
-				using (NetworkStream stream = client.GetStream())
-				{
-					byte[] buffer = new byte[1024];
-					int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-					string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-					DebugServer.Log("Received: " + data);
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				Stream stream = client.GetStream();
 
-					RunSimulation();
+				while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+				{
+					GameplayData data = Serializer.ByteArrayToObject<GameplayData>(buffer);
+					Debug.Log(data.ToString());
+
+					string result = await RunSimulation();
+					byte[] sendBuff = Encoding.UTF8.GetBytes(result);
+					await stream.WriteAsync(sendBuff, 0, sendBuff.Length);
+					DebugServer.Log("Transmit: " + result);
 				}
 			}
 			catch(Exception ex)
@@ -72,9 +80,9 @@ namespace HumanFactory.Server
 			}
 		}
 
-		private void RunSimulation()
+		private async Task<String> RunSimulation()
 		{
-
+			return "Echo";
 		}
 	}
 }

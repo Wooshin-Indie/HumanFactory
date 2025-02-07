@@ -1,6 +1,5 @@
 using HumanFactory.Manager;
 using HumanFactory.Util;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +7,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Settings;
-using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace HumanFactory.UI
 {
@@ -50,7 +47,7 @@ namespace HumanFactory.UI
 
         private void SetActivePrerequisiteUIs(bool isActive)
 		{
-			prerequisiteParent.gameObject.SetActive(isActive);
+            prerequisiteParent.gameObject.SetActive(isActive);
 		}
 
         public void SetStageInfo(int index)

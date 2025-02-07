@@ -195,7 +195,10 @@ namespace HumanFactory.Manager
 			posY = data.posY;
 			SetPad(data.padtype);
 			SetBuilding(data.buildingType);
+			if (!data.isActive) ToggleActive(false);
 			buttonInfo = new ButtonInfos(data.buttonInfos);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(BuildingType, isPressed, isActive, buttonInfo.dirType);
+	
 		}
 
 		public void ClearGrid()

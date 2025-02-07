@@ -161,7 +161,7 @@ namespace HumanFactory.Manager
         public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
-		private int cycleLock = 1;
+		[SerializeField] private int cycleLock = 1;
 		public void LockCycle()
 		{
 			cycleLock++;
@@ -185,6 +185,15 @@ namespace HumanFactory.Manager
 				SaveStage();
 			}
 
+			// HACK - Server 연결 테스트 입니다.
+			if (Input.GetKeyDown(KeyCode.RightBracket))
+			{
+				Managers.Client.SendMessage();
+
+				byte[] buffer = Serializer.JsonToByteArray(Application.persistentDataPath + "/PlayData.json");
+                Debug.Log("BUFFER LENGTH :" + buffer);
+			}
+
 			if (!isCycleRunning)
             {
                 if (!IsCycleEnabled())
@@ -198,7 +207,10 @@ namespace HumanFactory.Manager
                 StartCoroutine(ProgramCycleCoroutine());
             }
 
-        }
+
+		}
+        [Header("TEST")]
+		[SerializeField] public GameplayData testData;
 
 		public MapGrid GetMapGrid(int x, int y)
         {
@@ -261,8 +273,9 @@ namespace HumanFactory.Manager
             GameManagerEx.Instance.OnStageSuccess(info);
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
 
-            idxIn = 0;
-			idxOut = 0;
+            // Init Values
+
+			ClearHumans();
 			isOutputCorrect = true;
 			isPersonAdd = false;
 			isOneCycling = false;
@@ -340,6 +353,7 @@ namespace HumanFactory.Manager
                 programMap[data.posX, data.posY].SetStageGridInfo(data);
             }
 
+            ClearHumans();
         }
 
         [Header("Tilemap")]
@@ -423,11 +437,14 @@ namespace HumanFactory.Manager
             {
                 for (int j = 0; j < mapSize.y *2  + mapInterval.y; j++)
                 {
+                    if (programMap[i, j].PadType == PadType.DirNone &&
+                        programMap[i, j].BuildingType == BuildingType.None) continue;
                     gridDatas.gridDatas.Add(programMap[i, j].GetStageGridData());
                 }
             }
 
             Managers.Data.AddStageGridData(currentStage, currentSaveIdx, gridDatas);
+            Managers.Data.SaveAll();
         }
 
         #endregion
@@ -450,9 +467,15 @@ namespace HumanFactory.Manager
                 {
                     programMap[i, j].OnRelease();
                 }
-            }
-            cycleCount = killCount = 0;
-            CycleTime = 1f;
+			}
+
+            isStageEnded = false;
+            isOutputCorrect = true;
+			cycleCount = 0;
+			killCount = 0;
+			idxIn = 0;
+			idxOut = 0;
+			CycleTime = 1f;
 		}
 
 	}

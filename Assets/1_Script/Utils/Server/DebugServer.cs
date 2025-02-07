@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace HumanFactory.Util
 {
@@ -7,7 +6,6 @@ namespace HumanFactory.Util
 	{
 		public static void Log(string message)
 		{
-			Debug.Log(message);
 			Console.WriteLine(message);
 		}
 	}

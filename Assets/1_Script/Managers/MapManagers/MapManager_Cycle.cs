@@ -35,7 +35,7 @@ namespace HumanFactory.Manager
 		private IEnumerator ProgramCycleCoroutine()
 		{
 			InitPerCycle();
-			cycleCount++;
+			Debug.Log("CYCLE CUONT: " + cycleCount++);
 			while (cycleElapsedTime < CycleTime)
 			{
 				ExecutePerFrame(cycleElapsedTime, CycleTime);
@@ -251,14 +251,12 @@ namespace HumanFactory.Manager
 
 
 		private bool isStageEnded = true;
-		// TODO - 이거 false되는 경우를 stop 누를 때랑 스테이지 처음 들어갈 때로 해야 할 듯, 지금 InitNewPerson에 있음
 		private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
 		{
 			if (GameManagerEx.Instance.ExeType == ExecuteType.None ||
 				humanControllers.Count != 0) return;
 
 			if (isStageEnded) return;
-
 			isStageEnded = true;
 
 			if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
@@ -273,6 +271,8 @@ namespace HumanFactory.Manager
 
 		private void InitNewPerson()
 		{
+
+			Debug.Log($"ISPERSON : {isPersonAdd}, idxin : {idxIn}");
 			if (isPersonAdd && idxIn < currentStageInfo.inputs.Length)
 			{
 				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
