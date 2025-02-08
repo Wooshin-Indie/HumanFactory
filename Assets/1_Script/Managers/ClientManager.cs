@@ -1,5 +1,7 @@
+using HumanFactory.Util;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -17,12 +19,18 @@ namespace HumanFactory.Manager
 
 		public void SendMessage()
 		{
+			_ = Task.Run(() => SendMessageAsync());
+		}
+
+		private async void SendMessageAsync()
+		{
+			Debug.Log("SEND MESSAGE");
 			TcpClient client = new TcpClient(Constants.IP_ADDR_INHO, Constants.PORT_VM_TCP);
 			NetworkStream stream = client.GetStream();
 
-			string data = "HELLO SERVER!";
-			byte[] buffer = Encoding.UTF8.GetBytes(data);
-			stream.Write(buffer, 0, buffer.Length);
+			byte[] buffer = Serializer.JsonToByteArray(Application.persistentDataPath + "/PlayData.json");
+			await stream.WriteAsync(buffer, 0, buffer.Length);
+			await stream.FlushAsync();
 
 			buffer = new byte[1024];
 			int bytesRead = stream.Read(buffer, 0, buffer.Length);

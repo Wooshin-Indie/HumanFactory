@@ -1,5 +1,6 @@
 using HumanFactory.Manager;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HumanFactory.Props
 {
@@ -9,6 +10,10 @@ namespace HumanFactory.Props
 
         private bool isBlocked = false;
         public bool IsBlocked { get => isBlocked; }
+        private void Start()
+        {
+            outline.SetActive(false);
+        }
 
         public override void OnPointerClick()
 		{
@@ -31,15 +36,15 @@ namespace HumanFactory.Props
                 return;
             }
 
-			base.OnPointerEnter();
+            outline.SetActive(true);
 		}
 
 		public override void OnPointerExit()
 		{
             if (isBlocked) return;
 
-			base.OnPointerExit();
-		}
+            outline.SetActive(false);
+        }
 
 		public void BlockClick(bool isBlock)
         {
