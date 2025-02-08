@@ -47,8 +47,16 @@ namespace HumanFactory.UI
                 CloseWindow();
                 MapManager.Instance.LoadStage(MapManager.Instance.CurrentStage + 1, 0); // 다음 스테이지 호출
             });
+        }
 
-            
+        private void Update()
+        {
+            //if (!GetComponent<Button>().IsActive()) return;
+
+            //if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    GetComponent<Button>().onClick.Invoke();
+            //}
         }
 
         private Coroutine typeCoroutine = null;
@@ -57,21 +65,21 @@ namespace HumanFactory.UI
         /// </summary>
         public void SetSuccessPopupInfos(GameResultInfo resultInfo)
         {
-            RemoveSuccessPopupContents();
+            RemoveContents();
             InactivateButtons();
 
             if (typeCoroutine != null) StopCoroutine(typeCoroutine);
-            typeCoroutine = StartCoroutine(SuccessPopupWriting(resultInfo, 0.03f));
+            typeCoroutine = StartCoroutine(ContentsWritingEffect(resultInfo, 0.03f));
 
-            this.GetComponent<Button>().enabled = true;
-            this.GetComponent<Button>().onClick.AddListener(() =>
+            GetComponent<Button>().enabled = true;
+            GetComponent<Button>().onClick.AddListener(() =>
             {
                 StopCoroutine(typeCoroutine);
                 typewritingSource?.Stop();
                 handwritingSource?.Stop();
 
-                SkipSuccessPopupUIAnimation(resultInfo);
-                this.GetComponent<Button>().enabled = false;
+                SetContentsAnOnce(resultInfo);
+                GetComponent<Button>().enabled = false;
             });
         }
 
@@ -82,7 +90,7 @@ namespace HumanFactory.UI
         }
 
 
-        private void RemoveSuccessPopupContents()
+        private void RemoveContents() // string 공백으로 초기화
         {
             titleText.text = "";
             areaText.text = "";
@@ -123,7 +131,7 @@ namespace HumanFactory.UI
         private static AudioSource typewritingSource = null;
         private static AudioSource handwritingSource = null;
         private static AudioSource checkboxSource = null; // 체크박스 체크할 때
-        public IEnumerator SuccessPopupWriting(GameResultInfo resultInfo, float deltaTime)
+        public IEnumerator ContentsWritingEffect(GameResultInfo resultInfo, float deltaTime)
         {
             string[] chalTextKeys =
                 {"Success_Chal0Text", "Success_Chal1Text", "Success_Chal2Text",};
@@ -224,7 +232,7 @@ namespace HumanFactory.UI
             ActivateButtons();
         }
 
-        private void SkipSuccessPopupUIAnimation(GameResultInfo resultInfo)
+        private void SetContentsAnOnce(GameResultInfo resultInfo)
         {
             // 타이틀 출력
             titleText.text = resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString() 
