@@ -35,7 +35,7 @@ namespace HumanFactory.Manager
 		private IEnumerator ProgramCycleCoroutine()
 		{
 			InitPerCycle();
-			Debug.Log("CYCLE CUONT: " + cycleCount++);
+			cycleCount++;
 			while (cycleElapsedTime < CycleTime)
 			{
 				ExecutePerFrame(cycleElapsedTime, CycleTime);
@@ -271,8 +271,6 @@ namespace HumanFactory.Manager
 
 		private void InitNewPerson()
 		{
-
-			Debug.Log($"ISPERSON : {isPersonAdd}, idxin : {idxIn}");
 			if (isPersonAdd && idxIn < currentStageInfo.inputs.Length)
 			{
 				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)

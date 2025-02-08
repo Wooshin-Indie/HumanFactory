@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -139,6 +140,7 @@ namespace HumanFactory.Manager
 			isPressed = true;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
 
+			Debug.Log("PRESSED");
 			if (!isActive) return;
 			switch (buildingType)
 			{
@@ -150,6 +152,7 @@ namespace HumanFactory.Manager
 						buttonInfo.linkedGridPos.y);
 					break;
 				case BuildingType.RotateButton:
+					Debug.Log("ROTATE : " + buttonInfo.linkedGridPos.ToString() + ", " + buttonInfo.dirType);
 					MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y,
 						buttonInfo.dirType);
@@ -184,6 +187,7 @@ namespace HumanFactory.Manager
 			data.posY = posY;
 			data.padtype = padType;
 			data.buildingType = buildingType;
+			data.isActive = isActive;
 			data.buttonInfos = new ButtonInfos(buttonInfo);
 
 			return data;
@@ -195,7 +199,11 @@ namespace HumanFactory.Manager
 			posY = data.posY;
 			SetPad(data.padtype);
 			SetBuilding(data.buildingType);
-			if (!data.isActive) ToggleActive(false);
+			if (!data.isActive)
+			{
+				Debug.Log("?? : " + PosX + ", " + PosY);
+				ToggleActive(false);
+			}
 			buttonInfo = new ButtonInfos(data.buttonInfos);
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(BuildingType, isPressed, isActive, buttonInfo.dirType);
 	
