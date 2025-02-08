@@ -1,4 +1,5 @@
 using HumanFactory.Props;
+using HumanFactory.Util;
 using System;
 using System.Linq;
 using Unity.VisualScripting;
@@ -22,12 +23,7 @@ namespace HumanFactory.Manager
             OnGameScene();
             OnSettingScene();
 
-            // HACK - Server 연결 테스트 입니다.
-            if (Input.GetKeyDown(KeyCode.RightBracket))
-            {
-                Managers.Client.SendMessage();
-            }
-        }
+		}
 
         #region MouseInputLock
         private int mouseInputLock = 0;

@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -184,6 +185,7 @@ namespace HumanFactory.Manager
 			data.posY = posY;
 			data.padtype = padType;
 			data.buildingType = buildingType;
+			data.isActive = isActive;
 			data.buttonInfos = new ButtonInfos(buttonInfo);
 
 			return data;
@@ -195,7 +197,14 @@ namespace HumanFactory.Manager
 			posY = data.posY;
 			SetPad(data.padtype);
 			SetBuilding(data.buildingType);
+			if (!data.isActive)
+			{
+				Debug.Log("?? : " + PosX + ", " + PosY);
+				ToggleActive(false);
+			}
 			buttonInfo = new ButtonInfos(data.buttonInfos);
+			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(BuildingType, isPressed, isActive, buttonInfo.dirType);
+	
 		}
 
 		public void ClearGrid()

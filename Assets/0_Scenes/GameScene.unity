@@ -9787,6 +9787,9 @@ MonoBehaviour:
   buttonRect: {fileID: 1754703173}
   tileRect: {fileID: 1150456103}
   prevHoverPos: {x: 0, y: 0}
+  cycleLock: 1
+  testData:
+    stageGridDatas: []
   cycleTime: 1.03
   humanControllers: []
   gameTilemap: {fileID: 1832995144}

@@ -166,6 +166,8 @@ namespace HumanFactory
                 case ExecuteType.None:
                     if (exeType == ExecuteType.None) break;
                     Managers.Input.ReleaseMouseInput();
+                    if (exeType == ExecuteType.Pause) break;
+                    MapManager.Instance.LockCycle();
                     break;
                 case ExecuteType.Play:
                     if (exeType == ExecuteType.Play) break;
@@ -175,7 +177,12 @@ namespace HumanFactory
                     break;
                 case ExecuteType.Pause:
                     if (exeType == ExecuteType.Pause) break;
-                    MapManager.Instance.LockCycle();
+                    if (exeType == ExecuteType.None)
+					{
+						Managers.Input.LockMouseInput();
+						break;
+                    }
+					MapManager.Instance.LockCycle();
                     if (exeType == ExecuteType.Play) break;
                     Managers.Input.LockMouseInput();
                     break;
