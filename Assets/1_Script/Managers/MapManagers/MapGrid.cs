@@ -140,7 +140,6 @@ namespace HumanFactory.Manager
 			isPressed = true;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
 
-			Debug.Log("PRESSED");
 			if (!isActive) return;
 			switch (buildingType)
 			{
@@ -152,7 +151,6 @@ namespace HumanFactory.Manager
 						buttonInfo.linkedGridPos.y);
 					break;
 				case BuildingType.RotateButton:
-					Debug.Log("ROTATE : " + buttonInfo.linkedGridPos.ToString() + ", " + buttonInfo.dirType);
 					MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y,
 						buttonInfo.dirType);
