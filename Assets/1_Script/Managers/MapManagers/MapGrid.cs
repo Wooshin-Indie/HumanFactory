@@ -43,6 +43,9 @@ namespace HumanFactory.Manager
 			building.sprite = null;
 			building.color = Color.white;
 			buttonInfo.linkedGridPos.Set(posX, posY);
+
+			arrow.sortingOrder = 4;
+			building.sortingOrder = 5;
 		}
 
 		public void GetPadParameter(out int dir)
