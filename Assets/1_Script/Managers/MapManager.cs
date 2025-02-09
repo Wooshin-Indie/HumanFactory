@@ -469,7 +469,9 @@ namespace HumanFactory.Manager
                 }
 			}
 
-            isStageEnded = false;
+			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
+			isStageEnded = false;
             isOutputCorrect = true;
 			cycleCount = 0;
 			killCount = 0;

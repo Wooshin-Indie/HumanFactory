@@ -59,7 +59,7 @@ namespace HumanFactory.UI
             //}
         }
 
-        private Coroutine typeCoroutine = null;
+		private Coroutine typeCoroutine = null;
         /// <summary>
         /// 여러가지 정보들을 전달해서 UI에 띄웁니다.
         /// </summary>
@@ -289,5 +289,11 @@ namespace HumanFactory.UI
             stamp.gameObject.SetActive(true);
             stamp.text = "|COMPLETE|"; // TODO - 도전과제 달성 여부에 따라 스탬프 텍스트 바꿔야함
         }
-    }
+
+
+		public override void OnDisable()
+		{
+			GameManagerEx.Instance.ChangeRenderCamera(GameManagerEx.Instance.CurrentCamType);
+		}
+	}
 }
