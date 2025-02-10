@@ -25,8 +25,10 @@ namespace HumanFactory.Manager
         private string buildingReleasedOffPath = "Sprites/Buildings/Released_Off";
         private string effectSpritePath = "Sprites/Effects";
 
-        private string pressedRButtonPath = "Sprites/Buildings/Pressed_On/6_RotateButton";
-        private string releasedRButtonPath = "Sprites/Buildings/Released_On/6_RotateButton";
+        private string pressedOnRButtonPath = "Sprites/Buildings/Pressed_On/6_RotateButton";
+        private string releasedOnRButtonPath = "Sprites/Buildings/Released_On/6_RotateButton";
+        private string pressedOffRButtonPath = "Sprites/Buildings/Pressed_Off/6_RotateButton";
+        private string releasedOffRButtonPath = "Sprites/Buildings/Released_Off/6_RotateButton";
 
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
@@ -37,8 +39,10 @@ namespace HumanFactory.Manager
         private Sprite[] buildingReleasedOnSprites;
         private Sprite[] buildingReleasedOffSprites;
 
-        private Sprite[] pressedRotateButtonSprites;
-        private Sprite[] releasedRotateButtonSprites;
+        private Sprite[] pressedOnRotateButtonSprites;
+        private Sprite[] releasedOnRotateButtonSprites;
+        private Sprite[] pressedOffRotateButtonSprites;
+        private Sprite[] releasedOffRotateButtonSprites;
 
         private Sprite[] effectSprites;
 
@@ -53,8 +57,12 @@ namespace HumanFactory.Manager
 			buildingReleasedOnSprites = Resources.LoadAll<Sprite>(buildingReleasedOnPath);
 			buildingReleasedOffSprites = Resources.LoadAll<Sprite>(buildingReleasedOffPath);
 
-			pressedRotateButtonSprites = Resources.LoadAll<Sprite>(pressedRButtonPath);
-			releasedRotateButtonSprites = Resources.LoadAll<Sprite>(releasedRButtonPath);
+			pressedOnRotateButtonSprites = Resources.LoadAll<Sprite>(pressedOnRButtonPath);
+			releasedOnRotateButtonSprites = Resources.LoadAll<Sprite>(releasedOnRButtonPath);
+			pressedOffRotateButtonSprites = Resources.LoadAll<Sprite>(pressedOffRButtonPath);
+			releasedOffRotateButtonSprites = Resources.LoadAll<Sprite>(releasedOffRButtonPath);
+
+            Debug.Log("LOG : " + pressedOffRotateButtonSprites.Length);
 
             effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
@@ -116,8 +124,16 @@ namespace HumanFactory.Manager
 
             if (type == BuildingType.RotateButton && padType != PadType.DirNone)
             {
-                return (isPressed ? pressedRotateButtonSprites[(int)padType]
-                    : releasedRotateButtonSprites[(int)padType]);
+                if (isActive)
+                {
+                    return (isPressed ? pressedOnRotateButtonSprites[(int)padType]
+                        : releasedOnRotateButtonSprites[(int)padType]);
+                }
+                else
+				{
+					return (isPressed ? pressedOffRotateButtonSprites[(int)padType]
+						: releasedOffRotateButtonSprites[(int)padType]);
+				}
             }
 
             if (isActive)
