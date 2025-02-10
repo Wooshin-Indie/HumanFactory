@@ -7934,7 +7934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.008544922}
+  m_AnchoredPosition: {x: 0, y: 0.0046081543}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &870290299
@@ -9950,7 +9950,7 @@ MonoBehaviour:
   cycleTime: 1.03
   humanControllers: []
   gameTilemap: {fileID: 1832995144}
-  inTile: {fileID: 11400000, guid: 549f36a2d125f1c43a209e208e422c25, type: 2}
+  inTile: {fileID: 11400000, guid: a89ffbbf44295d74da8be69279a3888e, type: 2}
   leftTile: {fileID: 11400000, guid: 54d81379273fdeb41975e622b17b823a, type: 2}
   rightTile: {fileID: 11400000, guid: ecc3fefd05373ed4f9ec024dc47c0540, type: 2}
   belowTile: {fileID: 11400000, guid: 4e546f1d191b7964db66ad0a644a3052, type: 2}

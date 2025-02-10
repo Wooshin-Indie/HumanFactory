@@ -121,12 +121,14 @@ namespace HumanFactory.Manager
 			buildingSprite.sprite = null;
 		}
 
-		public void OnRelease()
+		public void OnRelease(bool isToggled = true)
 		{
 			if (!isPressed) return;
-			isPressed = false;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
-
+			if (isToggled)
+			{
+				isPressed = false;
+				buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
+			}
 
 			if (!isActive) return;
 			switch (buildingType)
@@ -144,12 +146,14 @@ namespace HumanFactory.Manager
 			}
 		}
 
-		public void OnPressed()
+		public void OnPressed(bool isToggled = true)
 		{
 			if (isPressed) return;
-			isPressed = true;
-			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
-
+			if (isToggled)
+			{
+				isPressed = true;
+				buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
+			}
 			if (!isActive) return;
 			switch (buildingType)
 			{
@@ -227,11 +231,14 @@ namespace HumanFactory.Manager
 		public void ToggleActive(bool isIngame)
 		{
 			if (buildingType == BuildingType.None || buildingType == BuildingType.ToggleButton) return;
+			
+			// Toggle 할 버튼이 눌려있음 -> 켜면 누르는걸 해줘야됨, 끄면 Release를 해줘야됨
+			// 하지만 sprite 및 상태는 변경하면 안됨
 
 			if (isIngame && isPressed)
 			{
-				if (isActive) OnRelease();
-				else OnPressed();
+				if (isActive) OnRelease(false);
+				else OnPressed(false);
 			}
 			isActive = !isActive;
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, isPressed, isActive, buttonInfo.dirType);

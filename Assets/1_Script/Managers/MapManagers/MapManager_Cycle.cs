@@ -295,6 +295,7 @@ namespace HumanFactory.Manager
 			{
 				if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y, isMapExpanded)) return;
 				if (programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump
+					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].IsActive
 					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
 				{
 					controller.OnTeleport();
