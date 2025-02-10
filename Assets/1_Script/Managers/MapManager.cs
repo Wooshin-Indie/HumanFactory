@@ -506,5 +506,21 @@ namespace HumanFactory.Manager
 			CycleTime = 1f;
 		}
 
+        public float GetElapsedAnimTime()
+        {
+            for (int i = 0; i < programMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < programMap.GetLength(1); j++)
+                {
+                    if (programMap[i, j].PadType != PadType.DirNone)
+                    {
+                        return programMap[i, j].GetPadAnimNormalizedTime();
+					}
+                }
+            }
+
+            return 0f;
+        }
+
 	}
 }

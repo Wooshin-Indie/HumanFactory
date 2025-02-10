@@ -53,6 +53,11 @@ namespace HumanFactory.Manager
 			dir = (int)padType;
 		}
 
+		public float GetPadAnimNormalizedTime()
+		{
+			return arrowSprite.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime;
+		}
+
 		public void OnClickRotate()
 		{
 			padType = (PadType)(((int)padType + 1) % Enum.GetValues(typeof(PadType)).Length);
@@ -77,6 +82,8 @@ namespace HumanFactory.Manager
 					arrowSprite.color = Constants.COLOR_TRANS;
 					break;
 			}
+			AnimatorStateInfo state = arrowSprite.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+			arrowSprite.GetComponent<Animator>().Play(state.fullPathHash, 0, MapManager.Instance.GetElapsedAnimTime());
 		}
 
 		public void SetPadToOrigin()
