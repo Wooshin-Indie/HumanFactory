@@ -113,6 +113,7 @@ namespace HumanFactory.Manager
 					&& programMap[x, y].BuildingType != BuildingType.ToggleButton
 					&& programMap[x, y].BuildingType != BuildingType.RotateButton) return;
 
+				Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 				isCircuiting = true;
 				circuitingButtonPos = new Vector2Int(x, y);
 			}
@@ -134,6 +135,7 @@ namespace HumanFactory.Manager
 			{
 				case BuildingType.RotateButton:
 					programMap[x, y].OnButtonRotate();
+					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 					break;
 				case BuildingType.Add1:
 				case BuildingType.Sub1:
@@ -141,6 +143,7 @@ namespace HumanFactory.Manager
 				case BuildingType.Double:
 				case BuildingType.Button:
 					programMap[x, y].ToggleActive(false);
+					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 					break;
 				case BuildingType.ToggleButton:
 					break;
@@ -220,17 +223,19 @@ namespace HumanFactory.Manager
 			if (programMap[x, y].BuildingType == BuildingType.None)
 				programMap[x, y].PreviewBuilding(type);
 			prevHoverPos.Set(x, y);
-
 		}
+
 		public void OnClickMapGridInBuildingMode(int x, int y, BuildingType type)
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
+			Managers.Sound.PlaySfx(SFXType.Button_Put);
 			programMap[x, y].SetBuilding(type);
 			Managers.Input.OnInputModeChanged(InputMode.None);
 		}
 		public void OnRightClickMapGridInBuildingMode(int x, int y)
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
+			Managers.Sound.PlaySfx(SFXType.Button_Remove, .8f);
 			programMap[x, y].SetBuilding(BuildingType.None);
 			programMap[x, y].ButtonInfo = new ButtonInfos(new Vector2Int(x, y));
 		}

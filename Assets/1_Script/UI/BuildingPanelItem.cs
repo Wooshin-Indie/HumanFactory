@@ -64,8 +64,8 @@ namespace HumanFactory.UI
 
         private bool isSelected = false;
         private void OnSelected()
-        {
-            isSelected = true;
+		{
+			isSelected = true;
             GetComponent<Image>().sprite = selectedSprite;
         }
 

@@ -15,6 +15,6 @@ public class Gunner : MonoBehaviour
 
     public void TriggerGunSound()
     {
-        Managers.Sound.PlaySfx(SFXType.Shot, 0.5f, 1.2f);
+        Managers.Sound.PlaySfx(SFXType.Shot, 0.3f, 1.2f);
     }
 }

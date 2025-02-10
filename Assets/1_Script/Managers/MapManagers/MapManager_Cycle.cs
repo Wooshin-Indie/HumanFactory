@@ -168,7 +168,6 @@ namespace HumanFactory.Manager
 		/// </summary>
 		private bool ExecuteAtTwoThirds()
 		{
-
 			foreach (var controller in humanControllers)
 			{
 				if (!CheckBoundary(controller.TargetPos.x, controller.TargetPos.y, isMapExpanded)) continue;

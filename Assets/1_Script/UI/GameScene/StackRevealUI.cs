@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -56,6 +57,7 @@ namespace HumanFactory.UI
 				}
 				else
 				{
+					Managers.Sound.PlaySfx(SFXType.Beep);
 					values[idx].GetComponent<Image>().color = Color.red;
 					values[idx].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.red;
 				}

@@ -19,6 +19,7 @@ namespace HumanFactory.UI
             bindingButton.onClick.AddListener(() =>
             {
                 OnStartBinding();
+				Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
 				Managers.Input.StartBinding(actionEnum, OnEndBinding);
             });
 		}

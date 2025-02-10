@@ -87,7 +87,14 @@ namespace HumanFactory
         Stamp,
         Writing,
         Typewriting,
-        Checkbox
+        Checkbox,
+        ButtonPress,
+        Beep,
+        UI_Click,
+        Wind,
+        Zoom,
+        Button_Put,
+        Button_Remove
     }
 
     public enum InputMode   // InputMode in GameScene

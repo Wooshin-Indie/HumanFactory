@@ -91,7 +91,7 @@ namespace HumanFactory.UI
                 currentSaveFileIndex = value;
                 MapManager.Instance.LoadStage(CurrentSelectedIndex, currentSaveFileIndex);
 
-                for (int i = 0; i < saveButtons.Count; i++)
+				for (int i = 0; i < saveButtons.Count; i++)
                 {
                     saveButtons[i].GetComponent<UIItemBase>().OnSelected(i == currentSaveFileIndex);
                 }
@@ -158,8 +158,9 @@ namespace HumanFactory.UI
                 chapters.Add(Instantiate(stagePanelPrefab, content));
                 chapters[idx].GetComponent<UIOnClickExpand>().SetChapterId(idx);
                 chapters[idx].GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    OnClickChapters(idx);
+				{
+					Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
+					OnClickChapters(idx);
                 });
             }
 
@@ -176,8 +177,9 @@ namespace HumanFactory.UI
                 stages.Add(Instantiate(stagePanelPrefab, content));
                 stages[idx].GetComponent<UIOnClickExpand>().SetStageId(stageIdx);
                 stages[idx].GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    OnClickStages(idx, stageIdx);
+				{
+					Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
+					OnClickStages(idx, stageIdx);
                 });
             }
             currentExpandedPanel = -1;

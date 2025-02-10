@@ -98,6 +98,7 @@ namespace HumanFactory.Manager
 		{
             if (!isMapExpanded) return;
 
+            Managers.Sound.PlaySfx(SFXType.Zoom);
             if (isMapZoomed)
 			{
 				isMapZoomed = false;

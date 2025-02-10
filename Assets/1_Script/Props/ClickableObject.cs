@@ -18,8 +18,7 @@ namespace HumanFactory.Props
 
         public override void OnPointerClick()
         {
-            OnPointerExit();
-
+            base.OnPointerClick();
             Managers.Input.LockMouseInput();
 
             Vector3 pos = transform.localPosition;
@@ -30,8 +29,9 @@ namespace HumanFactory.Props
         }
 
         public override void OnPointerEnter()
-        {
-            GetComponent<SpriteRenderer>().sprite = hilightedSprite;
+		{
+			base.OnPointerEnter();
+			GetComponent<SpriteRenderer>().sprite = hilightedSprite;
         }
 
         public override void OnPointerExit()

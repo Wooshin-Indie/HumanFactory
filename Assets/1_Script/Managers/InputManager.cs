@@ -149,6 +149,7 @@ namespace HumanFactory.Manager
 
         /* Input Modules */
 
+        private ClickableBase lastScreen = null;
         private ClickableBase prevScreen = null;
         private void InteractClickableObject()
         {
@@ -158,7 +159,12 @@ namespace HumanFactory.Manager
                 && IsMouseInputEnabled())
             {
                 prevScreen = hit.transform.GetComponent<ClickableBase>();
-                prevScreen?.OnPointerEnter();
+
+				if (lastScreen == null)
+				{
+					prevScreen?.OnPointerEnter();
+					lastScreen = prevScreen;
+				}
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -168,7 +174,8 @@ namespace HumanFactory.Manager
             else
             {
                 prevScreen?.OnPointerExit();
-            }
+				lastScreen = prevScreen = null;
+			}
         }
 
         private void ClickOutScene()

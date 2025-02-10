@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,11 +24,11 @@ namespace HumanFactory.UI
 				});
 			}
 
-			OnButtonClick(0);
 		}
 
 		private void OnButtonClick(int index)
 		{
+			Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
 			for (int i = 0; i < settingButtons.Count; i++)
 			{
 				settingButtons[i].GetComponent<UIItemBase>().OnSelected(i == index);

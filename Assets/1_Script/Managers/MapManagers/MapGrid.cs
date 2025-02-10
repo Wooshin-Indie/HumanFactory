@@ -148,7 +148,11 @@ namespace HumanFactory.Manager
 
 		public void OnPressed(bool isToggled = true)
 		{
+			if (buildingType == BuildingType.None) return;
 			if (isPressed) return;
+
+			Managers.Sound.PlaySfx(SFXType.ButtonPress);
+
 			if (isToggled)
 			{
 				isPressed = true;

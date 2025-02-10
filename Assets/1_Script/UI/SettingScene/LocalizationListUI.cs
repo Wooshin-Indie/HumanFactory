@@ -1,3 +1,4 @@
+using HumanFactory.Manager;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -26,8 +27,9 @@ namespace HumanFactory.UI
 		}
 
 		private void OnClickItem(int idx)
-        {
-            for (int i = 0; i < items.Count; i++)
+		{
+			Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
+			for (int i = 0; i < items.Count; i++)
             {
                 items[i].OnSelected(i == idx);
 			}

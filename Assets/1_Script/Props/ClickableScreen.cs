@@ -31,12 +31,13 @@ namespace HumanFactory.Props
 		public override void OnPointerEnter()
 		{
             if (isBlocked)
-            {
-                OnPointerExit();
+			{
+				OnPointerExit();
                 return;
             }
 
-            outline.SetActive(true);
+			base.OnPointerEnter();
+			outline.SetActive(true);
 		}
 
 		public override void OnPointerExit()
