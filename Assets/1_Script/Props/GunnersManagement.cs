@@ -132,7 +132,7 @@ namespace HumanFactory.Controller
 			{
 				for (int i = 0; i < originPos.Length; i++)
 				{
-					gunners[i].Shoot(i / 2 != 0);
+					gunners[i].Shoot(i % 2 != 0);
 				}
 			}
 			else

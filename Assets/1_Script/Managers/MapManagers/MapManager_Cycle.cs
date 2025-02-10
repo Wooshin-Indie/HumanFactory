@@ -18,6 +18,8 @@ namespace HumanFactory.Manager
 		private List<Func<bool>> secFuncs = new List<Func<bool>>();
 		private float cycleElapsedTime = 0f;
 
+		public Action<float> OnCycleTimeChanged { get; set; }
+
 		/** Result Variables **/
 		int cycleCount = 0;
 		int killCount = 0;
@@ -27,6 +29,7 @@ namespace HumanFactory.Manager
 			get => cycleTime;
 			set
 			{
+				OnCycleTimeChanged?.Invoke(value);
 				gunnersManagement.SetCycleTime(value);
 				cycleTime = value;
 			}
@@ -292,6 +295,7 @@ namespace HumanFactory.Manager
 			{
 				if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y, isMapExpanded)) return;
 				if (programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump
+					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].IsActive
 					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
 				{
 					controller.OnTeleport();

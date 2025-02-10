@@ -121,6 +121,7 @@ namespace HumanFactory.Manager
 
         [SerializeField] private Vector2Int mapSize;
         [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private GameObject spritePrefab;
         [SerializeField] private GameObject humanPrefab;
 
         [Header("Circuit")]
@@ -142,7 +143,7 @@ namespace HumanFactory.Manager
                 {
                     programMap[i, j] = new MapGrid(i, j, 
                         Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>(),
-                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
+                        Instantiate(spritePrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
                         );
                 }
             }
@@ -209,8 +210,6 @@ namespace HumanFactory.Manager
 
 
 		}
-        [Header("TEST")]
-		[SerializeField] public GameplayData testData;
 
 		public MapGrid GetMapGrid(int x, int y)
         {
@@ -359,7 +358,11 @@ namespace HumanFactory.Manager
         [Header("Tilemap")]
         [SerializeField] private Tilemap gameTilemap;
         [SerializeField] private Tile inTile;
-        [SerializeField] private Tile outTile;
+        [SerializeField] private Tile leftTile;
+        [SerializeField] private Tile rightTile;
+        [SerializeField] private Tile belowTile;
+        [SerializeField] private Tile leftBelowTile;
+        [SerializeField] private Tile rightBelowTile;
         [SerializeField] private int tilemapMargin;
 
 
@@ -369,7 +372,7 @@ namespace HumanFactory.Manager
             {
                 for(int j=-tilemapMargin;j < mapSize.y *2 + mapInterval.y + tilemapMargin; j++)
                 {
-                    gameTilemap.SetTile(new Vector3Int(i, j, 0), outTile);
+                    gameTilemap.SetTile(new Vector3Int(i, j, 0), null);
                 }
             }
         }
@@ -396,20 +399,44 @@ namespace HumanFactory.Manager
 							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0), inTile);
 						}
 					}
+                    for (int i = 0; i < mapSize.y; i++)
+                    {
+                        gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] + i, 0), leftTile);
+                        gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] + i, 0), rightTile);
+					}
+					for (int i = 0; i < mapSize.x; i++)
+					{
+                        gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] - 1, 0), belowTile);
+					}
+                    gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), leftBelowTile);
+                    gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), rightBelowTile);
 				}
 			}
             else
 			{
 				for (int t = 0; t < mapOffsets.GetLength(0); t++)
 				{
-					for (int i = 0; i < mapSize.x; i++)
+					for (int i = 0; i <= mapSize.x; i++)
 					{
 						for (int j = 0; j < mapSize.y; j++)
 						{
 							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0),
-								(t == 0) ? inTile : outTile);
+								(t == 0) ? inTile : null);
 						}
+
 					}
+
+					for (int i = 0; i < mapSize.y; i++)
+					{
+						gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] + i, 0), (t == 0) ? leftTile : null);
+						gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] + i, 0), (t == 0) ? rightTile : null);
+					}
+					for (int i = 0; i < mapSize.x; i++)
+					{
+						gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] - 1, 0), (t == 0) ? belowTile : null);
+					}
+					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), (t == 0) ? leftBelowTile : null);
+					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), (t == 0) ? rightBelowTile : null);
 				}
 			}
         }
@@ -469,7 +496,9 @@ namespace HumanFactory.Manager
                 }
 			}
 
-            isStageEnded = false;
+			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
+			isStageEnded = false;
             isOutputCorrect = true;
 			cycleCount = 0;
 			killCount = 0;
@@ -477,6 +506,22 @@ namespace HumanFactory.Manager
 			idxOut = 0;
 			CycleTime = 1f;
 		}
+
+        public float GetElapsedAnimTime()
+        {
+            for (int i = 0; i < programMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < programMap.GetLength(1); j++)
+                {
+                    if (programMap[i, j].PadType != PadType.DirNone)
+                    {
+                        return programMap[i, j].GetPadAnimNormalizedTime();
+					}
+                }
+            }
+
+            return 0f;
+        }
 
 	}
 }

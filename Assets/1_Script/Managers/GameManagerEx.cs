@@ -1,5 +1,5 @@
-using HumanFactory.UI;
 using HumanFactory.Manager;
+using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace HumanFactory
 {
-    public class GameManagerEx : MonoBehaviour
+	public class GameManagerEx : MonoBehaviour
     {
         #region Singleton
         static GameManagerEx s_instance;
@@ -114,12 +114,13 @@ namespace HumanFactory
 		{
 			SetScanlineMaterial(type != CameraType.Main);
 
-            for (int i = 0; i < raycasters.Count; i++)
+			for (int i = 0; i < raycasters.Count; i++)
             {
                 if (raycasters[i] == null) continue;
 
                 if (i == (int)type)
                 {
+
                     raycasters[i].enabled = true;
                 }
                 else raycasters[i].enabled = false;
@@ -139,8 +140,9 @@ namespace HumanFactory
         [SerializeField] private SuccessPopupUI successUI;
 
         public void OnStageSuccess(GameResultInfo info)
-        {
-            successUI.gameObject.SetActive(true);
+		{
+			GameManagerEx.Instance.BlockAllUIs();
+			successUI.gameObject.SetActive(true);
             successUI.SetSuccessPopupInfos(info);
             Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);
         }
@@ -156,6 +158,7 @@ namespace HumanFactory
 
         [SerializeField] private ExecuteType exeType = ExecuteType.None;
         public ExecuteType ExeType { get => exeType; }
+        public Action<ExecuteType> OnExeTypeChange { get; set; }
 
         public void SetExeType(ExecuteType type)
         {
@@ -188,7 +191,8 @@ namespace HumanFactory
                     break;
             }
             exeType = type;
-        }
+            OnExeTypeChange?.Invoke(type);
+		}
 
         public void BlockAllUIs()
 		{
