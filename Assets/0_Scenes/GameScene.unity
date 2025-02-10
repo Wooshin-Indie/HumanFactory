@@ -4855,7 +4855,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.52, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.500673, y: 0}
+  m_AnchoredPosition: {x: -7.5006876, y: 0}
   m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &573258331
@@ -7934,7 +7934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0032806396}
+  m_AnchoredPosition: {x: 0, y: 0.008544922}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &870290299
@@ -9940,7 +9940,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSize: {x: 5, y: 5}
-  arrowPrefab: {fileID: 4782348956925915108, guid: 8e5c2de190d85d248b35fda4a3fe67cf, type: 3}
+  arrowPrefab: {fileID: 7031241753299861200, guid: effab72efbb9e464f97b170ee16ecf82, type: 3}
+  spritePrefab: {fileID: 4782348956925915108, guid: 8e5c2de190d85d248b35fda4a3fe67cf, type: 3}
   humanPrefab: {fileID: 6113738478267193543, guid: 35f6cc5f56be0b444a2b11c7d81bf678, type: 3}
   buttonRect: {fileID: 1754703173}
   tileRect: {fileID: 1150456103}
@@ -9950,11 +9951,11 @@ MonoBehaviour:
   humanControllers: []
   gameTilemap: {fileID: 1832995144}
   inTile: {fileID: 11400000, guid: 549f36a2d125f1c43a209e208e422c25, type: 2}
-  leftTile: {fileID: 11400000, guid: 2a1cb0c2a3c66d743b0c79ffc321ef64, type: 2}
-  rightTile: {fileID: 11400000, guid: 2a1cb0c2a3c66d743b0c79ffc321ef64, type: 2}
-  belowTile: {fileID: 11400000, guid: 2a1cb0c2a3c66d743b0c79ffc321ef64, type: 2}
-  leftBelowTile: {fileID: 11400000, guid: f948f40b7b025984790bc1417379f2f4, type: 2}
-  rightBelowTile: {fileID: 11400000, guid: f948f40b7b025984790bc1417379f2f4, type: 2}
+  leftTile: {fileID: 11400000, guid: 54d81379273fdeb41975e622b17b823a, type: 2}
+  rightTile: {fileID: 11400000, guid: ecc3fefd05373ed4f9ec024dc47c0540, type: 2}
+  belowTile: {fileID: 11400000, guid: 4e546f1d191b7964db66ad0a644a3052, type: 2}
+  leftBelowTile: {fileID: 11400000, guid: 021878c2e8686394aae5c03515773af8, type: 2}
+  rightBelowTile: {fileID: 11400000, guid: d4ddcb0cfc03b7b42a412a8ce1d59ec1, type: 2}
   tilemapMargin: 0
 --- !u!114 &1056581399
 MonoBehaviour:
@@ -11327,7 +11328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0025024414}
+  m_AnchoredPosition: {x: 0, y: -0.0018920898}
   m_SizeDelta: {x: -530.98, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1256118437

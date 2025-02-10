@@ -121,6 +121,7 @@ namespace HumanFactory.Manager
 
         [SerializeField] private Vector2Int mapSize;
         [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private GameObject spritePrefab;
         [SerializeField] private GameObject humanPrefab;
 
         [Header("Circuit")]
@@ -142,7 +143,7 @@ namespace HumanFactory.Manager
                 {
                     programMap[i, j] = new MapGrid(i, j, 
                         Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>(),
-                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
+                        Instantiate(spritePrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
                         );
                 }
             }
