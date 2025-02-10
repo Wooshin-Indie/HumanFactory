@@ -50,6 +50,8 @@ namespace HumanFactory
             MapManager.Instance.IdxIn = 0;
             MapManager.Instance.IdxOut = 0;
 
+			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
+				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
         }
 
@@ -59,6 +61,5 @@ namespace HumanFactory
             MapManager.Instance.AddPersonWithOneCycling();
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
         }
-
-	}
+    }
 }
