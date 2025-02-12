@@ -37,6 +37,7 @@ namespace HumanFactory.Manager
 
 		private IEnumerator ProgramCycleCoroutine()
 		{
+
 			InitPerCycle();
 			cycleCount++;
 			while (cycleElapsedTime < CycleTime)
@@ -44,6 +45,11 @@ namespace HumanFactory.Manager
 				ExecutePerFrame(cycleElapsedTime, CycleTime);
 				yield return null;
 				cycleElapsedTime += Time.deltaTime;
+			}
+
+			for (int i = 0; i < flags.Count; i++)
+			{
+				if (!flags[i]) flags[i] = secFuncs[i].Invoke();
 			}
 
 			FinPerCycle();
@@ -63,11 +69,11 @@ namespace HumanFactory.Manager
 
 
 		}
-		public void AddPersonWith1x()
+		public void AddPersonWith1x(float cycleTime = 1f)
 		{
 			cycleCount = killCount = 0;
 			float prev = CycleTime;
-			CycleTime = 1f;
+			CycleTime = cycleTime;
 			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 			if (idxIn == 0)
@@ -122,8 +128,6 @@ namespace HumanFactory.Manager
 			{
 				if (flags[i] || !(cycleElapsedTime > CycleTime * timeSections[i])) continue;
 				flags[i] = secFuncs[i].Invoke();
-				// Action에 대해서 이친구는 리턴값이 없는 함수를 저장하는 자료형
-				// bool return 을 해야해 -> Func<T1, T2, T3> 
 			}
 
 			foreach (var controller in humanControllers)
@@ -252,22 +256,23 @@ namespace HumanFactory.Manager
 		}
 
 
-		private bool isStageEnded = true;
 		private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
 		{
 			if (GameManagerEx.Instance.ExeType == ExecuteType.None ||
 				humanControllers.Count != 0) return;
 
-			if (isStageEnded) return;
-			isStageEnded = true;
+			// BatchMode일 때, 사람들의 전의 상태와 똑같다면 실패로 판단하고 싸이클 끊기
+
+			if (Application.isBatchMode && IsSameWithPrevHumanPos())
+			{
+				Debug.Log("PREV HUMAN POS");
+				OnFailure();
+				return;
+			}
 
 			if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
 			{
 				OnSuccess();
-			}
-			else
-			{
-				OnFailure();
 			}
 		}
 
@@ -284,7 +289,6 @@ namespace HumanFactory.Manager
 					.GetComponent<CameraBase>().CctvUI?.InOut.SetValue(idxIn, true);
 				idxIn++;
 				isPersonAdd = false;
-				isStageEnded = false;
 			}
 		}
 
@@ -364,9 +368,10 @@ namespace HumanFactory.Manager
 							humanControllers[i].SubByButton();
 							break;
 						case BuildingType.Double:
-
+							 
 							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone ||
-								(programMap[tmpV.x, tmpV.y].PadType == programMap[humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y].PadType))
+								(programMap[tmpV.x, tmpV.y].PadType == (CheckBoundary(humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y, isMapExpanded)
+								? programMap[humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y].PadType : PadType.DirUp)))
 							{  // 경로가 겹치는 경우 바로 두배
 								humanControllers[i].HumanNum *= 2;
 							}
@@ -382,5 +387,28 @@ namespace HumanFactory.Manager
 				}
 			}
 		}
+		private HashSet<Vector2Int> prevHumansPos = new HashSet<Vector2Int>();
+
+		private bool IsSameWithPrevHumanPos()
+		{
+			HashSet<Vector2Int> currentPosSet = new HashSet<Vector2Int>();
+
+			foreach (var human in humanControllers)
+			{
+				currentPosSet.Add(human.CurrentPos);
+			}
+
+			if (prevHumansPos.Count == 0)
+			{
+				prevHumansPos = new HashSet<Vector2Int>(currentPosSet);
+				return false;
+			}
+
+			bool isSame = prevHumansPos.SetEquals(currentPosSet);
+
+			prevHumansPos = new HashSet<Vector2Int>(currentPosSet);
+			return isSame;
+		}
+
 	}
 }

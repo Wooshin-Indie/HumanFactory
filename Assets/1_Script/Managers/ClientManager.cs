@@ -19,20 +19,19 @@ namespace HumanFactory.Manager
 
 		public void SendMessage()
 		{
-			_ = Task.Run(() => SendMessageAsync());
+			_ = Task.Run(() => SendMessageAsync(Serializer.JsonToByteArray(new ClientSimulationData())));
 		}
 
-		private async void SendMessageAsync()
+		private async void SendMessageAsync(byte[] buff)
 		{
 			Debug.Log("SEND MESSAGE");
 			TcpClient client = new TcpClient(Constants.IP_ADDR_INHO, Constants.PORT_VM_TCP);
 			NetworkStream stream = client.GetStream();
 
-			byte[] buffer = Serializer.JsonToByteArray(Application.persistentDataPath + "/PlayData.json");
-			await stream.WriteAsync(buffer, 0, buffer.Length);
+			await stream.WriteAsync(buff, 0, buff.Length);
 			await stream.FlushAsync();
 
-			buffer = new byte[1024];
+			byte[] buffer = new byte[1024];
 			int bytesRead = stream.Read(buffer, 0, buffer.Length);
 			string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 			Debug.Log("RESPONSE : " + response);

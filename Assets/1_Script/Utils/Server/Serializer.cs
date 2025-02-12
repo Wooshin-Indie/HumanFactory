@@ -15,6 +15,12 @@ namespace HumanFactory.Util
 			return Zip(jsonData.Trim());
 		}
 
+		public static byte[] JsonToByteArray<T>(T data)
+		{
+			string jsonData = JsonUtility.ToJson(data);
+			return Zip(jsonData.Trim());
+		}
+
 		public static T ByteArrayToObject<T>(byte[] bytes)
 		{
 			string jsonData = Unzip(bytes);

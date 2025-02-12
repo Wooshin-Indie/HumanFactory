@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -30,9 +29,14 @@ namespace HumanFactory.Server
 		}
 		#endregion
 
+		private Simulator simulator;
+		public Simulator ServerSimulator { get => simulator; }
+
 		private void Awake()
 		{
 			Init();
+			simulator = GetComponent<Simulator>();
+			StartCoroutine(simulator.RunSimulation());
 			Task.Run(() => StartServer());
 		}
 
@@ -61,13 +65,15 @@ namespace HumanFactory.Server
 
 				while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
 				{
-					GameplayData data = Serializer.ByteArrayToObject<GameplayData>(buffer);
+					ClientSimulationData data = Serializer.ByteArrayToObject<ClientSimulationData>(buffer);
 					Debug.Log(data.ToString());
 
-					string result = await RunSimulation();
-					byte[] sendBuff = Encoding.UTF8.GetBytes(result);
+					// Simulator에 데이터 넣기
+					simulator.PushDatas(data);
+
+					ServerResultData result = new ServerResultData();
+					byte[] sendBuff = Serializer.JsonToByteArray(result);
 					await stream.WriteAsync(sendBuff, 0, sendBuff.Length);
-					DebugServer.Log("Transmit: " + result);
 				}
 			}
 			catch(Exception ex)
@@ -80,9 +86,5 @@ namespace HumanFactory.Server
 			}
 		}
 
-		private async Task<String> RunSimulation()
-		{
-			return "Echo";
-		}
 	}
 }

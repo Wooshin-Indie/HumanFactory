@@ -62,8 +62,6 @@ namespace HumanFactory.Manager
 			pressedOffRotateButtonSprites = Resources.LoadAll<Sprite>(pressedOffRButtonPath);
 			releasedOffRotateButtonSprites = Resources.LoadAll<Sprite>(releasedOffRButtonPath);
 
-            Debug.Log("LOG : " + pressedOffRotateButtonSprites.Length);
-
             effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
 

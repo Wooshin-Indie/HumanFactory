@@ -1,4 +1,5 @@
 using HumanFactory.Manager;
+using HumanFactory.Server;
 using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
@@ -139,18 +140,34 @@ namespace HumanFactory
 
         [SerializeField] private SuccessPopupUI successUI;
 
+
+
         public void OnStageSuccess(GameResultInfo info)
 		{
-			GameManagerEx.Instance.BlockAllUIs();
-			successUI.gameObject.SetActive(true);
-            successUI.SetSuccessPopupInfos(info);
-            Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);
+            if (!Application.isBatchMode)
+			{
+				GameManagerEx.Instance.BlockAllUIs();
+				successUI.gameObject.SetActive(true);
+				successUI.SetSuccessPopupInfos(info);
+				Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);
+			}
+            else
+            {
+                ServerManager.Instance.ServerSimulator.OnSimulationEnd(info, true);
+            }
         }
 
-        public void OnStageFail(int stageId)
+        public void OnStageFail(GameResultInfo info)
         {
-            // TODO - 비상벨 울리기 : serializeField로 받아둬야됨
-            // 모두 다 초기화하기 - 
+            if (!Application.isBatchMode)
+            {
+                // 배치모드가 아니면 Fail할 경우가 없음
+                return;
+            }
+            else
+			{
+				ServerManager.Instance.ServerSimulator.OnSimulationEnd(info, false);
+			}
         }
 
 

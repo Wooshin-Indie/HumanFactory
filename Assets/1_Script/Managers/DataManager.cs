@@ -5,8 +5,9 @@ using System;
 namespace HumanFactory.Manager
 {
     /*
-     * persistentDataPath : C:/Users/[UserName]/AppData/LocalLow/DefaultCompany/[ProjectName]
-     * 
+     * persistentDataPath   : C:/Users/[UserName]/AppData/LocalLow/DefaultCompany/[ProjectName] (Windows)
+     *                      : /home/[UserName]/.config/unity3d/DefaultCompany/[ProjectName]     (Ubuntu)
+     *                      
      * 1. DataManager는 데이터를 저장/로드하기 위한 매니저입니다.
      * 2. 이 경로는 런타임에 읽고 쓰기 가능한 경로입니다. (해당 경로 없으면 로그 찍어보세요)
      * 3. 해당 데이터들은 git이 추적하지 않으므로 각자 관리하셔야 합니다. (오류나면 경로안에 있는 데이터 지우시면 됩니다)

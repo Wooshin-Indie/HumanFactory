@@ -191,9 +191,6 @@ namespace HumanFactory.Manager
 			if (Input.GetKeyDown(KeyCode.RightBracket))
 			{
 				Managers.Client.SendMessage();
-
-				byte[] buffer = Serializer.JsonToByteArray(Application.persistentDataPath + "/PlayData.json");
-                Debug.Log("BUFFER LENGTH :" + buffer);
 			}
 
 			if (!isCycleRunning)
@@ -258,6 +255,7 @@ namespace HumanFactory.Manager
 
         private void OnSuccess()
         {
+            Debug.Log("ON SUCCESS");
             int btnCount = 0;
 
             for (int i = 0; i < mapSize.x * 2 + mapInterval.x; i++)
@@ -284,10 +282,18 @@ namespace HumanFactory.Manager
         private void OnFailure()
         {
             Debug.Log("FAILURE");
+
+			GameResultInfo info = new GameResultInfo(currentChapter, currentStage, currentSaveIdx,
+				cycleCount, -1, killCount);
+			GameManagerEx.Instance.OnStageFail(info);
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
-			idxOut = 0;
-            isOutputCorrect = true;
-        }
+
+			ClearHumans();
+			isOutputCorrect = true;
+			isPersonAdd = false;
+			isOneCycling = false;
+			CycleTime = 1f;
+		}
 
         public void RotatePadDir(int x, int y, PadType type)
         {
@@ -322,18 +328,23 @@ namespace HumanFactory.Manager
 
 
         public void LoadStage(int stageId, int saveIdx)
-        {
-            /** Load Datas **/
-            currentStage = stageId;
-            currentSaveIdx = saveIdx;
+		{
+			currentSaveIdx = saveIdx;
+            LoadStage(stageId, Managers.Data.GetGridDatas(stageId, saveIdx));
+        }
+
+        public void LoadStage(int stageId, StageSaveData saveData)
+		{
+			/** Load Datas **/
+			currentStage = stageId;
 			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
             /** Set Datas **/
             GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
 			isMapExpanded = currentStageInfo.isExpanded;
 			SetTilemap(isMapExpanded);
-            gunnersManagement.LoadGunners(isMapExpanded);
-			CurrentMapIdx = 0; 
+			gunnersManagement.LoadGunners(isMapExpanded);
+			CurrentMapIdx = 0;
 
 			Debug.Log("LOAD STAGE");
 
@@ -341,20 +352,19 @@ namespace HumanFactory.Manager
 			{
 				for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
 				{
-                    programMap[i, j].ClearGrid();
+					programMap[i, j].ClearGrid();
 				}
 			}
 
-			StageSaveData tmpGridData = Managers.Data.GetGridDatas(stageId, saveIdx);
-            if (tmpGridData == null) return;
+			if (saveData == null) return;
 
-            foreach (var data in tmpGridData.gridDatas)
-            {
-                programMap[data.posX, data.posY].SetStageGridInfo(data);
-            }
+			foreach (var data in saveData.gridDatas)
+			{
+				programMap[data.posX, data.posY].SetStageGridInfo(data);
+			}
 
-            ClearHumans();
-        }
+			ClearHumans();
+		}
 
         [Header("Tilemap")]
         [SerializeField] private Tilemap gameTilemap;
@@ -499,7 +509,6 @@ namespace HumanFactory.Manager
 
 			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
 				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
-			isStageEnded = false;
             isOutputCorrect = true;
 			cycleCount = 0;
 			killCount = 0;

@@ -14,10 +14,7 @@ namespace HumanFactory.Manager
 				buttonRect.transform.position = new Vector3(circuitingButtonPos.x,
 					circuitingButtonPos.y, Constants.HUMAN_POS_Z);
 				tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
-				if (circuitingButtonPos.x != x || circuitingButtonPos.y != y)
-					tileRect.gameObject.SetActive(true);
-				else
-					tileRect.gameObject.SetActive(false);
+				tileRect.gameObject.SetActive(true);
 
 				return BuildingType.None;
 			}
@@ -94,8 +91,6 @@ namespace HumanFactory.Manager
 
 			if (isCircuiting)   // 회로작업 중이면 -> 클릭했을 때 전에 클릭했던 버튼과 연결 
 			{
-				if (circuitingButtonPos.x == x && circuitingButtonPos.y == y) return;
-
 				if (IsAbleToLink(circuitingButtonPos, new Vector2Int(x, y)))
 				{
 					programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonInfo.linkedGridPos

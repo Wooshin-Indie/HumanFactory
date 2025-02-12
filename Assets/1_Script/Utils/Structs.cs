@@ -204,22 +204,59 @@ namespace HumanFactory
     public class GameplayData 
     {
         public StageGridDatas[] stageGridDatas;
-
-		public override string ToString()
-		{
-            foreach (var data in stageGridDatas)
-            {
-                foreach(var item in data.saveDatas)
-                {
-                    foreach (var grid in item.gridDatas)
-                    {
-                        Debug.Log($"GRID : ({grid.posX}, {grid.posY}), {grid.padtype}, {grid.buildingType}");
-                    }
-                }
-            }
-            return base.ToString();
-		}
 	}
 
-	#endregion
+    #endregion
+
+    #region Server Containers
+
+    /// <summary>
+    /// Client에서 서버에 보낼 시뮬레이션 데이터
+    /// </summary>
+    public class ClientSimulationData
+    {
+        public int userId = 0;
+        public int stageIdx = 0;
+        public StageSaveData saveData;
+    }
+
+    public class SimulationResult
+    {
+        public int userId = 0;
+        public int stageIdx = 0;
+        public int cycleCount = -1;
+        public int buttonCount = -1;
+        public int killCount = -1;
+
+        public SimulationResult(int uid, GameResultInfo info)
+        {
+            userId = uid;
+            stageIdx = info.StageIdx;
+            cycleCount = info.CycleCount;
+            buttonCount = info.ButtonCount;
+            killCount = info.KillCount;
+        }
+
+        public bool IsSuccess()
+        {
+            return (cycleCount >= 0 && buttonCount >= 0 && killCount >= 0);
+        }
+    }
+
+    /// <summary>
+    /// 서버에서 클라이언트로 보낼 결과 데이터
+    /// </summary>
+    public class ServerResultData
+    {
+        NormalizedResultData[] datas;
+    }
+
+    public class NormalizedResultData
+	{
+		public int minV;
+		public int maxV;
+		public float[] graphs;
+    }
+    
+    #endregion
 }
