@@ -221,7 +221,6 @@ namespace HumanFactory.Manager
 			}
 			buttonInfo = new ButtonInfos(data.buttonInfos);
 			buildingSprite.sprite = Managers.Resource.GetBuildingSprite(BuildingType, isPressed, isActive, buttonInfo.dirType);
-	
 		}
 
 		public void ClearGrid()
