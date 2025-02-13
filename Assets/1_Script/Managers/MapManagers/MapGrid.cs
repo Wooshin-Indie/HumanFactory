@@ -217,7 +217,6 @@ namespace HumanFactory.Manager
 			SetBuilding(data.buildingType);
 			if (!data.isActive)
 			{
-				Debug.Log("?? : " + PosX + ", " + PosY);
 				ToggleActive(false);
 			}
 			buttonInfo = new ButtonInfos(data.buttonInfos);

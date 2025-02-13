@@ -1,8 +1,6 @@
 using HumanFactory.Util;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace HumanFactory.Manager
 {
@@ -24,7 +22,6 @@ namespace HumanFactory.Manager
 
 		private async void SendMessageAsync(byte[] buff)
 		{
-			Debug.Log("SEND MESSAGE");
 			TcpClient client = new TcpClient(Constants.IP_ADDR_INHO, Constants.PORT_VM_TCP);
 			NetworkStream stream = client.GetStream();
 
@@ -33,8 +30,9 @@ namespace HumanFactory.Manager
 
 			byte[] buffer = new byte[1024];
 			int bytesRead = stream.Read(buffer, 0, buffer.Length);
-			string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-			Debug.Log("RESPONSE : " + response);
+			
+			// 데이터를 Json으로 저장
+			Managers.Data.SaveServerResults(Serializer.ByteArrayToObject<ServerResultData>(buffer));
 
 			client.Close();
 		}

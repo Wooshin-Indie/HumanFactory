@@ -258,18 +258,18 @@ namespace HumanFactory.Manager
 
 		private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
 		{
-			if (GameManagerEx.Instance.ExeType == ExecuteType.None ||
-				humanControllers.Count != 0) return;
+			if (GameManagerEx.Instance.ExeType == ExecuteType.None) return;
 
 			// BatchMode일 때, 사람들의 전의 상태와 똑같다면 실패로 판단하고 싸이클 끊기
 
 			if (Application.isBatchMode && IsSameWithPrevHumanPos())
 			{
-				Debug.Log("PREV HUMAN POS");
 				OnFailure();
 				return;
 			}
 
+
+			if (humanControllers.Count != 0) return;
 			if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
 			{
 				OnSuccess();
@@ -387,6 +387,7 @@ namespace HumanFactory.Manager
 				}
 			}
 		}
+
 		private HashSet<Vector2Int> prevHumansPos = new HashSet<Vector2Int>();
 
 		private bool IsSameWithPrevHumanPos()
@@ -402,6 +403,11 @@ namespace HumanFactory.Manager
 			{
 				prevHumansPos = new HashSet<Vector2Int>(currentPosSet);
 				return false;
+			}
+
+			foreach (var pos in prevHumansPos)
+			{
+				Debug.Log(cycleCount + " : " + pos.ToString());
 			}
 
 			bool isSame = prevHumansPos.SetEquals(currentPosSet);

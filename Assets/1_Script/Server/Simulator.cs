@@ -16,30 +16,37 @@ namespace HumanFactory.Server
 		public void PushDatas(ClientSimulationData data)
 		{
 			dataQueue.Enqueue(data);
+
+			if (!isSimulEnd)
+			{
+				StartCoroutine(RunSimulation());
+			}
 		}
 
 		private bool isSimulEnd = true;
 		public IEnumerator RunSimulation()
 		{
-			// if (dataQueue.Count <= 0) yield break;
+			while (true)
+			{
+				if (dataQueue.Count <= 0) yield break;
 
-			Debug.Log("Debug : " + Application.persistentDataPath);
-			yield return new WaitForSeconds(2.0f);
+				yield return new WaitForSeconds(2.0f);
 
-			isSimulEnd = false;
+				isSimulEnd = false;
 
-			// HACK - temp datas
-			ClientSimulationData data = new ClientSimulationData();
-			data.stageIdx = 0;
-			data.saveData = Managers.Data.GetGridDatas(0, 0);
+				// HACK - temp datas
+				ClientSimulationData data = new ClientSimulationData();
+				data.stageIdx = 0;
+				data.saveData = Managers.Data.GetGridDatas(0, 0);
 
-			// Load map and simulate
-			MapManager.Instance.LoadStage(data.stageIdx, data.saveData);
-			MapManager.Instance.AddPersonWith1x(0f);
-			GameManagerEx.Instance.SetExeType(ExecuteType.Play);
+				// Load map and simulate
+				MapManager.Instance.LoadStage(data.stageIdx, data.saveData);
+				MapManager.Instance.AddPersonWith1x(0f);
+				GameManagerEx.Instance.SetExeType(ExecuteType.Play);
 
-			// Wait until simuation ended
-			yield return new WaitUntil(() => isSimulEnd);
+				// Wait until simuation ended
+				yield return new WaitUntil(() => isSimulEnd);
+			}
 		}
 
 		public void OnSimulationEnd(GameResultInfo info, bool isSuccess)
@@ -52,16 +59,14 @@ namespace HumanFactory.Server
 		}
 
 
-		private string connectionString = "Server=localhost; Database=human_results; User ID=root; Password=;";
 
 		public void InsertResultData(SimulationResult result)
 		{
-			using (MySqlConnection conn = new MySqlConnection(connectionString))
+			using (MySqlConnection conn = new MySqlConnection(Constants.DB_CONN_STR))
 			{
 				try
 				{
 					conn.Open();
-					Debug.Log("Connection Opened.");
 
 					string query = @"
                     INSERT INTO results (UserId, StageIdx, CycleCount, ButtonCount, KillCount)

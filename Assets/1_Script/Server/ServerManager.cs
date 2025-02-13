@@ -1,4 +1,5 @@
 using HumanFactory.Util;
+using MySqlConnector;
 using System;
 using System.IO;
 using System.Net;
@@ -36,8 +37,7 @@ namespace HumanFactory.Server
 		{
 			Init();
 			simulator = GetComponent<Simulator>();
-			StartCoroutine(simulator.RunSimulation());
-			Task.Run(() => StartServer());
+				Task.Run(() => StartServer());
 		}
 
 		private async void StartServer()
@@ -46,6 +46,7 @@ namespace HumanFactory.Server
 			listener.Start();
 			
 			Debug.Log("Server Started!");
+
 			while (true)
 			{
 				TcpClient client = await listener.AcceptTcpClientAsync();
@@ -63,18 +64,14 @@ namespace HumanFactory.Server
 				int bytesRead;
 				Stream stream = client.GetStream();
 
-				while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-				{
-					ClientSimulationData data = Serializer.ByteArrayToObject<ClientSimulationData>(buffer);
-					Debug.Log(data.ToString());
+				// Read Simul Data, Simulate
+				bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+				ClientSimulationData data = Serializer.ByteArrayToObject<ClientSimulationData>(buffer);
+				//simulator.PushDatas(data);
 
-					// Simulator에 데이터 넣기
-					simulator.PushDatas(data);
-
-					ServerResultData result = new ServerResultData();
-					byte[] sendBuff = Serializer.JsonToByteArray(result);
-					await stream.WriteAsync(sendBuff, 0, sendBuff.Length);
-				}
+				// Read DB, Response
+				byte[] sendBuff = Serializer.JsonToByteArray<ServerResultData>(GetServerResultData());
+				await stream.WriteAsync(sendBuff, 0, sendBuff.Length);
 			}
 			catch(Exception ex)
 			{
@@ -84,6 +81,46 @@ namespace HumanFactory.Server
 			{
 				client.Close();
 			}
+		}
+
+		private ServerResultData GetServerResultData()
+		{
+			Debug.Log("RESULT DATA");
+			ServerResultData resultData = new ServerResultData();
+			resultData.Set();
+
+			using (MySqlConnection conn = new MySqlConnection(Constants.DB_CONN_STR))
+			{
+				try
+				{
+					conn.Open();
+					string query = "SELECT StageIdx, CycleCount, ButtonCount, KillCount" +
+						" FROM results;";
+
+					using (MySqlCommand cmd = new MySqlCommand(query, conn))
+					{
+						using (MySqlDataReader reader = cmd.ExecuteReader())
+						{
+							while(reader.Read()){
+								int stageIdx = reader.GetInt32("StageIdx");
+								int cycleCount = reader.GetInt32("CycleCount");
+								int buttonCount = reader.GetInt32("ButtonCount");
+								int killCount = reader.GetInt32("KillCount");
+								resultData.InsertData(stageIdx, cycleCount, buttonCount, killCount);
+
+								Debug.Log($"{stageIdx}, {cycleCount}, {buttonCount}, {killCount}");
+							}
+						}
+					}
+
+					return resultData;
+				}
+				catch (Exception ex)
+				{
+					Debug.LogError("Error: " + ex.Message);
+				}
+			}
+			return null;
 		}
 
 	}

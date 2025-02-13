@@ -17,6 +17,8 @@ namespace HumanFactory.Util
 
 		public static byte[] JsonToByteArray<T>(T data)
 		{
+			if (data == null) return new byte[0];
+
 			string jsonData = JsonUtility.ToJson(data);
 			return Zip(jsonData.Trim());
 		}
@@ -24,9 +26,13 @@ namespace HumanFactory.Util
 		public static T ByteArrayToObject<T>(byte[] bytes)
 		{
 			string jsonData = Unzip(bytes);
-			Debug.Log(jsonData);
 			T objectData = JsonUtility.FromJson<T>(jsonData);
 			return objectData;
+		}
+
+		public static string ByteArrayToJson(byte[] bytes)
+		{
+			return Unzip(bytes);
 		}
 
 		/** Compressions **/

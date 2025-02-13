@@ -1,5 +1,9 @@
+using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Resources;
+using UnityEditor;
 using UnityEngine;
 
 namespace HumanFactory
@@ -129,6 +133,7 @@ namespace HumanFactory
         public int[] challenges;
         public bool isExpanded;
         public int prerequisite;
+        public int[] maxCounts;
 	}
 
     [Serializable]
@@ -236,26 +241,61 @@ namespace HumanFactory
             buttonCount = info.ButtonCount;
             killCount = info.KillCount;
         }
-
-        public bool IsSuccess()
-        {
-            return (cycleCount >= 0 && buttonCount >= 0 && killCount >= 0);
-        }
     }
 
     /// <summary>
     /// 서버에서 클라이언트로 보낼 결과 데이터
     /// </summary>
+    [System.Serializable]
     public class ServerResultData
     {
-        NormalizedResultData[] datas;
+        public CountResultData[] datas;
+
+        public ServerResultData()
+        {
+        }
+
+        public void Set()
+        {
+			datas = new CountResultData[Managers.Resource.GetStageCount()];
+
+			for (int i = 0; i < datas.Count(); i++)
+			{
+                datas[i] = new CountResultData();
+				datas[i].cycleGraphs = Enumerable.Repeat(0, Constants.COUNT_GRAPH_MAX).ToArray();
+				datas[i].buttonGraphs = Enumerable.Repeat(0, Constants.COUNT_GRAPH_MAX).ToArray();
+				datas[i].killGraphs = Enumerable.Repeat(0, Constants.COUNT_GRAPH_MAX).ToArray();
+			}
+		}
+
+        public void InsertData(int stageIdx, int cycleCnt, int btnCnt, int killCnt)
+        {
+            int cycleMax = Managers.Resource.GetStageInfo(stageIdx).maxCounts[0];
+            int btnMax = Managers.Resource.GetStageInfo(stageIdx).maxCounts[1];
+            int killMax = Managers.Resource.GetStageInfo(stageIdx).maxCounts[2];
+
+            int cycleIdx = GetBarIdx(cycleCnt, cycleMax);
+            int btnIdx = GetBarIdx(btnCnt, btnMax);
+            int killIdx = GetBarIdx(killCnt, killMax);
+
+            if (cycleIdx > 0) datas[stageIdx].cycleGraphs[cycleIdx]++;
+            if (btnIdx > 0) datas[stageIdx].buttonGraphs[btnIdx]++;
+            if (killIdx > 0) datas[stageIdx].killGraphs[killIdx]++;
+		}
+
+        private int GetBarIdx(int cnt, int max)
+        {
+            if (max == 0) return -1;
+            return Mathf.Min((cnt * Constants.COUNT_GRAPH_MAX / max), Constants.COUNT_GRAPH_MAX - 1);
+        }
     }
 
-    public class NormalizedResultData
+    [System.Serializable]
+    public class CountResultData
 	{
-		public int minV;
-		public int maxV;
-		public float[] graphs;
+		public int[] cycleGraphs;
+		public int[] buttonGraphs;
+		public int[] killGraphs;
     }
     
     #endregion

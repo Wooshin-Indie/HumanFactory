@@ -57,5 +57,8 @@ namespace HumanFactory
         public static readonly int PORT_LAP_TCP = 61393;
         public static readonly string IP_ADDR_INHO = "122.35.235.70";
 
-    }
+
+		public static string DB_CONN_STR = "Server=localhost; Database=human_results; User ID=root; Password=;";
+        public static int COUNT_GRAPH_MAX = 25;
+	}
 }

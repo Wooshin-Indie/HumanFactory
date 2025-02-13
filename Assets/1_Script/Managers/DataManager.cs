@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using DG.Tweening.Plugins.Core.PathCore;
 
 namespace HumanFactory.Manager
 {
@@ -19,6 +20,7 @@ namespace HumanFactory.Manager
         /** Paths **/
         private string settingDataPath;
         private string playDataPath;
+        private string serverResultPath;
 
         /** Datas **/
         private SettingData settingData = null;
@@ -35,6 +37,7 @@ namespace HumanFactory.Manager
         {
             settingDataPath = Application.persistentDataPath + "/SettingData.json";
             playDataPath = Application.persistentDataPath + "/PlayData.json";
+            serverResultPath = Application.persistentDataPath + "/ServerResultData.json";
 
             LoadAll();
             ApplyBasicSettings();
@@ -88,6 +91,10 @@ namespace HumanFactory.Manager
         {
             return gameplayData.stageGridDatas[stageId].saveDatas[saveIdx];
         }
+        public StageResultData GetClientResultData(int stageId)
+        {
+            return gameplayData.stageGridDatas[stageId].resultDatas;
+        }
 
         public void AddStageGridData(int stageId, int saveIdx, StageSaveData datas)
         {
@@ -100,6 +107,26 @@ namespace HumanFactory.Manager
             Debug.Log($"Stage: {stageId} Clear!");
             gameplayData.stageGridDatas[stageId].resultDatas.UpdateData(data);
             OnSaveClearStage.Invoke();
+        }
+
+        /// <summary>
+        /// 서버에서 받은 결과 데이터를 저장
+        /// 그래프를 그리는데 사용
+        /// </summary>
+        public void SaveServerResults(ServerResultData data)
+		{
+			string json = JsonUtility.ToJson(data, true);
+			File.WriteAllText(serverResultPath, json);
+		}
+
+        /// <summary>
+        /// Stage에 해당하는 결과들을 받아옵니다.
+        /// </summary>
+        public CountResultData GetServerResults(int stageIdx)
+        {
+            string json = File.ReadAllText(serverResultPath);
+			ServerResultData data = JsonUtility.FromJson<ServerResultData>(json);
+            return data.datas[stageIdx];
         }
 
         // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.

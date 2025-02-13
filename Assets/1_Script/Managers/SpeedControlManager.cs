@@ -29,7 +29,7 @@ namespace HumanFactory
         private void PlayGame() // 게임 재생
         {
             MapManager.Instance.IsOneCycling = false;
-            MapManager.Instance.AddPersonWith1x();
+            MapManager.Instance.AddPersonWith1x(0.1f);
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
             Debug.Log("게임 재생");
         }

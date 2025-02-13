@@ -131,6 +131,10 @@ MonoBehaviour:
     m_Key: Challenge_AccessDenied
     m_Metadata:
       m_Items: []
+  - m_Id: 7229285646327808
+    m_Key: Statistics
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -26,6 +26,7 @@ namespace HumanFactory.UI
         [SerializeField] private TextMeshProUGUI stageDescript;
         [SerializeField] private TextMeshProUGUI titleBanner;
         [SerializeField] private ChallengeContentUI challengeUI;
+        [SerializeField] private StatContentUI statisticsUI;
         [SerializeField] private RectTransform accessDeniedPanel;
 
         [Header("Panel Buttons")]
@@ -53,7 +54,9 @@ namespace HumanFactory.UI
                         saveButtons[i].gameObject.SetActive(false);
                     }
                     challengeUI.ClearInfo();
-                    if (typeCoroutine != null)
+                    statisticsUI.ClearInfo();
+
+					if (typeCoroutine != null)
                     {
                         StopCoroutine(typeCoroutine);
 						TypingEffect.StopTypingSound();
@@ -78,6 +81,7 @@ namespace HumanFactory.UI
 						clickableScreen.BlockClick(true);
 					}
                     challengeUI.SetStageInfo(value);
+                    statisticsUI.SetStageInfo(value);
 					CurrentSaveFileIndex = 0;
 				}
 			}
