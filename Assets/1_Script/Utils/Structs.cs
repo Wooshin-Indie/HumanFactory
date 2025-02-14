@@ -2,8 +2,6 @@ using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
-using UnityEditor;
 using UnityEngine;
 
 namespace HumanFactory
@@ -126,7 +124,6 @@ namespace HumanFactory
     public class StageInfo
     {
         public int stageId;
-        public string stageName;
         public int[] inputs;
         public int[] outputs;
         public int[] enableBuildings;
@@ -140,7 +137,6 @@ namespace HumanFactory
     public class  ChapterInfo
     {
         public int chapterId;
-        public string chapterName;
         public int[] stageIndexes;
     }
     #endregion
@@ -293,9 +289,9 @@ namespace HumanFactory
     [System.Serializable]
     public class CountResultData
 	{
-		public int[] cycleGraphs;
-		public int[] buttonGraphs;
-		public int[] killGraphs;
+		public int[] cycleGraphs = new int[0];
+		public int[] buttonGraphs = new int[0];
+		public int[] killGraphs = new int[0];
     }
     
     #endregion

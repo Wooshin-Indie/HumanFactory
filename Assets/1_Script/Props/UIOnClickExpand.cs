@@ -10,6 +10,7 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
 
     [SerializeField] private TextMeshProUGUI stageName;
+    [SerializeField] private TextMeshProUGUI shortDesc;
     [SerializeField] private Sprite expandedSprite;
 
     private bool isExpanded = false;
@@ -27,6 +28,9 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetStageId(int id)
     {
         stageName.SetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{id}");
+
+        Debug.Log($"DEBUG : {Constants.TABLE_STAGE}, {id}");
+        shortDesc.SetLocalizedString(Constants.TABLE_STAGE, $"ShortDesc_{id}");
     }
 
     public void SetChapterId(int id)

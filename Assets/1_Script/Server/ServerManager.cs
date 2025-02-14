@@ -35,9 +35,16 @@ namespace HumanFactory.Server
 
 		private void Awake()
 		{
-			Init();
-			simulator = GetComponent<Simulator>();
+			if (Application.isBatchMode)
+			{
+				Init();
+				simulator = GetComponent<Simulator>();
 				Task.Run(() => StartServer());
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 		}
 
 		private async void StartServer()
@@ -107,8 +114,6 @@ namespace HumanFactory.Server
 								int buttonCount = reader.GetInt32("ButtonCount");
 								int killCount = reader.GetInt32("KillCount");
 								resultData.InsertData(stageIdx, cycleCount, buttonCount, killCount);
-
-								Debug.Log($"{stageIdx}, {cycleCount}, {buttonCount}, {killCount}");
 							}
 						}
 					}

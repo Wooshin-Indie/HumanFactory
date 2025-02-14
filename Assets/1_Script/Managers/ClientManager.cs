@@ -29,7 +29,7 @@ namespace HumanFactory.Manager
 			await stream.FlushAsync();
 
 			byte[] buffer = new byte[1024];
-			int bytesRead = stream.Read(buffer, 0, buffer.Length);
+			int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 			
 			// 데이터를 Json으로 저장
 			Managers.Data.SaveServerResults(Serializer.ByteArrayToObject<ServerResultData>(buffer));

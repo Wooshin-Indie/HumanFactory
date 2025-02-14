@@ -28,15 +28,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3088613272051712
-    m_Localized: Chapter
+    m_Localized: Area
     m_Metadata:
       m_Items: []
   - m_Id: 3088770310987776
-    m_Localized: Chapter 0
+    m_Localized: 'Tutorial Area '
     m_Metadata:
       m_Items: []
   - m_Id: 3091079984177152
-    m_Localized: Chapter 1
+    m_Localized: Area no.17
     m_Metadata:
       m_Items: []
   - m_Id: 3091080030314496
@@ -126,6 +126,7 @@ MonoBehaviour:
   - m_Id: 4348261983707136
     m_Localized: 'Access Denied
 
+      
 
       Requirement : {StageKey}'
     m_Metadata:

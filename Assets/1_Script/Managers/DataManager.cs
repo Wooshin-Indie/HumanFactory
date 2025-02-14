@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.IO;
 using System;
-using DG.Tweening.Plugins.Core.PathCore;
 
 namespace HumanFactory.Manager
 {
@@ -126,6 +125,10 @@ namespace HumanFactory.Manager
         {
             string json = File.ReadAllText(serverResultPath);
 			ServerResultData data = JsonUtility.FromJson<ServerResultData>(json);
+            if (data.datas.Length <= stageIdx)
+            {
+                return new CountResultData();
+            }
             return data.datas[stageIdx];
         }
 
@@ -167,10 +170,24 @@ namespace HumanFactory.Manager
         }
 
         public bool IsAbleToAccessStage(int idx)
-        {
-            int preIdx = Managers.Resource.GetStageInfo(idx).prerequisite;
+		{
+
+#if UNITY_EDITOR
+            if (isUnlockAll) return true;
+#endif
+
+			int preIdx = Managers.Resource.GetStageInfo(idx).prerequisite;
             return preIdx < 0 ? 
                 true : gameplayData.stageGridDatas[preIdx].resultDatas.CycleCount >= 0;
         }
-	}
+
+#if UNITY_EDITOR
+        bool isUnlockAll = false;
+        public void UnlockAll()
+        {
+            isUnlockAll = true;
+        }
+#endif
+
+    }
 }

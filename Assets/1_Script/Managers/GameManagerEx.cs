@@ -217,8 +217,15 @@ namespace HumanFactory
 				raycasters[i].enabled = false;
 		}
 
+        #if UNITY_EDITOR
+        [ContextMenu("Unlock All Stages")]
+        public void UnlockAllStages()
+        {
+            Managers.Data.UnlockAll();
+        }
+        #endif
 
-	}
+    }
 }
 
  

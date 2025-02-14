@@ -466,8 +466,8 @@ namespace HumanFactory.Manager
 
         public void SaveStage()
 		{
-            Debug.Log("SAVED");
 			Debug.Log($"Save Stage : {currentStage}");
+            if (currentStage < 0) return;
 
 			StageSaveData gridDatas = new StageSaveData();
 

@@ -1,5 +1,4 @@
 using HumanFactory.Props;
-using HumanFactory.Util;
 using System;
 using System.Linq;
 using Unity.VisualScripting;

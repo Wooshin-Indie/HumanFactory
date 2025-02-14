@@ -1,5 +1,10 @@
 ﻿Key,Id,Shared Comments,English (United States)(en-US),English (United States)(en-US) Comments,Korean (South Korea)(ko-KR),Korean (South Korea)(ko-KR) Comments
-0,1.49E+11,,"Stage #1 - Mov
+Unlock,5.43E+15,,"Access Denied
+
+You do not have the required permissions to access this CCTV.",,"접근 제한
+
+해당 CCTV에 접근하기 위한 권한이 부족합니다.",
+LongDesc_0,1.49E+11,,"Stage #1 - Mov
 This is your first task. 
 It's very simple, but you must not take it lightly. 
 The people you see on the screen will obey your commands without question. 
@@ -10,11 +15,50 @@ If you tell them to go, they will go... and if you tell them to die, they will d
 화면에 보이는 사람들은 당신의 말을 따릅니다.
 앞으로 가라면 갈 것이고,
 죽으라면 죽을 것입니다.",
+LongDesc_1,1.49E+11,,,,,
+LongDesc_2,5.43E+15,,,,,
+LongDesc_3,,,,,,
+LongDesc_4,,,,,,
+LongDesc_5,,,,,,
+LongDesc_6,,,,,,
+LongDesc_7,,,,,,
+LongDesc_8,,,,,,
+LongDesc_9,,,,,,
+LongDesc_10,,,,,,
+LongDesc_11,,,,,,
+LongDesc_12,,,,,,
+LongDesc_13,,,,,,
+LongDesc_14,,,,,,
+LongDesc_15,,,,,,
+LongDesc_16,,,,,,
+LongDesc_17,,,,,,
+LongDesc_18,,,,,,
+LongDesc_19,,,,,,
+LongDesc_20,,,,,,
 ,,,,,,
 ,,,,,,
 ,,,,,,
-Unlock,,,"Access Denied
-
-You do not have the required permissions to access this CCTV.",,"접근 제한
-
-해당 CCTV에 접근하기 위한 권한이 부족합니다.",
+,,,,,,
+,,,,,,
+,,,,,,
+ShortDesc_0,,,Input and Output,,입력과 출력,
+ShortDesc_1,,,New Input,,새로운 입력,
+ShortDesc_2,,,Add 1,,1 더하기,
+ShortDesc_3,,,Faster,,더 빠르게,
+ShortDesc_4,,,Even Numbers,,짝수,
+ShortDesc_5,,,Odd Numbers,,홀수,
+ShortDesc_6,,,Add 1 even numbers,,짝수만 1 더하기,
+ShortDesc_7,,,Double,,2배,
+ShortDesc_8,,,Fill the gaps,,빠진 부분 채우기,
+ShortDesc_9,,,,,,
+ShortDesc_10,,,,,,
+ShortDesc_11,,,,,,
+ShortDesc_12,,,,,,
+ShortDesc_13,,,,,,
+ShortDesc_14,,,,,,
+ShortDesc_15,,,,,,
+ShortDesc_16,,,,,,
+ShortDesc_17,,,,,,
+ShortDesc_18,,,,,,
+ShortDesc_19,,,,,,
+ShortDesc_20,,,,,,

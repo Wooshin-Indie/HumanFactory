@@ -155,8 +155,9 @@ namespace HumanFactory.UI
 		}
 
         private void LoadChaptersOnPanel()
-        {
-            for (int i = 0; i < Managers.Resource.GetChapterCount(); i++)
+		{
+			titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, "Chapter");
+			for (int i = 0; i < Managers.Resource.GetChapterCount(); i++)
             {
                 int idx = i;
                 chapters.Add(Instantiate(stagePanelPrefab, content));
@@ -217,7 +218,6 @@ namespace HumanFactory.UI
 			currentExpandedPanel = -1;
 			CurrentSelectedIndex = -1;
 
-			titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, "Stage");
 			ChapterBackButton.interactable = false;
         }
 
@@ -277,8 +277,7 @@ namespace HumanFactory.UI
             stageDescript.GetComponent<RectTransform>().DOAnchorPosY(0f, 0f);
             if (Managers.Data.IsAbleToAccessStage(index))
 			{
-                // TODO - Type Coroutine Key값 바꿔줘야됨
-				typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, "0", 0.01f));
+				typeCoroutine = StartCoroutine(TypingEffect.TypingCoroutine(stageDescript, $"LongDesc_{index}", 0.01f));
 			}
             else
             {

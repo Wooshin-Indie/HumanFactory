@@ -18,19 +18,56 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 148934352896
+  - m_Id: 5434196641046531
+    m_Localized: 'Access Denied
+
+
+
+      You do not have the required permissions
+      to access this CCTV.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291166728192
     m_Localized: "Stage #1 - Mov\r\nThis is your first task. \r\nIt's very simple,
       but you must not take it lightly. \r\nThe people you see on the screen will
       obey your commands without question. \r\nIf you tell them to go, they will
       go... and if you tell them to die, they will die\r\n"
     m_Metadata:
       m_Items: []
-  - m_Id: 5434196641046531
-    m_Localized: 'Access Denied
-
-
-      You do not have the required permissions
-      to access this CCTV.'
+  - m_Id: 8883291212865562
+    m_Localized: Input and Output
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865563
+    m_Localized: New Input
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865564
+    m_Localized: Add 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865565
+    m_Localized: Faster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865566
+    m_Localized: Odd Numbers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059840
+    m_Localized: Even Numbers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059841
+    m_Localized: Add 1 even numbers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059842
+    m_Localized: Double
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059843
+    m_Localized: Fill the gaps
     m_Metadata:
       m_Items: []
   references:
