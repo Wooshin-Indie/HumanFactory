@@ -28,8 +28,6 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetStageId(int id)
     {
         stageName.SetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{id}");
-
-        Debug.Log($"DEBUG : {Constants.TABLE_STAGE}, {id}");
         shortDesc.SetLocalizedString(Constants.TABLE_STAGE, $"ShortDesc_{id}");
     }
 

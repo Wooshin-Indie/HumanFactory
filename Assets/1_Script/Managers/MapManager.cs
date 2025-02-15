@@ -495,6 +495,7 @@ namespace HumanFactory.Manager
             isPersonAdd = false;
             for (int i = humanControllers.Count - 1; i >= 0; i--)
             {
+                humanControllers[i].SetAnimSpeed(1f);
                 humanControllers[i].HumanDyingProcessWithBox();
                 humanControllers.Remove(humanControllers[i]);
             }

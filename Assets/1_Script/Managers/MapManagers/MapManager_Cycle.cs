@@ -31,6 +31,10 @@ namespace HumanFactory.Manager
 			{
 				OnCycleTimeChanged?.Invoke(value);
 				gunnersManagement.SetCycleTime(value);
+				foreach (var controller in humanControllers)
+				{
+					controller.SetAnimSpeed(value);
+				}
 				cycleTime = value;
 			}
 		}
@@ -39,7 +43,7 @@ namespace HumanFactory.Manager
 		{
 
 			InitPerCycle();
-			cycleCount++;
+			Debug.Log("CYCLE COUNT : "+ cycleCount++);
 			while (cycleElapsedTime < CycleTime)
 			{
 				ExecutePerFrame(cycleElapsedTime, CycleTime);
@@ -71,13 +75,15 @@ namespace HumanFactory.Manager
 		}
 		public void AddPersonWith1x(float cycleTime = 1f)
 		{
-			cycleCount = killCount = 0;
 			float prev = CycleTime;
 			CycleTime = cycleTime;
 			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 			if (idxIn == 0)
+			{
+				cycleCount = killCount = 0;
 				isPersonAdd = true;
+			}
 		}
 		public void AddPersonWithOneCycling()
 		{
@@ -213,7 +219,7 @@ namespace HumanFactory.Manager
 
 			isCycleRunning = false;
 
-			if (isOneCycling)
+			if (isOneCycling && GameManagerEx.Instance.ExeType != ExecuteType.None)
 			{
 				GameManagerEx.Instance.SetExeType(ExecuteType.Pause); // 게임 정지
 			}

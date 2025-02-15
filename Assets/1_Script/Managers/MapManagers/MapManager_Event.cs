@@ -121,7 +121,6 @@ namespace HumanFactory.Manager
 							&& programMap[i, j].ButtonInfo.linkedGridPos.x == x
 							&& programMap[i, j].ButtonInfo.linkedGridPos.y == y)
 						{
-							Debug.Log(i + ", " + j + " : " + "cor");
 							return true;
 						}
 					}

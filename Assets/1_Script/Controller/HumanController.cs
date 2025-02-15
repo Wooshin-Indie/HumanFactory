@@ -71,10 +71,13 @@ namespace HumanFactory.Controller
             operandType = HumanOperandType.None;
         }
 
+        public void SetAnimSpeed(float cycleTime)
+        {
+			GetComponent<Animator>().speed = 1 / cycleTime;
+		}
+
         public void OnInitPerCycle()
 		{
-			// Animation 속도 조절 (한 싸이클마다만 함)
-			GetComponent<Animator>().speed = 1 / MapManager.Instance.CycleTime;
             
 			if (prevPos == targetPos)
 			{
