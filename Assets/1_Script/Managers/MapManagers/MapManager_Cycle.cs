@@ -83,7 +83,7 @@ namespace HumanFactory.Manager
 		{
 
 			float prev = CycleTime;
-			CycleTime = 0.1f;
+			CycleTime = 2f;
 			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 			if (idxIn == 0)

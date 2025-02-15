@@ -10,6 +10,7 @@ namespace HumanFactory
         [SerializeField] private Button playButton; // 재생 버튼
         [SerializeField] private Button pauseButton; // 일시정지 버튼
         [SerializeField] private Button doubleButton; // 배속 버튼
+        [SerializeField] private Button tripleButton; // 배속 버튼
         [SerializeField] private Button stopButton; // 정지 버튼
         [SerializeField] private Button oneCycleButton; // 1사이클 실행 버튼
 
@@ -19,6 +20,7 @@ namespace HumanFactory
             playButton.onClick.AddListener(PlayGame);
             pauseButton.onClick.AddListener(PauseGame);
             doubleButton.onClick.AddListener(DoubleGame);
+            tripleButton.onClick.AddListener(TripleGame);
             stopButton.onClick.AddListener(StopGame);
             oneCycleButton.onClick.AddListener(OneCycleGame);
 
@@ -29,7 +31,7 @@ namespace HumanFactory
         private void PlayGame() // 게임 재생
         {
             MapManager.Instance.IsOneCycling = false;
-            MapManager.Instance.AddPersonWith1x(0.1f);
+            MapManager.Instance.AddPersonWith1x(1f);
             GameManagerEx.Instance.SetExeType(ExecuteType.Play);
             Debug.Log("게임 재생");
         }
@@ -40,11 +42,20 @@ namespace HumanFactory
         }
 
         private void DoubleGame() // 게임 2배속
-        {
-            MapManager.Instance.DoubleCycleTime();
-        }
+		{
+			MapManager.Instance.IsOneCycling = false;
+			MapManager.Instance.AddPersonWith1x(.5f);
+			GameManagerEx.Instance.SetExeType(ExecuteType.Play);
+		}
 
-        private void StopGame() // 게임 리셋
+		private void TripleGame() // 게임 2배속
+		{
+			MapManager.Instance.IsOneCycling = false;
+			MapManager.Instance.AddPersonWith1x(.1f);
+			GameManagerEx.Instance.SetExeType(ExecuteType.Play);
+		}
+
+		private void StopGame() // 게임 리셋
         {
             MapManager.Instance.ClearHumans();
             MapManager.Instance.IdxIn = 0;

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -61,21 +62,70 @@ namespace HumanFactory.Manager
 			{2, 2},
 			{3, 3},
 		};
+
+		// 다른 Grid인지,
+		// 해당 linkedPos를 참조하고있는 다른 버튼이 있는지 확인합니다.
 		private bool IsAbleToLink(Vector2Int start, Vector2Int end)
 		{
-
 			int quad1 = GetMapIdxFromPos(start.x, start.y, IsMapExpanded);
 			int quad2 = GetMapIdxFromPos(end.x, end.y, IsMapExpanded);
 
 			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump 
 				&& programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump0)
+			{
+				if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType == BuildingType.Toggle
+						&& IsDestToPosExist(end.x, end.y, BuildingType.Toggle, IsMapExpanded))
+					return false;
+				if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType == BuildingType.Rotate
+					&& IsDestToPosExist(end.x, end.y, BuildingType.Rotate, IsMapExpanded))
+					return false;
+
 				return quad1 == quad2;
+			}
 
 			if (quad1 < 0 || quad2 < 0) return false;
+
 
 			for (int i = 0; i < linkableIndices.GetLength(0); i++)
 			{
 				if (quad1 == linkableIndices[i, 0] && quad2 == linkableIndices[i, 1]) return true;
+			}
+
+			return false;
+		}
+
+		private bool IsDestToPosExist(int x, int y, BuildingType type, bool isExpanded)
+		{
+			if (isExpanded)
+			{
+				for (int i = 0; i < 2 * mapSize.x + mapInterval.x; i++)
+				{
+					for (int j = 0; j < 2 * mapSize.y + mapInterval.y; j++)
+					{
+						if (programMap[i, j].BuildingType == type 
+							&& programMap[i, j].ButtonInfo.linkedGridPos.x == x 
+							&& programMap[i, j].ButtonInfo.linkedGridPos.y == y)
+						{
+							return true;
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < mapSize.x; i++)
+				{
+					for (int j = 0; j < mapSize.y; j++)
+					{
+						if (programMap[i, j].BuildingType == type
+							&& programMap[i, j].ButtonInfo.linkedGridPos.x == x
+							&& programMap[i, j].ButtonInfo.linkedGridPos.y == y)
+						{
+							Debug.Log(i + ", " + j + " : " + "cor");
+							return true;
+						}
+					}
+				}
 			}
 
 			return false;

@@ -95,6 +95,7 @@ namespace HumanFactory.Manager
 		public void SetBuilding(BuildingType type)
 		{
 			buildingType = type;
+			buttonInfo = new ButtonInfos(new Vector2Int(posX, posY));
 			if (type != BuildingType.None)
 			{
 				isActive = true;
@@ -102,7 +103,10 @@ namespace HumanFactory.Manager
 				buildingSprite.color = Color.white;
 			}
 			else
+			{
 				buildingSprite.sprite = null;
+				buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
+			}
 		}
 
 		public void PreviewBuilding(BuildingType type)
