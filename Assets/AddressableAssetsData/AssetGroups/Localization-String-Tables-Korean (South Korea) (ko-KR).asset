@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 880c1229ccd6d8246afdb24eed523ebe
   m_SerializeEntries:
+  - m_GUID: 0523f391e35b21d48bc2e05481a3aa35
+    m_Address: Manual_ko-KR
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ko-KR
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0d034d9c19c13e946a5d06a1556a672e
     m_Address: StageDescription_ko-KR
     m_ReadOnly: 1

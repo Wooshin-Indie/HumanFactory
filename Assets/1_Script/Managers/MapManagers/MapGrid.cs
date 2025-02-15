@@ -133,13 +133,13 @@ namespace HumanFactory.Manager
 			if (!isActive) return;
 			switch (buildingType)
 			{
-				case BuildingType.Button:
+				case BuildingType.NewInput:
 					break;
-				case BuildingType.ToggleButton:
+				case BuildingType.Toggle:
 					MapManager.Instance.ToggleButtonInGame(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
-				case BuildingType.RotateButton:
+				case BuildingType.Rotate:
 					MapManager.Instance.PadToOrigin(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
@@ -161,14 +161,14 @@ namespace HumanFactory.Manager
 			if (!isActive) return;
 			switch (buildingType)
 			{
-				case BuildingType.Button:
+				case BuildingType.NewInput:
 					MapManager.Instance.AddPerson();
 					break;
-				case BuildingType.ToggleButton:
+				case BuildingType.Toggle:
 					MapManager.Instance.ToggleButtonInGame(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
-				case BuildingType.RotateButton:
+				case BuildingType.Rotate:
 					MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y,
 						buttonInfo.dirType);
@@ -232,7 +232,7 @@ namespace HumanFactory.Manager
 
 		public void ToggleActive(bool isIngame)
 		{
-			if (buildingType == BuildingType.None || buildingType == BuildingType.ToggleButton) return;
+			if (buildingType == BuildingType.None || buildingType == BuildingType.Toggle) return;
 			
 			// Toggle 할 버튼이 눌려있음 -> 켜면 누르는걸 해줘야됨, 끄면 Release를 해줘야됨
 			// 하지만 sprite 및 상태는 변경하면 안됨

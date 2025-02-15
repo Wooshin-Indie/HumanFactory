@@ -297,7 +297,8 @@ namespace HumanFactory.Manager
 			foreach (HumanController controller in humanControllers)
 			{
 				if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y, isMapExpanded)) return;
-				if (programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump
+				if ((programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump||
+					(programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump0 && controller.HumanNum == 0))
 					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].IsActive
 					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
 				{
@@ -361,10 +362,10 @@ namespace HumanFactory.Manager
 					if (!programMap[tmpV.x, tmpV.y].IsActive) continue;
 					switch (programMap[tmpV.x, tmpV.y].BuildingType)
 					{
-						case BuildingType.Add1:
+						case BuildingType.Add:
 							humanControllers[i].AddByButton();
 							break;
-						case BuildingType.Sub1:
+						case BuildingType.Sub:
 							humanControllers[i].SubByButton();
 							break;
 						case BuildingType.Double:

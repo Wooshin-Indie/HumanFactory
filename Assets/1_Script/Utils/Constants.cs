@@ -31,6 +31,7 @@ namespace HumanFactory
 			KeyCode.A,
 			KeyCode.S,
 			KeyCode.D,
+			KeyCode.F,
 			KeyCode.Escape,
             KeyCode.Alpha1,
             KeyCode.Alpha2,

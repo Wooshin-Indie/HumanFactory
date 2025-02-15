@@ -35,18 +35,18 @@ namespace HumanFactory.UI
             {
 				switch (type)
 				{
-					case BuildingType.ToggleButton:
+					case BuildingType.Toggle:
 						leftKey = "MouseNoneLeft";
 						rightKey = "Empty";
 						break;
-					case BuildingType.RotateButton:
+					case BuildingType.Rotate:
 						leftKey = "MouseNoneLeft";
 						rightKey = "MouseNoneRight0";
 						break;
 					case BuildingType.Jump:
-					case BuildingType.Sub1:
-					case BuildingType.Add1:
-					case BuildingType.Button:
+					case BuildingType.Sub:
+					case BuildingType.Add:
+					case BuildingType.NewInput:
 					case BuildingType.Double:
 						leftKey = "MouseNoneLeft";
 						rightKey = "MouseNoneRight1";

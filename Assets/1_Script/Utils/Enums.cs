@@ -20,13 +20,14 @@ namespace HumanFactory
     public enum BuildingType
     {
         None = -1,
-        Add1 = 0,
-        Sub1,
-        Jump,
-        Double,
-        Button,
-        ToggleButton,
-        RotateButton
+        Add = 0,
+        Sub,
+		Double,
+		NewInput,
+		Jump,
+		Jump0,
+        Toggle,
+        Rotate
     }
 
     public enum CameraType
@@ -124,12 +125,13 @@ namespace HumanFactory
         None= -1,
         Add_Button = 0,
         Sub_Button,
-        Jump_Button,
-        Double_Button,
-        Input_Button,
+		Double_Button,
+		Input_Button,
+		Jump_Button,
+		JumpZero_Button,
         Toggle_Button,
         Rotate_Button,
-		Back = 7,
+		Back = 8,
         ChangeMode_1,
         ChangeMode_2,
         Zoom_Map

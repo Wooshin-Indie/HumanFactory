@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Manual Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Manual
+  m_TableCollectionNameGuidString: f9f42730179b23244a6d607f1a595792
+  m_Entries:
+  - m_Id: 49474822144
+    m_Key: Intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256254009344
+    m_Key: IntroContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 467529490432
+    m_Key: Cautions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 533099044864
+    m_Key: CautionsContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1026022039552
+    m_Key: Subtitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1762537627648
+    m_Key: Committe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11440642449408
+    m_Key: Buttons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11560549212160
+    m_Key: ButtonContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11847305388032
+    m_Key: NewInput
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12262398877696
+    m_Key: NewInputContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12582352969728
+    m_Key: AddSub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12694517047296
+    m_Key: AddSubContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12956392611840
+    m_Key: Double
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13056992993280
+    m_Key: DoubleContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187642841784320
+    m_Key: Jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187738622910464
+    m_Key: JumpContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187938716377088
+    m_Key: Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188007662346240
+    m_Key: ToggleContent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188192425631744
+    m_Key: Rotate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188279948173312
+    m_Key: RotateContent
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1752275522385346562
+  references:
+    version: 2
+    RefIds:
+    - rid: 1752275522385346562
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1739556243005

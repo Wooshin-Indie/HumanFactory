@@ -32,8 +32,9 @@ namespace HumanFactory.Manager
 				buttonRect.gameObject.SetActive(true);
 
 				if (programMap[x, y].BuildingType == BuildingType.Jump
-				|| programMap[x, y].BuildingType == BuildingType.RotateButton
-				|| programMap[x, y].BuildingType == BuildingType.ToggleButton)
+				|| programMap[x, y].BuildingType == BuildingType.Jump0
+				|| programMap[x, y].BuildingType == BuildingType.Rotate
+				|| programMap[x, y].BuildingType == BuildingType.Toggle)
 				{
 					tileRect.transform.position = new Vector3(programMap[x, y].ButtonInfo.linkedGridPos.x,
 						programMap[x, y].ButtonInfo.linkedGridPos.y,
@@ -66,7 +67,8 @@ namespace HumanFactory.Manager
 			int quad1 = GetMapIdxFromPos(start.x, start.y, IsMapExpanded);
 			int quad2 = GetMapIdxFromPos(end.x, end.y, IsMapExpanded);
 
-			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump)
+			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump 
+				&& programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump0)
 				return quad1 == quad2;
 
 			if (quad1 < 0 || quad2 < 0) return false;
@@ -105,8 +107,9 @@ namespace HumanFactory.Manager
 			else
 			{
 				if (programMap[x, y].BuildingType != BuildingType.Jump
-					&& programMap[x, y].BuildingType != BuildingType.ToggleButton
-					&& programMap[x, y].BuildingType != BuildingType.RotateButton) return;
+					&& programMap[x, y].BuildingType != BuildingType.Jump0
+					&& programMap[x, y].BuildingType != BuildingType.Toggle
+					&& programMap[x, y].BuildingType != BuildingType.Rotate) return;
 
 				Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 				isCircuiting = true;
@@ -124,23 +127,24 @@ namespace HumanFactory.Manager
 
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
 
-			if (programMap[x, y].BuildingType == BuildingType.ToggleButton) return;
+			if (programMap[x, y].BuildingType == BuildingType.Toggle) return;
 
 			switch (programMap[x, y].BuildingType)
 			{
-				case BuildingType.RotateButton:
+				case BuildingType.Rotate:
 					programMap[x, y].OnButtonRotate();
 					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 					break;
-				case BuildingType.Add1:
-				case BuildingType.Sub1:
+				case BuildingType.Add:
+				case BuildingType.Sub:
 				case BuildingType.Jump:
+				case BuildingType.Jump0:
 				case BuildingType.Double:
-				case BuildingType.Button:
+				case BuildingType.NewInput:
 					programMap[x, y].ToggleActive(false);
 					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
 					break;
-				case BuildingType.ToggleButton:
+				case BuildingType.Toggle:
 					break;
 			}
 		}

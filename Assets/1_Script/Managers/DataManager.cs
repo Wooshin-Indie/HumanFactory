@@ -5,8 +5,8 @@ using System;
 namespace HumanFactory.Manager
 {
     /*
-     * persistentDataPath   : C:/Users/[UserName]/AppData/LocalLow/DefaultCompany/[ProjectName] (Windows)
-     *                      : /home/[UserName]/.config/unity3d/DefaultCompany/[ProjectName]     (Ubuntu)
+     * persistentDataPath   : C:/Users/[UserName]/AppData/LocalLow/[DefaultCompany]/[ProjectName] (Windows)
+     *                      : /home/[UserName]/.config/unity3d/[DefaultCompany]/[ProjectName]     (Ubuntu)
      *                      
      * 1. DataManager는 데이터를 저장/로드하기 위한 매니저입니다.
      * 2. 이 경로는 런타임에 읽고 쓰기 가능한 경로입니다. (해당 경로 없으면 로그 찍어보세요)
@@ -103,7 +103,7 @@ namespace HumanFactory.Manager
         public Action OnSaveClearStage { get; set; }
 		public void SaveClearStage(int stageId, StageResultData data)
         {
-            Debug.Log($"Stage: {stageId} Clear!");
+            Debug.Log($"Stage: {stageId} Clear! {data.ToString()}");
             gameplayData.stageGridDatas[stageId].resultDatas.UpdateData(data);
             OnSaveClearStage.Invoke();
         }

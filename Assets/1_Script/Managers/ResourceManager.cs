@@ -25,10 +25,10 @@ namespace HumanFactory.Manager
         private string buildingReleasedOffPath = "Sprites/Buildings/Released_Off";
         private string effectSpritePath = "Sprites/Effects";
 
-        private string pressedOnRButtonPath = "Sprites/Buildings/Pressed_On/6_RotateButton";
-        private string releasedOnRButtonPath = "Sprites/Buildings/Released_On/6_RotateButton";
-        private string pressedOffRButtonPath = "Sprites/Buildings/Pressed_Off/6_RotateButton";
-        private string releasedOffRButtonPath = "Sprites/Buildings/Released_Off/6_RotateButton";
+        private string pressedOnRButtonPath = "Sprites/Buildings/Pressed_On_Rotate";
+        private string releasedOnRButtonPath = "Sprites/Buildings/Released_On_Rotate";
+        private string pressedOffRButtonPath = "Sprites/Buildings/Pressed_Off_Rotate";
+        private string releasedOffRButtonPath = "Sprites/Buildings/Released_Off_Rotate";
 
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
@@ -120,7 +120,7 @@ namespace HumanFactory.Manager
         {
             if (type == BuildingType.None) return null;
 
-            if (type == BuildingType.RotateButton && padType != PadType.DirNone)
+            if (type == BuildingType.Rotate && padType != PadType.DirNone)
             {
                 if (isActive)
                 {

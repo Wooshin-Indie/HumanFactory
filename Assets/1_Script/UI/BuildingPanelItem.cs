@@ -11,6 +11,7 @@ namespace HumanFactory.UI
     {
         [SerializeField] private Image itemImage;
         [SerializeField] private TextMeshProUGUI itemName;
+        [SerializeField] private TextMeshProUGUI itemShortcut;
 
         [SerializeField] private Sprite selectedSprite;
         private Sprite originalSprite;
@@ -23,6 +24,7 @@ namespace HumanFactory.UI
 
             itemImage.sprite = Managers.Resource.GetBuildingSprite((BuildingType)index, false, true);
             itemName.text = Enum.GetName(typeof(BuildingType), index);
+            itemShortcut.text = ((KeyCode)Managers.Data.BasicSettingData.KeyBindings[index]).ToString();
             SetItemName((BuildingType)index);
 
             GetComponent<Button>().onClick.AddListener(() =>
@@ -78,8 +80,9 @@ namespace HumanFactory.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             itemName.GetComponent<TextMeshProUGUI>().color = Color.black;
+            itemShortcut.GetComponent<TextMeshProUGUI>().color = Color.black;
 
-            if (isSelected)
+			if (isSelected)
             {
                 GetComponent<Image>().sprite = originalSprite;
             }
@@ -89,8 +92,9 @@ namespace HumanFactory.UI
         {
 
             itemName.GetComponent<TextMeshProUGUI>().color = Color.white;
+			itemShortcut.GetComponent<TextMeshProUGUI>().color = Color.white;
 
-            if (isSelected)
+			if (isSelected)
             {
                 GetComponent<Image>().sprite = selectedSprite;
             }
@@ -98,25 +102,7 @@ namespace HumanFactory.UI
 
         private void SetItemName(BuildingType type)
         {
-            switch (type)
-            {
-                case BuildingType.None:
-                    itemName.text = "None"; break;
-                case BuildingType.Add1:
-                    itemName.text = "ADD1"; break;
-                case BuildingType.Sub1:
-                    itemName.text = "Sub1"; break;
-                case BuildingType.Jump:
-                    itemName.text = "Jump"; break;
-                case BuildingType.Button:
-                    itemName.text = "Input"; break;
-                case BuildingType.Double:
-                    itemName.text = "Double"; break;
-                case BuildingType.RotateButton:
-                    itemName.text = "Rotate"; break;
-                case BuildingType.ToggleButton:
-                    itemName.text = "Toggle"; break;
-            }
+            itemName.text = type.ToString();
         }
     }
 }

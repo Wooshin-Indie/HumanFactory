@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Manual_en-US
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-US
+  m_SharedData: {fileID: 11400000, guid: f9f42730179b23244a6d607f1a595792, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 49474822144
+    m_Localized: Introduction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256254009344
+    m_Localized: '   You are the CCTV administrator of the authorities. Your job
+      is to manage the workers through surveillance and maximize productivity. They
+      will follow any command you give. This manual provides guidelines on how to
+      efficiently manage and control workers. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 467529490432
+    m_Localized: Cautions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 533099044864
+    m_Localized: '   Do not disclose anything you see or hear while on duty to outsiders.
+      Legal consequences may follow.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1026022039552
+    m_Localized: How to command workers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1762537627648
+    m_Localized: Central Planning Bureau
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11440642449408
+    m_Localized: Buttons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11560549212160
+    m_Localized: '   Buttons control the complex actions of workers. You can also
+      control the numbers or logical flow displayed in the boxes. Learn more through
+      the tutorial practice materials.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11847305388032
+    m_Localized: 1. New Input
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12262398877696
+    m_Localized: '   By pressing this button, a new worker will be hired and added
+      to your workforce.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12582352969728
+    m_Localized: 2. Add, Sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12694517047296
+    m_Localized: '   Workers who step on the button will cause the number displayed
+      in the box to increase or decrease by 1.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12956392611840
+    m_Localized: 3. Double
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13056992993280
+    m_Localized: '   Pressing this button will generate an identical worker at the
+      designated location. If the direction is the same, they will immediately merge.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187642841784320
+    m_Localized: 4. Jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187738622910464
+    m_Localized: '   Pressing this button moves workers to the connected location.
+      The symbol on the button may restrict movement to specific workers.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187938716377088
+    m_Localized: 5. Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188007662346240
+    m_Localized: '   This button can turn an active button off or activate an inactive
+      button.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188192425631744
+    m_Localized: 6. Rotate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188279948173312
+    m_Localized: '   While pressed, this button changes the floor direction at the
+      connected location to match its symbol.'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
