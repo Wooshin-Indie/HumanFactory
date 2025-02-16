@@ -28,6 +28,8 @@ namespace HumanFactory.Manager
 		private bool isActive = true;
 		public bool IsActive { get => isActive; set => isActive = value; }
 
+		private bool isExecuted = false;
+		public bool IsExcuted { get => isExecuted; set => isExecuted = value; }
 
 		private PadType originPadType = 0;
 
@@ -131,6 +133,7 @@ namespace HumanFactory.Manager
 			if (isToggled)
 			{
 				isPressed = false;
+				isExecuted = false;
 				buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
 			}
 
@@ -154,6 +157,7 @@ namespace HumanFactory.Manager
 		{
 			if (buildingType == BuildingType.None) return;
 			if (isPressed) return;
+			if (isExecuted) return;
 
 			Managers.Sound.PlaySfx(SFXType.ButtonPress);
 
@@ -166,13 +170,16 @@ namespace HumanFactory.Manager
 			switch (buildingType)
 			{
 				case BuildingType.NewInput:
+					isExecuted = true;
 					MapManager.Instance.AddPerson();
 					break;
 				case BuildingType.Toggle:
+					isExecuted = true;
 					MapManager.Instance.ToggleButtonInGame(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y);
 					break;
 				case BuildingType.Rotate:
+					isExecuted = true;
 					MapManager.Instance.RotatePadDir(buttonInfo.linkedGridPos.x,
 						buttonInfo.linkedGridPos.y,
 						buttonInfo.dirType);

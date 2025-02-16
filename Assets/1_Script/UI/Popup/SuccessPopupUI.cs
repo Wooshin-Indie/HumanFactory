@@ -41,12 +41,6 @@ namespace HumanFactory.UI
                 CloseWindow();
                 Managers.Input.OnEscape();
             });
-            buttons[2].onClick.AddListener(() => // Next Stage Button
-            {
-                Managers.Input.ReleaseMouseInput();
-                CloseWindow();
-                MapManager.Instance.LoadStage(MapManager.Instance.CurrentStage + 1, 0); // 다음 스테이지 호출
-            });
         }
 
         private void Update()
@@ -259,17 +253,10 @@ namespace HumanFactory.UI
             int[] counts = { resultInfo.CycleCount, resultInfo.ButtonCount, resultInfo.KillCount };
             StageInfo stageInfo = Managers.Resource.GetStageInfo(resultInfo.StageIdx);
 
-            bool isChallengePassed = false;
             for (int i = 0; i < 3; i++)  // 기록(점수) 출력 및 체크박스 활성화
             {
-                if (counts[i] <= stageInfo.challenges[i]) isChallengePassed = true;
-
                 chalRecords[i].text = $"{counts[i]}/{stageInfo.challenges[i]}";
-                if (isChallengePassed)
-                {
-                    checkBoxes[i].sprite = checkedBox;
-                }
-                isChallengePassed = false;
+                checkBoxes[i].sprite = (counts[i] <= stageInfo.challenges[i]) ? checkedBox : emptyBox;
             }
 
             // Comments 내용 출력
@@ -278,7 +265,6 @@ namespace HumanFactory.UI
             ActivateStamp(resultInfo);
             ActivateButtons();
         }
-
 
         private static AudioSource stampSource = null; // 도장 찍을 때
         private void ActivateStamp(GameResultInfo resultInfo)
