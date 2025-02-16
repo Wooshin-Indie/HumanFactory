@@ -30,6 +30,11 @@ namespace HumanFactory.Manager
         private string pressedOffRButtonPath = "Sprites/Buildings/Pressed_Off_Rotate";
         private string releasedOffRButtonPath = "Sprites/Buildings/Released_Off_Rotate";
 
+        private string pressedOnDButtonPath = "Sprites/Buildings/Pressed_On_Double";
+        private string releasedOnDButtonPath = "Sprites/Buildings/Released_On_Double";
+        private string pressedOffDButtonPath = "Sprites/Buildings/Pressed_Off_Double";
+        private string releasedOffDButtonPath = "Sprites/Buildings/Released_Off_Double";
+
         /** Data Containers **/
         private StageInfos stageInfos = new StageInfos();
         private ChapterInfos chapterInfos = new ChapterInfos();
@@ -43,6 +48,11 @@ namespace HumanFactory.Manager
         private Sprite[] releasedOnRotateButtonSprites;
         private Sprite[] pressedOffRotateButtonSprites;
         private Sprite[] releasedOffRotateButtonSprites;
+
+        private Sprite[] pressedOnDoubleButtonSprites;
+        private Sprite[] releasedOnDoubleButtonSprites;
+        private Sprite[] pressedOffDoubleButtonSprites;
+        private Sprite[] releasedOffDoubleButtonSprites;
 
         private Sprite[] effectSprites;
 
@@ -61,6 +71,11 @@ namespace HumanFactory.Manager
 			releasedOnRotateButtonSprites = Resources.LoadAll<Sprite>(releasedOnRButtonPath);
 			pressedOffRotateButtonSprites = Resources.LoadAll<Sprite>(pressedOffRButtonPath);
 			releasedOffRotateButtonSprites = Resources.LoadAll<Sprite>(releasedOffRButtonPath);
+
+            pressedOnDoubleButtonSprites = Resources.LoadAll<Sprite>(pressedOnDButtonPath);
+            releasedOnDoubleButtonSprites = Resources.LoadAll<Sprite>(releasedOnDButtonPath);
+            pressedOffDoubleButtonSprites = Resources.LoadAll<Sprite>(pressedOffDButtonPath);
+            releasedOffDoubleButtonSprites = Resources.LoadAll<Sprite>(releasedOffDButtonPath);
 
             effectSprites = Resources.LoadAll<Sprite>(effectSpritePath);
         }
@@ -132,6 +147,20 @@ namespace HumanFactory.Manager
 					return (isPressed ? pressedOffRotateButtonSprites[(int)padType]
 						: releasedOffRotateButtonSprites[(int)padType]);
 				}
+            }
+
+            if (type == BuildingType.Double && padType != PadType.DirNone)
+            {
+                if (isActive)
+                {
+                    return (isPressed ? pressedOnDoubleButtonSprites[(int)padType]
+                        : releasedOnDoubleButtonSprites[(int)padType]);
+                }
+                else
+                {
+                    return (isPressed ? pressedOffDoubleButtonSprites[(int)padType]
+                        : releasedOffDoubleButtonSprites[(int)padType]);
+                }
             }
 
             if (isActive)

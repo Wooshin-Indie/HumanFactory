@@ -194,21 +194,19 @@ namespace HumanFactory.UI
             bool isChallengePassed = false;
             for (int i = 0; i < 3; i++)
             {
-                if (counts[i] <= stageInfo.challenges[i]) isChallengePassed = true;
-
                 tmpDescript = $"{counts[i]}/{stageInfo.challenges[i]}";
                 foreach (char letter in tmpDescript.ToCharArray()) // 기록(점수) 출력
                 {
                     chalRecords[i].text += letter;
                     yield return new WaitForSeconds(deltaTime);
                 }
-                if (isChallengePassed)
+                if (counts[i] <= stageInfo.challenges[i])
                 {
                     yield return new WaitForSeconds(0.2f);
                     checkboxSource = Managers.Sound.PlaySfx(SFXType.Checkbox, 1.0f, 1.0f); // 체크박스 쓰는 소리
                     checkBoxes[i].sprite = checkedBox;
                 }
-                isChallengePassed = false;
+                else checkBoxes[i].sprite = emptyBox;
             }
 
             tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_Comments");
@@ -259,17 +257,10 @@ namespace HumanFactory.UI
             int[] counts = { resultInfo.CycleCount, resultInfo.ButtonCount, resultInfo.KillCount };
             StageInfo stageInfo = Managers.Resource.GetStageInfo(resultInfo.StageIdx);
 
-            bool isChallengePassed = false;
             for (int i = 0; i < 3; i++)  // 기록(점수) 출력 및 체크박스 활성화
             {
-                if (counts[i] <= stageInfo.challenges[i]) isChallengePassed = true;
-
                 chalRecords[i].text = $"{counts[i]}/{stageInfo.challenges[i]}";
-                if (isChallengePassed)
-                {
-                    checkBoxes[i].sprite = checkedBox;
-                }
-                isChallengePassed = false;
+                checkBoxes[i].sprite = (counts[i] <= stageInfo.challenges[i]) ? checkedBox : emptyBox;
             }
 
             // Comments 내용 출력
