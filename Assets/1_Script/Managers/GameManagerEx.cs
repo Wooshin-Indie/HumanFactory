@@ -4,6 +4,7 @@ using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace HumanFactory
@@ -141,7 +142,6 @@ namespace HumanFactory
         [SerializeField] private SuccessPopupUI successUI;
 
 
-
         public void OnStageSuccess(GameResultInfo info)
 		{
             if (!Application.isBatchMode)
@@ -217,15 +217,31 @@ namespace HumanFactory
 				raycasters[i].enabled = false;
 		}
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [ContextMenu("Unlock All Stages")]
         public void UnlockAllStages()
         {
             Managers.Data.UnlockAll();
         }
-        #endif
+#endif
 
-    }
+        [Header("LOGs")]
+        [SerializeField] private LogPanelUI logUI;
+
+		public void DisplayLog()
+		{
+            logUI.DisplayLog(LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_LOG, "Log_Test"), Color.black);
+		}
+
+        // HACK - Log 시험용
+		private void Update()
+		{
+            if (Input.GetKeyDown(KeyCode.LeftBracket))
+            {
+                DisplayLog();
+            }
+		}
+	}
 }
 
  

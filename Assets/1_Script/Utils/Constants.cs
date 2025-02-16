@@ -43,6 +43,7 @@ namespace HumanFactory
         public static readonly string TABLE_MENUUI = "MenuUI";
         public static readonly string TABLE_GAMEUI = "GameUI";
         public static readonly string TABLE_SUCCESSPOPUPUI = "SuccessPopupUI";
+        public static readonly string TABLE_LOG = "Log";
 
         public static readonly string ANIM_PARAM_IDLE = "IsIdle";
         public static readonly string ANIM_PARAM_WALK = "IsWalk";

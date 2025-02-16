@@ -199,7 +199,6 @@ namespace HumanFactory.Manager
 		{
 
 			DoTeleport();
-
 			CalcDuplicatedPos();
 
 			foreach (var controller in humanControllers)
@@ -239,6 +238,16 @@ namespace HumanFactory.Manager
 					int mapIdx = GetMapIdxFromPos(humanControllers[idx].PrevPos.x, humanControllers[idx].PrevPos.y, isMapExpanded);
 					gunnersManagement.DetectEscaped(humanControllers[idx].CurrentPos - humanControllers[idx].PrevPos, mapIdx, isMapExpanded);
 					humanControllers[idx].HumanDyingProcessWithoutBox();
+					humanControllers.Remove(humanControllers[idx]);
+					killCount++;
+					return;
+				}
+				else if (humanControllers[idx].HumanNum < 0 || humanControllers[idx].HumanNum >= 1000)
+				{
+					int mapIdx = GetMapIdxFromPos(humanControllers[idx].PrevPos.x, humanControllers[idx].PrevPos.y, isMapExpanded);
+					gunnersManagement.DetectEscaped(humanControllers[idx].CurrentPos - humanControllers[idx].PrevPos, mapIdx, isMapExpanded);
+					programMap[humanControllers[idx].CurrentPos.x, humanControllers[idx].CurrentPos.y].OnRelease();
+					humanControllers[idx].HumanDyingProcessWithBox();
 					humanControllers.Remove(humanControllers[idx]);
 					killCount++;
 					return;
@@ -367,17 +376,18 @@ namespace HumanFactory.Manager
 				if (!CheckBoundary(tmpV.x, tmpV.y, isMapExpanded)) continue;
 				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
 				{
-					if (!programMap[tmpV.x, tmpV.y].IsActive) continue;
+					if (!programMap[tmpV.x, tmpV.y].IsActive || programMap[tmpV.x, tmpV.y].IsExcuted) continue;
 					switch (programMap[tmpV.x, tmpV.y].BuildingType)
 					{
 						case BuildingType.Add:
 							humanControllers[i].AddByButton();
+							programMap[tmpV.x, tmpV.y].IsExcuted = true;
 							break;
 						case BuildingType.Sub:
 							humanControllers[i].SubByButton();
+							programMap[tmpV.x, tmpV.y].IsExcuted = true;
 							break;
 						case BuildingType.Double:
-							 
 							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone || programMap[tmpV.x, tmpV.y].ButtonInfo.dirType == PadType.DirNone ||
 								(programMap[tmpV.x, tmpV.y].PadType == programMap[tmpV.x, tmpV.y].ButtonInfo.dirType))
 							{  // 경로가 겹치는 경우, Pad의 방향이 없는 경우, DoubleButton의 방향이 없는 경우 -> 바로 두배

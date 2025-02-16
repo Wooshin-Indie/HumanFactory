@@ -41,12 +41,6 @@ namespace HumanFactory.UI
                 CloseWindow();
                 Managers.Input.OnEscape();
             });
-            buttons[2].onClick.AddListener(() => // Next Stage Button
-            {
-                Managers.Input.ReleaseMouseInput();
-                CloseWindow();
-                MapManager.Instance.LoadStage(MapManager.Instance.CurrentStage + 1, 0); // 다음 스테이지 호출
-            });
         }
 
         private void Update()
@@ -269,7 +263,6 @@ namespace HumanFactory.UI
             ActivateStamp(resultInfo);
             ActivateButtons();
         }
-
 
         private static AudioSource stampSource = null; // 도장 찍을 때
         private void ActivateStamp(GameResultInfo resultInfo)

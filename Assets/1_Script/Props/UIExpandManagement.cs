@@ -124,7 +124,8 @@ namespace HumanFactory.UI
             }
             CurrentSelectedIndex = -1;
 
-            Managers.Data.OnSaveClearStage -= OnSaveClearStage;
+			scrollviewHeight = GetComponent<RectTransform>().rect.height;
+			Managers.Data.OnSaveClearStage -= OnSaveClearStage;
             Managers.Data.OnSaveClearStage += OnSaveClearStage;
 
 		}
@@ -261,10 +262,12 @@ namespace HumanFactory.UI
         private void SetSelectedStageOnCenter(int index, int stageIdx, float duration)
         {
             noiseEffect.MakeNoise();
-            float maxPosition = content.GetComponent<RectTransform>().rect.height - scrollviewHeight + 200;
+            float maxPosition = content.GetComponent<RectTransform>().rect.height - scrollviewHeight;
             float setPosition = Mathf.Clamp(Mathf.Abs(stages[index].GetComponent<RectTransform>().anchoredPosition.y) - scrollviewHeight / 2,
                 0,
                 maxPosition);
+
+            Debug.Log(maxPosition + ", " + setPosition);
 
             scrollTweener = content.GetComponent<RectTransform>().DOAnchorPosY(setPosition, duration);
 
