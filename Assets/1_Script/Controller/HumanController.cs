@@ -162,9 +162,17 @@ namespace HumanFactory.Controller
             HumanNum = controller.HumanNum;
 			MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].GetPadParameter(out currentDir);
 
-			Vector2Int dir = targetPos - prevPos;
-            targetPos = targetPos + dir;
-            prevPos = prevPos + dir;
+            UpdateTargetPosWithDoubleButtonDir();
+        }
+
+        public void UpdateTargetPosWithDoubleButtonDir()
+        {
+            PadType buttonDir = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].ButtonInfo.dirType; // doubleButton에 설정된 방향 받아오기
+            Vector2Int dir = new Vector2Int(Constants.DIR_X[(int)buttonDir], Constants.DIR_Y[(int)buttonDir]);
+            targetPos = currentPos + dir;
+            prevPos = currentPos;
+
+            isDoubled = true;
         }
 
         public void EffectTestFunc(EffectType type)

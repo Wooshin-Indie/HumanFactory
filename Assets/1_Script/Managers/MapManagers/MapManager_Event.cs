@@ -155,7 +155,14 @@ namespace HumanFactory.Manager
 			}
 			else
 			{
-				if (programMap[x, y].BuildingType != BuildingType.Jump
+				if (programMap[x, y].BuildingType == BuildingType.Double)
+				{
+                    programMap[x, y].OnButtonRotate();
+                    Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
+                    return;
+                }
+
+                if (programMap[x, y].BuildingType != BuildingType.Jump
 					&& programMap[x, y].BuildingType != BuildingType.Jump0
 					&& programMap[x, y].BuildingType != BuildingType.Toggle
 					&& programMap[x, y].BuildingType != BuildingType.Rotate) return;

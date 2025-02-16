@@ -188,21 +188,19 @@ namespace HumanFactory.UI
             bool isChallengePassed = false;
             for (int i = 0; i < 3; i++)
             {
-                if (counts[i] <= stageInfo.challenges[i]) isChallengePassed = true;
-
                 tmpDescript = $"{counts[i]}/{stageInfo.challenges[i]}";
                 foreach (char letter in tmpDescript.ToCharArray()) // 기록(점수) 출력
                 {
                     chalRecords[i].text += letter;
                     yield return new WaitForSeconds(deltaTime);
                 }
-                if (isChallengePassed)
+                if (counts[i] <= stageInfo.challenges[i])
                 {
                     yield return new WaitForSeconds(0.2f);
                     checkboxSource = Managers.Sound.PlaySfx(SFXType.Checkbox, 1.0f, 1.0f); // 체크박스 쓰는 소리
                     checkBoxes[i].sprite = checkedBox;
                 }
-                isChallengePassed = false;
+                else checkBoxes[i].sprite = emptyBox;
             }
 
             tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_Comments");

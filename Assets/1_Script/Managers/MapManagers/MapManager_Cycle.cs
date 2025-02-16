@@ -388,13 +388,16 @@ namespace HumanFactory.Manager
 							programMap[tmpV.x, tmpV.y].IsExcuted = true;
 							break;
 						case BuildingType.Double:
-							programMap[tmpV.x, tmpV.y].IsExcuted = true;
-							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone ||
-								(programMap[tmpV.x, tmpV.y].PadType == (CheckBoundary(humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y, isMapExpanded)
-								? programMap[humanControllers[i].PrevPos.x, humanControllers[i].PrevPos.y].PadType : PadType.DirUp)))
-							{  // 경로가 겹치는 경우 바로 두배
+							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone || programMap[tmpV.x, tmpV.y].ButtonInfo.dirType == PadType.DirNone ||
+								(programMap[tmpV.x, tmpV.y].PadType == programMap[tmpV.x, tmpV.y].ButtonInfo.dirType))
+							{  // 경로가 겹치는 경우, Pad의 방향이 없는 경우, DoubleButton의 방향이 없는 경우 -> 바로 두배
 								humanControllers[i].HumanNum *= 2;
-							}
+
+                                // Pad방향 없고 DoubleButton방향 있는 경우에는 DoubleButton방향으로 이동
+                                if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone &&
+									programMap[tmpV.x, tmpV.y].ButtonInfo.dirType != PadType.DirNone)
+									humanControllers[i].UpdateTargetPosWithDoubleButtonDir();
+                            }
 							else
 							{
 								HumanController tmpController = Instantiate(humanPrefab, new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z), Quaternion.identity)
