@@ -119,6 +119,16 @@
             "isExpanded": 0,
             "prerequisite": 10,
             "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 12,
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "outputs": [ 2, 12, 30, 56, 90 ],
+            "enableBuildings": [ 0, 1, 2, 3, 4, 5, 6, 7],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 11,
+            "maxCounts": [ 100, 25, 50 ]
         }
     ],
     "chapterInfo": [
@@ -128,7 +138,7 @@
         },
         {
             "chapterId": 1,
-            "stageIndexes": [ 11 ]
+            "stageIndexes": [ 11, 12 ]
         }
     ]
 }

@@ -89,7 +89,7 @@ namespace HumanFactory.Manager
 		{
 
 			float prev = CycleTime;
-			CycleTime = 2f;
+			CycleTime = 0.3f;
 			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 			if (idxIn == 0)
@@ -144,6 +144,7 @@ namespace HumanFactory.Manager
 
 		/// <summary>
 		/// 1/3 경과 시, Button을 전부 Release하여 맵을 Original로 만듦
+		/// TDOO - Target이 안바뀌는 애들은 Release 할 필요 없음
 		/// </summary>
 		private bool ExecuteAtOneThird()
 		{
@@ -222,6 +223,7 @@ namespace HumanFactory.Manager
 			if (isOneCycling && GameManagerEx.Instance.ExeType != ExecuteType.None)
 			{
 				GameManagerEx.Instance.SetExeType(ExecuteType.Pause); // 게임 정지
+				CycleTime = 1f;
 			}
 		}
 
