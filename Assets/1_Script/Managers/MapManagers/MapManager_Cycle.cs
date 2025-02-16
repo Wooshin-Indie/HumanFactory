@@ -388,6 +388,7 @@ namespace HumanFactory.Manager
 							programMap[tmpV.x, tmpV.y].IsExcuted = true;
 							break;
 						case BuildingType.Double:
+							programMap[tmpV.x, tmpV.y].IsExcuted = true;
 							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone || programMap[tmpV.x, tmpV.y].ButtonInfo.dirType == PadType.DirNone ||
 								(programMap[tmpV.x, tmpV.y].PadType == programMap[tmpV.x, tmpV.y].ButtonInfo.dirType))
 							{  // 경로가 겹치는 경우, Pad의 방향이 없는 경우, DoubleButton의 방향이 없는 경우 -> 바로 두배
