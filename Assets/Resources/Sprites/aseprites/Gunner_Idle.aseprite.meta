@@ -76,7 +76,7 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    customPivotPosition: {x: 0.5, y: 0}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
@@ -89,7 +89,7 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    customPivotPosition: {x: 0.5, y: 0}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638737542223009412
+  platformSettingsDirtyTick: 638754400874713454
   textureAssetName: 
   singleSpriteImportData:
   - name: 

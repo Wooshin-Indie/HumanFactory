@@ -11,33 +11,45 @@ namespace HumanFactory.Controller
         public List<Gunner> Gunners { get => gunners; set => gunners = value; }
 
 		public Vector2[] expandPos;		// 확장되었을 때, 9명의 위치
-		public Vector2[] originPos;		// 확장되지 않을 때, 4명의 위치
+		public Vector2[] originPos;     // 확장되지 않을 때, 4명의 위치
+        public float[,] originRange;
+
+		private void Update()
+		{
+			for (int i = 0; i < gunners.Count; i++)
+			{
+				if (!(gunners[i].gameObject.activeSelf)) return;
+				else gunners[i].OnUpdate();
+			}
+		}
 
         public void PlaceGunners(Vector2Int mapSize)
         {
 			Vector2 interval = MapManager.Instance.MapInterval;
 			expandPos = new Vector2[9]
 			{
-				new Vector2(-1, -1),
+				new Vector2(-2, -1),
 				new Vector2(mapSize.x -0.5f + interval.x /2, -1),
-				new Vector2(mapSize.x * 2 + interval.x, -1),
-				new Vector2(-1, mapSize.y + interval.y/2 -1),
+				new Vector2(mapSize.x * 2 + interval.x + 1, -1),
+				new Vector2(-2, mapSize.y + interval.y/2 -1),
 				new Vector2(mapSize.x -0.5f + interval.x /2,  mapSize.y + interval.y/2 -1),
-				new Vector2(mapSize.x * 2 + interval.x,  mapSize.y + interval.y/2 -1),
-				new Vector2(-1,2 * mapSize.y + interval.y - 0.5f),
+				new Vector2(mapSize.x * 2 + interval.x + 1,  mapSize.y + interval.y/2 -1),
+				new Vector2(-2, 2 * mapSize.y + interval.y - 0.5f),
 				new Vector2(mapSize.x -0.5f + interval.x /2, 2 * mapSize.y + interval.y - 0.5f),
-				new Vector2(mapSize.x * 2 + interval.x, 2 * mapSize.y + interval.y - 0.5f),
+				new Vector2(mapSize.x * 2 + interval.x + 1, 2 * mapSize.y + interval.y - 0.5f),
 			};
 
 			originPos = new Vector2[4]
 			{
-				new Vector2(-1, -1),
-				new Vector2(mapSize.x, -1),
-				new Vector2(-1, mapSize.y - 0.5f),
-				new Vector2(mapSize.x, mapSize.y-0.5f)
+				new Vector2(-2, -1),
+				new Vector2(mapSize.x + 1, -1),
+				new Vector2(-2, mapSize.y - 0.5f),
+				new Vector2(mapSize.x + 1, mapSize.y-0.5f)
 			};
 
-			for(int i=0; i<expandPos.Length; i++)
+			
+
+            for (int i=0; i<expandPos.Length; i++)
 			{
 				gunners.Add(Instantiate(gunnerPrefab, new Vector3(expandPos[i].x, expandPos[i].y, Constants.HUMAN_POS_Z), Quaternion.identity).
 					GetComponent<Gunner>());
@@ -54,6 +66,7 @@ namespace HumanFactory.Controller
 					{
 						gunners[i].gameObject.SetActive(true);
 						gunners[i].transform.position = new Vector3(originPos[i].x, originPos[i].y, Constants.HUMAN_POS_Z);
+						gunners[i].ResetState(originPos[i]);
 					}
 					else
 					{
@@ -67,7 +80,8 @@ namespace HumanFactory.Controller
 				{
 					gunners[i].gameObject.SetActive(true);
 					gunners[i].transform.position = new Vector3(expandPos[i].x, expandPos[i].y, Constants.HUMAN_POS_Z);
-				}
+                    gunners[i].ResetState(expandPos[i]);
+                }
 			}
 		}
 
@@ -152,7 +166,6 @@ namespace HumanFactory.Controller
 				gunner.GetComponent<Animator>().speed = 1 / cycleTime;
 			}
 		}
-
 
 	}
 }

@@ -366,6 +366,7 @@ namespace HumanFactory.Manager
 			ClearHumans();
 		}
 
+
         [Header("Tilemap")]
         [SerializeField] private Tilemap gameTilemap;
         [SerializeField] private Tile inTile;
