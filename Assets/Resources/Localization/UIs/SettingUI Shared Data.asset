@@ -63,6 +63,14 @@ MonoBehaviour:
     m_Key: 1_SFX
     m_Metadata:
       m_Items: []
+  - m_Id: 8920108779823104
+    m_Key: Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8920201998229504
+    m_Key: Scanline
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

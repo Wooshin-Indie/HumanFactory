@@ -18,9 +18,18 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 9398247424
-    m_Localized: "Log : \uD14C\uC2A4\uD2B8\uC6A9 \uB85C\uADF8\uC785\uB2C8\uB2E4.
-      \uD14C\uC2A4\uD2B8\uC6A9."
+  - m_Id: 265544283316224
+    m_Localized: "\uC5F0\uACB0 \uBD88\uAC00\uB2A5 : \uB2E4\uB978 \uC704\uCE58\uC758
+      \uAC19\uC740 \uBC84\uD2BC\uC774 \uD574\uB2F9 \uCE78\uC744 \uCC38\uC870\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 265548095938560
+    m_Localized: "\uC5F0\uACB0 \uBD88\uAC00\uB2A5 : \uC798\uBABB\uB41C \uBC29\uD5A5\uC785\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 266650178674688
+    m_Localized: "\uC785\uB825 \uC7A0\uAE08 : \uB178\uB3D9\uC790\uB4E4\uC774 \uC77C\uD558\uB294
+      \uC911\uC785\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   references:

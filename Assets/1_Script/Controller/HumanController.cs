@@ -6,79 +6,86 @@ using UnityEngine;
 
 namespace HumanFactory.Controller
 {
-    public class HumanController : MonoBehaviour
-    {
+	public class HumanController : MonoBehaviour
+	{
 
-        [Header("Debug")]
-        [SerializeField] private Vector2Int currentPos; // 현재 그리드 위치
-        [SerializeField] private Vector2Int targetPos;  // 이동할 그리드 위치
-        [SerializeField] private Vector2Int prevPos;  // 이전 그리드 위치
-        [SerializeField] private int currentDir;        // 이동할 방향
-        [SerializeField] private HumanOperandType operandType;
-        [SerializeField] private int humanNum = 2;
+		[Header("Debug")]
+		[SerializeField] private Vector2Int currentPos; // 현재 그리드 위치
+		[SerializeField] private Vector2Int targetPos;  // 이동할 그리드 위치
+		[SerializeField] private Vector2Int prevPos;  // 이전 그리드 위치
+		[SerializeField] private int currentDir;        // 이동할 방향
+		[SerializeField] private HumanOperandType operandType;
+		[SerializeField] private int humanNum = 2;
 
-        [SerializeField] private TextMeshPro numTMP;
+		[SerializeField] private TextMeshPro numTMP;
 
-        public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
-        public Vector2Int PrevPos { get => prevPos; set => prevPos = value; }
-        public Vector2Int TargetPos { get => targetPos; set => targetPos = value; }
-        public int HumanNum { get => humanNum; 
-            set
-            {
-                humanNum = value;
-                numTMP.text = humanNum.ToString();
-            }
-        }
+		public Vector2Int CurrentPos { get => currentPos; set => currentPos = value; }
+		public Vector2Int PrevPos { get => prevPos; set => prevPos = value; }
+		public Vector2Int TargetPos { get => targetPos; set => targetPos = value; }
+		public int HumanNum
+		{
+			get => humanNum;
+			set
+			{
+				humanNum = value;
+				numTMP.text = humanNum.ToString();
+			}
+		}
 
-        public HumanOperandType OperandType { get => operandType; }
+		public HumanOperandType OperandType { get => operandType; }
 
-        public void UpdateCurpos()
-        {
-            currentPos = targetPos;
-        }
+		public void UpdateCurpos()
+		{
+			currentPos = targetPos;
+		}
 
-        private int operandsResult = 0;
-        public void SetAsOperand1() {
-            operandType = HumanOperandType.Operand1;
-            operandsResult = humanNum;
-        }
+		private int operandsResult = 0;
+		public void SetAsOperand1()
+		{
+			operandType = HumanOperandType.Operand1;
+			operandsResult = humanNum;
+		}
 
-        public void SetOperands(int number) {
-            operandsResult += number;
-        }
+		public void SetOperands(int number)
+		{
+			operandsResult += number;
+		}
 
 
 
-        public int SetAsOperand2() {
-            // 애니메이션 필요하면 애니메이션 추가해야됨
-            operandType = HumanOperandType.Operand2;
-            return humanNum;
-        }
+		public int SetAsOperand2()
+		{
+			// 애니메이션 필요하면 애니메이션 추가해야됨
+			operandType = HumanOperandType.Operand2;
+			return humanNum;
+		}
 
-        public void ExecuteOperand()
-        {
-            switch (operandType) {
-                case HumanOperandType.Operand1:
-                    HumanNum = operandsResult;
-                    break;
-                case HumanOperandType.Operand2:
-                    Destroy(gameObject);
-                    break;
-            }
-        }
+		public void ExecuteOperand()
+		{
+			switch (operandType)
+			{
+				case HumanOperandType.Operand1:
+					HumanNum = operandsResult;
+					break;
+				case HumanOperandType.Operand2:
+					Destroy(gameObject);
+					break;
+			}
+		}
 
-        private void UnsetOperand() { 
-            operandType = HumanOperandType.None;
-        }
+		private void UnsetOperand()
+		{
+			operandType = HumanOperandType.None;
+		}
 
-        public void SetAnimSpeed(float cycleTime)
-        {
+		public void SetAnimSpeed(float cycleTime)
+		{
 			GetComponent<Animator>().speed = 1 / cycleTime;
 		}
 
-        public void OnInitPerCycle()
+		public void OnInitPerCycle()
 		{
-            
+			if (isTeleport) return;
 			if (prevPos == targetPos)
 			{
 				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_IDLE);
@@ -90,29 +97,29 @@ namespace HumanFactory.Controller
 
 		}
 
-        public void OnFinPerCycle()
+		public void OnFinPerCycle()
 		{
 			UpdateTargetPos();
 
 			UnsetOperand();
-        }
+		}
 
 
-        private void Awake()
-        {
-            prevPos = new Vector2Int(0, -1);
-            currentPos = new Vector2Int(0, -1);
-            targetPos = new Vector2Int(0, 0);
-            currentDir = 0;
-            numTMP.text = humanNum.ToString();
-        }
+		private void Awake()
+		{
+			prevPos = new Vector2Int(0, -1);
+			currentPos = new Vector2Int(0, -1);
+			targetPos = new Vector2Int(0, 0);
+			currentDir = 0;
+			numTMP.text = humanNum.ToString();
+		}
 
 
-        public void SetPositionByRatio(float ratio)
-        {
-            Vector2 tmpV = Vector2.Lerp(new Vector2(prevPos.x, prevPos.y), new Vector2(targetPos.x, targetPos.y), ratio);
-            transform.position = new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z);
-        }
+		public void SetPositionByRatio(float ratio)
+		{
+			Vector2 tmpV = Vector2.Lerp(new Vector2(prevPos.x, prevPos.y), new Vector2(targetPos.x, targetPos.y), ratio);
+			transform.position = new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z);
+		}
 
 		private bool isDoubled = false;
 		public bool IsDoubled { get => isDoubled; }
@@ -120,96 +127,97 @@ namespace HumanFactory.Controller
 		/// Update targetPos when transform.position is nearby it
 		/// </summary>
 		private void UpdateTargetPos()
-        {
-            if (isDoubled)
-            {
-                isDoubled = false;
-                return;
-            }
+		{
+			if (isDoubled)
+			{
+				isDoubled = false;
+				return;
+			}
 
-            // 점하고 가까울때만 실행
-            transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
+			// 점하고 가까울때만 실행
+			transform.position = new Vector3(targetPos.x, targetPos.y, Constants.HUMAN_POS_Z);
 
-            if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y, MapManager.Instance.IsMapExpanded)) return; //그리드 밖이면 return
+			if (!MapManager.Instance.CheckBoundary(currentPos.x, currentPos.y, MapManager.Instance.IsMapExpanded)) return; //그리드 밖이면 return
 
-            MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
+			MapGrid grid = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y];
 
-            //
-            grid.GetPadParameter(out currentDir);
+			//
+			grid.GetPadParameter(out currentDir);
 
-            switch (currentDir) {
-                case (int)PadType.DirLeft:
-                    GetComponent<SpriteRenderer>().flipX = true;
-                    break;
-                case (int)PadType.DirRight:
+			switch (currentDir)
+			{
+				case (int)PadType.DirLeft:
+					GetComponent<SpriteRenderer>().flipX = true;
+					break;
+				case (int)PadType.DirRight:
 					GetComponent<SpriteRenderer>().flipX = false;
 					break;
-            }
+			}
 
 
-            prevPos = targetPos;
+			prevPos = targetPos;
 			targetPos += new Vector2Int(Constants.DIR_X[currentDir], Constants.DIR_Y[currentDir]);
 
-        }
+		}
 
-        public void SetAsDoubled(HumanController controller)
-        {
-            isDoubled = true;
+		public void SetAsDoubled(HumanController controller)
+		{
+			isDoubled = true;
 
-            currentPos = controller.CurrentPos;
-            targetPos = controller.CurrentPos;
-            prevPos = controller.PrevPos;
-            HumanNum = controller.HumanNum;
+			currentPos = controller.CurrentPos;
+			targetPos = controller.CurrentPos;
+			prevPos = controller.PrevPos;
+			HumanNum = controller.HumanNum;
 			MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].GetPadParameter(out currentDir);
 
-            UpdateTargetPosWithDoubleButtonDir();
-        }
+			UpdateTargetPosWithDoubleButtonDir();
+		}
 
-        public void UpdateTargetPosWithDoubleButtonDir()
-        {
-            PadType buttonDir = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].ButtonInfo.dirType; // doubleButton에 설정된 방향 받아오기
-            Vector2Int dir = new Vector2Int(Constants.DIR_X[(int)buttonDir], Constants.DIR_Y[(int)buttonDir]);
-            targetPos = currentPos + dir;
-            prevPos = currentPos;
+		public void UpdateTargetPosWithDoubleButtonDir()
+		{
+			PadType buttonDir = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].ButtonInfo.dirType; // doubleButton에 설정된 방향 받아오기
+			Vector2Int dir = new Vector2Int(Constants.DIR_X[(int)buttonDir], Constants.DIR_Y[(int)buttonDir]);
+			targetPos = currentPos + dir;
+			prevPos = currentPos;
 
-            isDoubled = true;
-        }
+			isDoubled = true;
+		}
 
-        public void EffectTestFunc(EffectType type)
-        {
-            Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
-                type);
-        }
+		public void EffectTestFunc(EffectType type)
+		{
+			Managers.Effect.ShowSpriteEffect(transform.position + new Vector3(0, 0.2f, 0),
+				type);
+		}
 
-        public void HumanDyingProcessWithBox()
-        {
-            numTMP.gameObject.SetActive(false);
-
-			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_DIE);
-            RuntimeAnimatorController rac = GetComponent<Animator>().runtimeAnimatorController;
-            float duration = 0f;
-            for (int i = 0; i < rac.animationClips.Length; i++)
-            {
-                if (rac.animationClips[i].name == "Human_Die")
-                {
-                    duration = rac.animationClips[i].length*MapManager.Instance.CycleTime;
-                    break;
-                }
-            }
-
-            GetComponent<SpriteRenderer>().DOFade(0f, duration).SetEase(Ease.InQuint).
-                        OnComplete(() =>
-                        {
-                            Destroy(this.gameObject);
-                        });
-        }
-
-        public void HumanDyingProcessWithoutBox()
+		public void HumanDyingProcessWithBox()
 		{
 			numTMP.gameObject.SetActive(false);
 
-			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_RUN); 
-            
+			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_DIE);
+			RuntimeAnimatorController rac = GetComponent<Animator>().runtimeAnimatorController;
+			float duration = 0f;
+			for (int i = 0; i < rac.animationClips.Length; i++)
+			{
+				if (rac.animationClips[i].name == "Human_Die")
+				{
+					duration = rac.animationClips[i].length * MapManager.Instance.CycleTime;
+					break;
+				}
+			}
+
+			GetComponent<SpriteRenderer>().DOFade(0f, duration).SetEase(Ease.InQuint).
+						OnComplete(() =>
+						{
+							Destroy(this.gameObject);
+						});
+		}
+
+		public void HumanDyingProcessWithoutBox()
+		{
+			numTMP.gameObject.SetActive(false);
+
+			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_RUN);
+
 			RuntimeAnimatorController rac = GetComponent<Animator>().runtimeAnimatorController;
 			float duration = 0f;
 			for (int i = 0; i < rac.animationClips.Length; i++)
@@ -221,8 +229,8 @@ namespace HumanFactory.Controller
 				}
 			}
 
-			transform.DOMove(new Vector3(targetPos.x + 2* Constants.DIR_X[currentDir], targetPos.y + 2* Constants.DIR_Y[currentDir],
-				Constants.HUMAN_POS_Z), duration*0.45f);
+			transform.DOMove(new Vector3(targetPos.x + 2 * Constants.DIR_X[currentDir], targetPos.y + 2 * Constants.DIR_Y[currentDir],
+				Constants.HUMAN_POS_Z), duration * 0.45f);
 			GetComponent<SpriteRenderer>().DOFade(0f, duration).SetEase(Ease.InQuint).
 						OnComplete(() =>
 						{
@@ -230,27 +238,29 @@ namespace HumanFactory.Controller
 						});
 		}
 
-        [SerializeField]
-        private bool isTeleport = false;
-        public bool IsTeleport { get => isTeleport; }
-        public void OnTeleport()
-        {
-            isTeleport = true;
+		[SerializeField]
+		private bool isTeleport = false;
+		public bool IsTeleport { get => isTeleport; }
+		public void OnTeleport()
+		{
+			isTeleport = true;
 			targetPos = currentPos;
+			GetComponent<Animator>().Play("Human_Idle_Clip");
+			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_JUMP);
 		}
-        public void OffTeleport(Vector2Int vec)
-        {
-            isTeleport = false;
-            currentPos = vec;
-            targetPos = vec;
-            transform.position.Set(vec.x, vec.y, Constants.HUMAN_POS_Z);
-        }
+		public void OffTeleport(Vector2Int vec)
+		{
+			isTeleport = false;
+			currentPos = vec;
+			targetPos = vec;
+			transform.position.Set(vec.x, vec.y, Constants.HUMAN_POS_Z);
+		}
 
 		public void AddByButton()
-        {
-            HumanNum++;
+		{
+			HumanNum++;
 			EffectTestFunc(EffectType.Addi);
-        }
+		}
 
 		public void SubByButton()
 		{

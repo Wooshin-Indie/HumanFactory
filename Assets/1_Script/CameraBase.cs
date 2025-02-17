@@ -75,8 +75,8 @@ namespace HumanFactory
         }
 
         public void ConvertSceneBackward()
-        {
-            if (isZoomed)
+		{
+			if (isZoomed)
             {
                 recentlyInteractedUI?.GetComponent<PopUpUIBase>().CloseWindow();
                 recentlyInteractedUI = null;
@@ -84,8 +84,9 @@ namespace HumanFactory
                 ZoomOutToOrigin();
             }
             else
-            {
-                StartCoroutine(LerpToOriginCoroutine());
+			{
+				GameManagerEx.Instance.BlockAllUIs();
+				StartCoroutine(LerpToOriginCoroutine());
             }
         }
 

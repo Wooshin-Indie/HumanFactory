@@ -43,10 +43,6 @@ MonoBehaviour:
     m_Key: Success_CommentText
     m_Metadata:
       m_Items: []
-  - m_Id: 348101249331200
-    m_Key: Success_Comments
-    m_Metadata:
-      m_Items: []
   - m_Id: 691421861240832
     m_Key: Challenge_Cycle
     m_Metadata:
@@ -57,6 +53,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 691424231022592
     m_Key: Challenge_Died
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764042336362496
+    m_Key: Comment_Cycle_Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764091384553472
+    m_Key: Comment_Cycle_Fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764092928057344
+    m_Key: Comment_Button_Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764093544620032
+    m_Key: Comment_Button_Fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764095222341632
+    m_Key: Comment_Kill_Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764095553691648
+    m_Key: Comment_Kill_Fail
     m_Metadata:
       m_Items: []
   m_Metadata:

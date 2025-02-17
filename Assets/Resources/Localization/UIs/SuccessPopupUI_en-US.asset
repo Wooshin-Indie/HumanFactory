@@ -34,11 +34,8 @@ MonoBehaviour:
     m_Localized: ' Area Evaluation Report'
     m_Metadata:
       m_Items: []
-  - m_Id: 348101249331200
-    m_Localized: 'The total cycle is expected in the near future.
-
-      The cost
-      for the structures will be reduced.'
+  - m_Id: 5764091384553472
+    m_Localized: The total cycle is expected in the near future.
     m_Metadata:
       m_Items: []
   - m_Id: 348033230303232
@@ -63,6 +60,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 691424231022592
     m_Localized: Died
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764093544620032
+    m_Localized: The cost for the structures will be reduced.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764095553691648
+    m_Localized: There is a need to reduce human resource costs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764042336362496
+    m_Localized: Cycle Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764092928057344
+    m_Localized: Button Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5764095222341632
+    m_Localized: Kill Success
     m_Metadata:
       m_Items: []
   references:

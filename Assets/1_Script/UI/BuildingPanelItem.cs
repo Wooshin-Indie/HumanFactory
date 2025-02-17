@@ -24,7 +24,7 @@ namespace HumanFactory.UI
 
             itemImage.sprite = Managers.Resource.GetBuildingSprite((BuildingType)index, false, true);
             itemName.text = Enum.GetName(typeof(BuildingType), index);
-            itemShortcut.text = ((KeyCode)Managers.Data.BasicSettingData.KeyBindings[index]).ToString();
+            itemShortcut.text = ((KeyCode)Managers.Data.BasicSettingData.keyBindings[index]).ToString();
             SetItemName((BuildingType)index);
 
             GetComponent<Button>().onClick.AddListener(() =>

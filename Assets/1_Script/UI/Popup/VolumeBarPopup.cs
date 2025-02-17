@@ -28,7 +28,7 @@ namespace HumanFactory.UI
 
 		public override void PopupWindow()
         {
-            volumeSlider.value = Managers.Data.BasicSettingData.BgmVolume;
+            volumeSlider.value = Managers.Data.BasicSettingData.bgmVolume;
             base.PopupWindow();
         }
 
@@ -40,7 +40,7 @@ namespace HumanFactory.UI
 
         private void OnValueChangeFromOuter(SettingData data)
         {
-            volumeSlider.value = data.BgmVolume;
+            volumeSlider.value = data.bgmVolume;
         }
     }
 }

@@ -2,6 +2,7 @@ using HumanFactory.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory
@@ -152,21 +153,21 @@ namespace HumanFactory
             masterVolume = 1f;
             languageIndex = 0;
             isRevealBlood = true;
+			curResolution = new Resolution();
+			curResolution.width = 1920;
+			curResolution.height = 1080;
+            isScanline = true;
         }
 
-        private float masterVolume;
-        private float sfxVolume;
-        private float bgmVolume;
-        private bool isRevealBlood;
-        private int languageIndex;
-        private int[] keyBindings;
 
-        public float MasterVolume { get=> masterVolume; set=> masterVolume= value; }
-        public float SfxVolume { get=> sfxVolume; set=> sfxVolume = value; }
-        public float BgmVolume { get=> bgmVolume; set=> bgmVolume = value; }
-        public bool IsRevealBlood { get=> isRevealBlood; set=> isRevealBlood = value; }
-        public int LanguageIndex { get=> languageIndex; set=> languageIndex = value; }
-        public int[] KeyBindings { get=> keyBindings; set=> keyBindings = value; }
+        public float masterVolume;
+        public float sfxVolume;
+        public float bgmVolume;
+        public bool isRevealBlood;
+        public int languageIndex;
+        public int[] keyBindings;
+        public Resolution curResolution;
+        public bool isScanline;
 
         // etc...
     }

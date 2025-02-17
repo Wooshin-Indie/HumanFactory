@@ -107,6 +107,7 @@ namespace HumanFactory.Controller
 						gunners[3 + idxOffset[idx]].Shoot(true);
 						break;
 					case var _ when dir.y > 0:      // 위쪽
+					default:
 						gunners[3 + idxOffset[idx]].Shoot(false);
 						gunners[4 + idxOffset[idx]].Shoot(true);
 						break;
@@ -129,6 +130,7 @@ namespace HumanFactory.Controller
 						gunners[2].Shoot(true);
 						break;
 					case var _ when dir.y > 0:      // 위쪽
+					default:
 						gunners[2].Shoot(false);
 						gunners[3].Shoot(true);
 						break;

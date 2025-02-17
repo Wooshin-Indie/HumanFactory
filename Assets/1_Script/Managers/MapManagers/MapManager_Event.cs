@@ -73,12 +73,12 @@ namespace HumanFactory.Manager
 			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump 
 				&& programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump0)
 			{
-				if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType == BuildingType.Toggle
-						&& IsDestToPosExist(end.x, end.y, BuildingType.Toggle, IsMapExpanded))
-					return false;
 				if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType == BuildingType.Rotate
 					&& IsDestToPosExist(end.x, end.y, BuildingType.Rotate, IsMapExpanded))
+				{
+					GameManagerEx.Instance.DisplayLogByKey("Link_1");
 					return false;
+				}
 
 				return quad1 == quad2;
 			}
@@ -91,6 +91,7 @@ namespace HumanFactory.Manager
 				if (quad1 == linkableIndices[i, 0] && quad2 == linkableIndices[i, 1]) return true;
 			}
 
+			GameManagerEx.Instance.DisplayLogByKey("Link_2");
 			return false;
 		}
 

@@ -203,8 +203,15 @@ namespace HumanFactory.UI
                 else checkBoxes[i].sprite = emptyBox;
             }
 
-            tmpDescript = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_Comments");
-            foreach (char letter in tmpDescript.ToCharArray()) // comment 내용 출력
+			String commandText = "";
+			commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Cycle_" +
+				(resultInfo.CycleCount <= stageInfo.challenges[0] ? "Success" : "Fail")) + '\n';
+			commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Button_" +
+				(resultInfo.ButtonCount <= stageInfo.challenges[1] ? "Success" : "Fail")) + '\n';
+			commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Kill_" +
+				(resultInfo.KillCount <= stageInfo.challenges[2] ? "Success" : "Fail"));
+            tmpDescript = commandText;
+			foreach (char letter in tmpDescript.ToCharArray()) // comment 내용 출력
             {
                 comments.text += letter;
                 yield return new WaitForSeconds(deltaTime);
@@ -258,7 +265,15 @@ namespace HumanFactory.UI
             }
 
             // Comments 내용 출력
-            comments.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_Comments");
+            String commandText = "";
+            commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Cycle_" +
+				(resultInfo.CycleCount <= stageInfo.challenges[0] ? "Success" : "Fail")) + '\n';
+			commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Button_" +
+				(resultInfo.ButtonCount <= stageInfo.challenges[1] ? "Success" : "Fail")) + '\n';
+			commandText += LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Comment_Kill_" +
+				(resultInfo.KillCount <= stageInfo.challenges[2] ? "Success" : "Fail"));
+
+			comments.text = commandText;
 
             ActivateStamp(resultInfo);
             ActivateButtons();
@@ -271,7 +286,27 @@ namespace HumanFactory.UI
 
             stampSource = Managers.Sound.PlaySfx(SFXType.Stamp, 1.0f, 1.0f);
             stamp.gameObject.SetActive(true);
-            stamp.text = "|COMPLETE|"; // TODO - 도전과제 달성 여부에 따라 스탬프 텍스트 바꿔야함
+
+            int chalCount = 0;
+            if (resultInfo.CycleCount <= stageInfo.challenges[0]) chalCount++;
+            if (resultInfo.ButtonCount <= stageInfo.challenges[1]) chalCount++;
+            if (resultInfo.KillCount <= stageInfo.challenges[2]) chalCount++;
+
+            switch (chalCount) {
+                case 0:
+					stamp.text = "|PASS|";
+					break;
+                case 1:
+					stamp.text = "|GOOD|";
+					break;
+                case 2:
+					stamp.text = "|GREAT|";
+					break;
+                case 3:
+					stamp.text = "|EXCELLENT!|";
+					break;
+            }
+
         }
 
 

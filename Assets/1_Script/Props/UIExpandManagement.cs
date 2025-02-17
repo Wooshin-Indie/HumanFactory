@@ -267,8 +267,6 @@ namespace HumanFactory.UI
                 0,
                 maxPosition);
 
-            Debug.Log(maxPosition + ", " + setPosition);
-
             scrollTweener = content.GetComponent<RectTransform>().DOAnchorPosY(setPosition, duration);
 
             StartTypingDescript(stageIdx);

@@ -28,7 +28,7 @@ namespace HumanFactory.UI
         {
             actionEnum = keyEnum;
             actionText.text = keyEnum.ToString();
-            int keyCode = Managers.Data.BasicSettingData.KeyBindings[(int)keyEnum];
+            int keyCode = Managers.Data.BasicSettingData.keyBindings[(int)keyEnum];
             if (keyCode == (int)KeyCode.None) keyText.text = "";
             else keyText.text = ((KeyCode)keyCode).ToString();
         }

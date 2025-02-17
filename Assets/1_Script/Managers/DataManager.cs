@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.Localization.Settings;
 
 namespace HumanFactory.Manager
 {
@@ -63,6 +64,7 @@ namespace HumanFactory.Manager
         }
         public void SaveAll()
         {
+            Debug.Log("SAVED");
             SaveData<SettingData>(ref settingData, settingDataPath);
             SaveData<GameplayData>(ref gameplayData, playDataPath);
         }
@@ -70,6 +72,7 @@ namespace HumanFactory.Manager
         private void SaveData<T>(ref T data, string path)
         {
             string json = JsonUtility.ToJson(data, true);
+            Debug.Log(json);
             File.WriteAllText(path, json);
         }
 
@@ -135,32 +138,37 @@ namespace HumanFactory.Manager
         // 나머지 LanguageIndex, IsRevealBlood 는 필요할때 프로퍼티로 갖다 쓰시면 됩니다.
         private void ApplyBasicSettings()
         {
-            Managers.Sound.BgmVolume = settingData.BgmVolume;
-            Managers.Sound.SfxVolume = settingData.SfxVolume;
-            Managers.Sound.MasterVolume = settingData.MasterVolume;
-        }
+            Managers.Sound.BgmVolume = settingData.bgmVolume;
+            Managers.Sound.SfxVolume = settingData.sfxVolume;
+            Managers.Sound.MasterVolume = settingData.masterVolume;
+
+			LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[settingData.languageIndex];
+
+            Screen.SetResolution(settingData.curResolution.width, settingData.curResolution.height,
+                (settingData.curResolution.width == 1920 && settingData.curResolution.height == 1080));
+		}
 
         private void InitSettingData()
         {
-            if (settingData.KeyBindings == null)
+            if (settingData.keyBindings == null)
 			{
-				settingData.KeyBindings = new int[Enum.GetValues(typeof(ShortcutActionEnum)).Length-1];
-                for (int i = 0; i < settingData.KeyBindings.Length; i++)
+				settingData.keyBindings = new int[Enum.GetValues(typeof(ShortcutActionEnum)).Length-1];
+                for (int i = 0; i < settingData.keyBindings.Length; i++)
 				{
-					settingData.KeyBindings[i] = (int)Constants.KEYCODE_SHORTCUT_DEFAULT[i];
+					settingData.keyBindings[i] = (int)Constants.KEYCODE_SHORTCUT_DEFAULT[i];
                 }
             }
         }
         public void ChangeBinding(ShortcutActionEnum selectedAction, int keycode)
         {
-            for (int i = 0; i < settingData.KeyBindings.Length; i++)
+            for (int i = 0; i < settingData.keyBindings.Length; i++)
             {
-                if (settingData.KeyBindings[i] == keycode)
+                if (settingData.keyBindings[i] == keycode)
                 {
-                    settingData.KeyBindings[i] = 0;
+                    settingData.keyBindings[i] = 0;
                 }
             }
-            settingData.KeyBindings[(int)selectedAction] = keycode;
+            settingData.keyBindings[(int)selectedAction] = keycode;
             OnUpdateKeyBindings.Invoke();
         }
 

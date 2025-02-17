@@ -3,6 +3,7 @@ using HumanFactory.Server;
 using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -33,13 +34,17 @@ namespace HumanFactory
         {
             Init();
 
-            ConvertUIRaycaster(CameraType.Main);
 			Cursor.SetCursor(mouseTexture, new Vector2(0, 0),CursorMode.ForceSoftware);
 		}
-        #endregion
 
-        // Camera : Main, Menu, Game 순
-        [SerializeField] private List<Camera> cameras;
+		private void Start()
+		{
+			ConvertUIRaycaster(CameraType.Main);
+		}
+		#endregion
+
+		// Camera : Main, Menu, Game 순
+		[SerializeField] private List<Camera> cameras;
         [SerializeField] private List<RenderTexture> renderTextures;
 
         [SerializeField] private Texture2D mouseTexture;
@@ -132,8 +137,13 @@ namespace HumanFactory
         /// <summary>
         /// Scanline Shader Graph Toggle 함수
         /// </summary>
-        private void SetScanlineMaterial(bool isActive)
+        public void SetScanlineMaterial(bool isActive)
         {
+            if(!Managers.Data.BasicSettingData.isScanline)
+			{
+				scanlineMat.SetInt("_IsActive", (isActive) ? 0 : 0);
+                return;
+			}
             scanlineMat.SetInt("_IsActive", (isActive) ? 1 : 0);
         }
 
@@ -228,19 +238,28 @@ namespace HumanFactory
         [Header("LOGs")]
         [SerializeField] private LogPanelUI logUI;
 
-		public void DisplayLog()
+        HashSet<string> logKeys = new HashSet<string>();
+		public void DisplayLogByKey(string key)
 		{
-            logUI.DisplayLog(LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_LOG, "Log_Test"), Color.black);
+            logKeys.Add(key);
 		}
 
-        // HACK - Log 시험용
+        private void OnUpdateLog()
+        {
+            if (logKeys.Count == 0) return;
+
+            foreach(var logkey in  logKeys)
+            {
+				logUI.DisplayLog(LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_LOG, logkey), Color.black);
+			}
+            logKeys.Clear();
+        }
+
 		private void Update()
 		{
-            if (Input.GetKeyDown(KeyCode.LeftBracket))
-            {
-                DisplayLog();
-            }
-		}
+            OnUpdateLog();
+        }
+
 	}
 }
 
