@@ -1,15 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using HumanFactory.Manager;
+using UnityEngine.UI;
+using HumanFactory;
+using UnityEngine.Animations;
 
 public class ResolutionDropdownUI : MonoBehaviour
 {
 	public TMP_Dropdown resolutionDropdown;
-
 	private List<Resolution> ratioResolutions = new List<Resolution>();
 
 	void Start()
 	{
+
+		OnUpdateSetting(Managers.Data.BasicSettingData);
+
 		
 		for (int i = 0; i < Screen.resolutions.Length; i++)
 		{
@@ -43,12 +49,30 @@ public class ResolutionDropdownUI : MonoBehaviour
 		resolutionDropdown.RefreshShownValue();
 
 		resolutionDropdown.onValueChanged.AddListener(SetResolution);
+
+		/** Scanline **/
+		scanlineToggle.onValueChanged.AddListener(OnScanlineValueChanged);
 	}
 
 	void SetResolution(int resolutionIndex)
 	{
 		Resolution resolution = ratioResolutions[resolutionIndex];
+		Managers.Data.BasicSettingData.curResolution = resolution;
 		Screen.SetResolution(resolution.width, resolution.height, 
-			resolution.width == 1920 && resolution.width==0);
+			resolution.width == 1920 && resolution.width==1080);
+	}
+
+
+	[SerializeField] private Toggle scanlineToggle;
+
+	private void OnUpdateSetting(SettingData data)
+	{
+		scanlineToggle.isOn = data.isScanline;
+
+	}
+	private void OnScanlineValueChanged(bool isOn)
+	{
+		Managers.Data.BasicSettingData.isScanline = isOn;
+		GameManagerEx.Instance.SetScanlineMaterial(isOn);
 	}
 }

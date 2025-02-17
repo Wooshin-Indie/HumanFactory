@@ -28,7 +28,7 @@ namespace HumanFactory.Manager
             set
             {
 				sfxVolume = value;
-                Managers.Data.BasicSettingData.SfxVolume = value;
+                Managers.Data.BasicSettingData.sfxVolume = value;
             }
         }
         public float BgmVolume
@@ -38,7 +38,7 @@ namespace HumanFactory.Manager
             {
 				bgmVolume = value;
 				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
-                Managers.Data.BasicSettingData.BgmVolume = value;
+                Managers.Data.BasicSettingData.bgmVolume = value;
             }
         }
         public float MasterVolume { 
@@ -47,7 +47,7 @@ namespace HumanFactory.Manager
 			{
 				masterVolume = value;
 				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
-				Managers.Data.BasicSettingData.MasterVolume = value;
+				Managers.Data.BasicSettingData.masterVolume = value;
 			} 
 		}
         public int CurrentBGM { get { return currentBGM; } }

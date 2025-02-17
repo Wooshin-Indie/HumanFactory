@@ -1,5 +1,6 @@
 using HumanFactory.Manager;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace HumanFactory.UI
 
 		private void OnClickItem(int idx)
 		{
+			Managers.Data.BasicSettingData.languageIndex = idx;
 			Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
 			for (int i = 0; i < items.Count; i++)
             {

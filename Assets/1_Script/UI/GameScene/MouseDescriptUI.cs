@@ -47,8 +47,11 @@ namespace HumanFactory.UI
 					case BuildingType.Sub:
 					case BuildingType.Add:
 					case BuildingType.NewInput:
-					case BuildingType.Double:
 						leftKey = "MouseNoneLeft";
+						rightKey = "MouseNoneRight1";
+						break;
+					case BuildingType.Double:
+						leftKey = "MouseNoneRight0";
 						rightKey = "MouseNoneRight1";
 						break;
 					default:

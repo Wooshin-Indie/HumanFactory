@@ -36,9 +36,9 @@ namespace HumanFactory.UI
 
 		private void OnValueChangedFromOuter(SettingData data)
 		{
-			masterSlider.value = data.MasterVolume;
-			bgmSlider.value = data.BgmVolume;
-			sfxSlider.value = data.SfxVolume;
+			masterSlider.value = data.masterVolume;
+			bgmSlider.value = data.bgmVolume;
+			sfxSlider.value = data.sfxVolume;
 		}
 	}
 }
