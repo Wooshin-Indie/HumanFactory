@@ -148,10 +148,6 @@ namespace HumanFactory.Manager
 					programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonInfo.linkedGridPos
 						= new Vector2Int(x, y);
 				}
-				else
-				{
-					// TODO - Link가 불가능할 때 실행하는 부분
-				}
 				isCircuiting = false;
 			}
 			else

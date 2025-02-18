@@ -182,7 +182,6 @@ namespace HumanFactory.Manager
 		#endregion
 		private void Update()
 		{
-			// HACK : 저장 타이밍 따로 정해줘야됨
 			if (Input.GetKeyDown(KeyCode.S))
 			{
 				SaveStage();
@@ -322,10 +321,10 @@ namespace HumanFactory.Manager
 		#region Save/Load Data
 
 		private int currentStage = -1;
-
         public int CurrentStage { get => currentStage; }
 
         private int currentSaveIdx = -1;
+        public int CurrentSaveIdx { get => currentSaveIdx; }
 
         private Vector2Int exitPos;
         public void LoadStage(int stageId, int saveIdx)
@@ -334,10 +333,12 @@ namespace HumanFactory.Manager
             LoadStage(stageId, Managers.Data.GetGridDatas(stageId, saveIdx));
         }
 
-        public void LoadStage(int stageId, StageSaveData saveData)
+        public Action<int> OnCurrentStageIdxAction { get; set; }
+		public void LoadStage(int stageId, StageSaveData saveData)
 		{
 			/** Load Datas **/
 			currentStage = stageId;
+            OnCurrentStageIdxAction?.Invoke(currentStage);
 			currentStageInfo = Managers.Resource.GetStageInfo(stageId);
 
             /** Set Datas **/
@@ -494,7 +495,7 @@ namespace HumanFactory.Manager
             }
 
             Managers.Data.AddStageGridData(currentStage, currentSaveIdx, gridDatas);
-            Managers.Data.SaveAll();
+            Managers.Data.SaveGameplayData();
         }
 
         #endregion

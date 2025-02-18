@@ -41,9 +41,7 @@ namespace HumanFactory.Manager
 
 		private IEnumerator ProgramCycleCoroutine()
 		{
-
 			InitPerCycle();
-			Debug.Log("CYCLE COUNT : "+ cycleCount++);
 			while (cycleElapsedTime < CycleTime)
 			{
 				ExecutePerFrame(cycleElapsedTime, CycleTime);
@@ -81,19 +79,22 @@ namespace HumanFactory.Manager
 
 			if (idxIn == 0)
 			{
+				SaveStage();
 				cycleCount = killCount = 0;
 				isPersonAdd = true;
 			}
 		}
 		public void AddPersonWithOneCycling()
 		{
-
 			float prev = CycleTime;
 			CycleTime = 0.3f;
 			cycleElapsedTime = cycleElapsedTime * (CycleTime / prev);
 
 			if (idxIn == 0)
+			{
+				SaveStage();
 				isPersonAdd = true;
+			}
 		}
 		public void AddPerson()
 		{

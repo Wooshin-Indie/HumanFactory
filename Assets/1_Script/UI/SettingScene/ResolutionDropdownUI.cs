@@ -4,7 +4,6 @@ using TMPro;
 using HumanFactory.Manager;
 using UnityEngine.UI;
 using HumanFactory;
-using UnityEngine.Animations;
 
 public class ResolutionDropdownUI : MonoBehaviour
 {
@@ -13,9 +12,6 @@ public class ResolutionDropdownUI : MonoBehaviour
 
 	void Start()
 	{
-
-		OnUpdateSetting(Managers.Data.BasicSettingData);
-
 		
 		for (int i = 0; i < Screen.resolutions.Length; i++)
 		{
@@ -50,29 +46,48 @@ public class ResolutionDropdownUI : MonoBehaviour
 
 		resolutionDropdown.onValueChanged.AddListener(SetResolution);
 
-		/** Scanline **/
+		/** Toggles **/
 		scanlineToggle.onValueChanged.AddListener(OnScanlineValueChanged);
+		fullScreenToggle.onValueChanged.AddListener(OnFullScreenValueChanged);
+
+		OnUpdateSetting(Managers.Data.BasicSettingData);
 	}
 
 	void SetResolution(int resolutionIndex)
 	{
 		Resolution resolution = ratioResolutions[resolutionIndex];
-		Managers.Data.BasicSettingData.curResolution = resolution;
-		Screen.SetResolution(resolution.width, resolution.height, 
-			resolution.width == 1920 && resolution.width==1080);
+		Managers.Data.BasicSettingData.resolutionWidth = resolution.width;
+		Managers.Data.BasicSettingData.resolutionHeight = resolution.height;
+		Screen.SetResolution(resolution.width, resolution.height, Managers.Data.BasicSettingData.isFullScreen);
 	}
 
-
+	[SerializeField] private Toggle fullScreenToggle;
 	[SerializeField] private Toggle scanlineToggle;
 
 	private void OnUpdateSetting(SettingData data)
 	{
 		scanlineToggle.isOn = data.isScanline;
-
+		fullScreenToggle.isOn = data.isFullScreen;
+		for (int i = 0; i < ratioResolutions.Count; i++)
+		{
+			if (ratioResolutions[i].width == data.resolutionWidth && ratioResolutions[i].height == data.resolutionHeight)
+			{
+				resolutionDropdown.value = i;
+				break;
+			}
+		}
 	}
 	private void OnScanlineValueChanged(bool isOn)
 	{
 		Managers.Data.BasicSettingData.isScanline = isOn;
 		GameManagerEx.Instance.SetScanlineMaterial(isOn);
+	}
+
+	private void OnFullScreenValueChanged(bool isOn)
+	{
+		Managers.Data.BasicSettingData.isFullScreen = isOn;
+		Screen.SetResolution(Managers.Data.BasicSettingData.resolutionWidth,
+			Managers.Data.BasicSettingData.resolutionHeight,
+			isOn);
 	}
 }

@@ -69,10 +69,18 @@ namespace HumanFactory.Manager
             SaveData<GameplayData>(ref gameplayData, playDataPath);
         }
 
+        public void SaveGameplayData()
+		{
+			SaveData<GameplayData>(ref gameplayData, playDataPath);
+		}
+        public void SaveSettingData()
+		{
+			SaveData<SettingData>(ref settingData, settingDataPath);
+		}
+
         private void SaveData<T>(ref T data, string path)
         {
             string json = JsonUtility.ToJson(data, true);
-            Debug.Log(json);
             File.WriteAllText(path, json);
         }
 
@@ -144,8 +152,7 @@ namespace HumanFactory.Manager
 
 			LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[settingData.languageIndex];
 
-            Screen.SetResolution(settingData.curResolution.width, settingData.curResolution.height,
-                (settingData.curResolution.width == 1920 && settingData.curResolution.height == 1080));
+            Screen.SetResolution(settingData.resolutionWidth, settingData.resolutionHeight, settingData.isFullScreen);
 		}
 
         private void InitSettingData()

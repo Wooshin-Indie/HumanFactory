@@ -110,6 +110,72 @@ MonoBehaviour:
       connected location to match its symbol.'
     m_Metadata:
       m_Items: []
+  - m_Id: 1267114085048320
+    m_Localized: '   Workers determine their movement direction by following the
+      arrows on the floor. If there are none, they stop in place.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1267298214993920
+    m_Localized: Arrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1278005769789440
+    m_Localized: '   If multiple people move to the same location at the same time,
+      their amounts will be combined.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1287445499731968
+    m_Localized: Larger Stage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1287603935371264
+    m_Localized: '   To prevent excessive resource waste by managers, standards are
+      set to evaluate the level of waste. This is highly challenging, but it will
+      be beneficial for your future career.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1301297914306560
+    m_Localized: Jump O
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1301422975868928
+    m_Localized: Jump  X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1307815866916864
+    m_Localized: "   You can use the arrows to view other grids, or use the Zoom_map
+      key to view the entire map.\n   The exit is located in the grid at the top-right,
+      so please be cautious not to cause harm to individuals with incorrect commands."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1321072501579776
+    m_Localized: Basics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1321515139063808
+    m_Localized: '   Workers enter from the bottom-left of the stage and exit at
+      the top-right'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1347283978149888
+    m_Localized: Gunners
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1347430371942400
+    m_Localized: '   They monitor the workers, disposing of those who flee or are
+      no longer useful. Workers must be managed efficiently to prevent the waste
+      of human resources.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1357364757127168
+    m_Localized: Challenges
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1360844636938240
+    m_Localized: '   Certain areas have larger stages. The Jump button alone can
+      affect beyond the 5x5 grid.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

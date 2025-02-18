@@ -71,6 +71,14 @@ MonoBehaviour:
     m_Key: Scanline
     m_Metadata:
       m_Items: []
+  - m_Id: 9281472237002752
+    m_Key: FullScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9424253530005504
+    m_Key: ResetSettings
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -153,10 +153,10 @@ namespace HumanFactory
             masterVolume = 1f;
             languageIndex = 0;
             isRevealBlood = true;
-			curResolution = new Resolution();
-			curResolution.width = 1920;
-			curResolution.height = 1080;
-            isScanline = true;
+			resolutionWidth = 1920;
+			resolutionHeight= 1080;
+            isFullScreen = true;
+			isScanline = true;
         }
 
 
@@ -166,10 +166,31 @@ namespace HumanFactory
         public bool isRevealBlood;
         public int languageIndex;
         public int[] keyBindings;
-        public Resolution curResolution;
+        public int resolutionWidth;
+        public int resolutionHeight;
+        public bool isFullScreen;
         public bool isScanline;
 
         // etc...
+
+        public void Clear()
+		{
+			sfxVolume = 1f;
+			bgmVolume = 1f;
+			masterVolume = 1f;
+			languageIndex = 0;
+			isRevealBlood = true;
+			resolutionWidth = 1920;
+			resolutionHeight = 1080;
+			isFullScreen = true;
+			isScanline = true;
+
+            keyBindings = new int[Constants.KEYCODE_SHORTCUT_DEFAULT.Length];
+            for (int i = 0; i < Constants.KEYCODE_SHORTCUT_DEFAULT.Length; i++)
+            {
+                keyBindings[i] = (int)Constants.KEYCODE_SHORTCUT_DEFAULT[i];
+            }
+		}
     }
 
     [Serializable]

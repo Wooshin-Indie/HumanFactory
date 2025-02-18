@@ -23,7 +23,6 @@ namespace HumanFactory.UI
 					OnButtonClick(t);
 				});
 			}
-
 		}
 
 		private void OnButtonClick(int index)
