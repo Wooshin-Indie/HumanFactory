@@ -47,6 +47,11 @@ namespace HumanFactory.UI
 			curPage = 0;
 			ResetChildOrder();
 			isPaging = false;
+
+			if (curPage == 0)
+			{
+				prevPageButton.gameObject.SetActive(false);
+			}
 		}
 
 		private void OnNextPage()
@@ -59,6 +64,15 @@ namespace HumanFactory.UI
 			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 
 			int nextPage = curPage + 1;
+
+			if(nextPage == pages.Count() - 1)
+			{
+				nextPageButton.gameObject.SetActive(false);
+			}
+			if (nextPage == 1)
+			{
+				prevPageButton.gameObject.SetActive(true);
+			}
 
 			Sequence seq1 = DOTween.Sequence();
 			Sequence seq2 = DOTween.Sequence();
@@ -85,7 +99,6 @@ namespace HumanFactory.UI
 
 			seq1.Play();
 			seq2.Play();
-			
 		}
 
 		private void OnPrevPage()
@@ -97,6 +110,15 @@ namespace HumanFactory.UI
 
 			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 			int prevPage = curPage - 1;
+
+			if (prevPage == pages.Count() - 2)
+			{
+				nextPageButton.gameObject.SetActive(false);
+			}
+			if (prevPage == 0)
+			{
+				prevPageButton.gameObject.SetActive(false);
+			}
 
 			Sequence seq1 = DOTween.Sequence();
 			Sequence seq2 = DOTween.Sequence();

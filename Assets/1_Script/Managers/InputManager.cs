@@ -198,7 +198,6 @@ namespace HumanFactory.Manager
 
         private void ClickOutScene()
         {
-            if (!IsMouseInputEnabled()) return;
             if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[(int)ShortcutActionEnum.Back]))
             {
                 OnEscape();
@@ -206,11 +205,17 @@ namespace HumanFactory.Manager
         }
 
         public void OnEscape()
-        {
-            Managers.Sound.PlaySfx(SFXType.Back, 0.8f, 1.7f);
+		{
+			if (!IsMouseInputEnabled()) return;
+			Managers.Sound.PlaySfx(SFXType.Back, 0.8f, 1.7f);
 			LockMouseInput();
-			Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
 
+            /** SAVE SETTINGS **/
+            if (GameManagerEx.Instance.CurrentCamType == CameraType.Game) MapManager.Instance.SaveStage();
+			else if(GameManagerEx.Instance.CurrentCamType == CameraType.Main || 
+                GameManagerEx.Instance.CurrentCamType == CameraType.Setting) Managers.Data.SaveSettingData();
+			
+            Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
 			inputMode = InputMode.None;
 			OnInputModeChanged(inputMode);
 		}

@@ -123,7 +123,6 @@ namespace HumanFactory.Manager
         {
             if (audioSources.Length <= (int)type)
             {
-                Debug.Log("Resource Error : There is not enough bgms..");
                 return null;
             }
 
