@@ -226,11 +226,8 @@ namespace HumanFactory.Manager
 			}
 		}
 
-		private void CheckOutOfRange(int idx)
+        private void CheckOutOfRange(int idx)
 		{
-			Vector2Int exitPos = (!isMapExpanded) ? new Vector2Int(mapSize.x - 1, mapSize.y) :
-				new Vector2Int(2 * mapSize.x + mapInterval.x - 1, 2 * mapSize.y + mapInterval.y);
-
 			if (!(humanControllers[idx].CurrentPos.x == exitPos.x && humanControllers[idx].CurrentPos.y == exitPos.y))		// 출구가 아닌 경우
 			{
 				if (!CheckBoundary(humanControllers[idx].CurrentPos.x, humanControllers[idx].CurrentPos.y, isMapExpanded))	// 맵 밖으로 나간경우
@@ -256,7 +253,7 @@ namespace HumanFactory.Manager
 			}
 			//human이 output지점 (4,5)이 아닌 바운더리 안이면 continue, (4,5)를 제외한 바운더리 바깥이면 총쏴서 없앰
 
-			if (idxOut < currentStageInfo.outputs.Length)
+			if (idxOut < currentStageInfo.outputs.Length) // exitPos일 때 실행되는 코드
 			{
 				if (humanControllers[idx].HumanNum != currentStageInfo.outputs[idxOut])
 				{
@@ -300,6 +297,7 @@ namespace HumanFactory.Manager
 				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
 					.GetComponent<HumanController>();
 				humanControllers.Add(tmpController);
+				StartCoroutine(GetComponent<WaitingsManagement>().WaitingsCoroutine());
 
 				tmpController.HumanNum = currentStageInfo.inputs[idxIn];
 				GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]

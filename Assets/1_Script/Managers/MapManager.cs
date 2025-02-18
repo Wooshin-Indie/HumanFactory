@@ -41,6 +41,7 @@ namespace HumanFactory.Manager
         {
             Init();
             InitGunners();
+            GetComponent<WaitingsManagement>().InitWaitings();
         }
 
 		#region Map Expension
@@ -326,7 +327,7 @@ namespace HumanFactory.Manager
 
         private int currentSaveIdx = -1;
 
-
+        private Vector2Int exitPos;
         public void LoadStage(int stageId, int saveIdx)
 		{
 			currentSaveIdx = saveIdx;
@@ -342,11 +343,13 @@ namespace HumanFactory.Manager
             /** Set Datas **/
             GameManagerEx.Instance.RayCasters[(int)CameraType.Game].GetComponent<BuildingPanelUI>()?.SetBanner();
 			isMapExpanded = currentStageInfo.isExpanded;
-			SetTilemap(isMapExpanded);
+            exitPos = (!isMapExpanded) ? new Vector2Int(mapSize.x - 1, mapSize.y) :
+                new Vector2Int(2 * mapSize.x + mapInterval.x - 1, 2 * mapSize.y + mapInterval.y);
+            SetTilemap(isMapExpanded);
 			gunnersManagement.LoadGunners(isMapExpanded);
 			CurrentMapIdx = 0;
 
-			Debug.Log("LOAD STAGE");
+            Debug.Log("LOAD STAGE");
 
 			for (int i = 0; i < mapSize.x * 2 + mapInterval.x; i++)
 			{
@@ -355,6 +358,9 @@ namespace HumanFactory.Manager
 					programMap[i, j].ClearGrid();
 				}
 			}
+
+            // 여기에 inTile (0, -1), outTile (exitPos) 넣기
+            
 
 			if (saveData == null) return;
 
@@ -375,6 +381,8 @@ namespace HumanFactory.Manager
         [SerializeField] private Tile belowTile;
         [SerializeField] private Tile leftBelowTile;
         [SerializeField] private Tile rightBelowTile;
+        [SerializeField] private Tile inputTile;
+        [SerializeField] private Tile outputTile;
         [SerializeField] private int tilemapMargin;
 
 
@@ -400,6 +408,7 @@ namespace HumanFactory.Manager
                 {mapSize.x + mapInterval.x, mapSize.y + mapInterval.y}
             };
 
+            gameTilemap.SetTile(new Vector3Int(4, 5, 0), null);
             if (isExpanded)
             {
                 for (int t = 0; t < mapOffsets.GetLength(0); t++)
@@ -423,7 +432,7 @@ namespace HumanFactory.Manager
                     gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), leftBelowTile);
                     gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), rightBelowTile);
 				}
-			}
+            }
             else
 			{
 				for (int t = 0; t < mapOffsets.GetLength(0); t++)
@@ -450,7 +459,9 @@ namespace HumanFactory.Manager
 					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), (t == 0) ? leftBelowTile : null);
 					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), (t == 0) ? rightBelowTile : null);
 				}
-			}
+            }
+            gameTilemap.SetTile(new Vector3Int(0, -1, 0), inputTile);
+            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), outputTile); // input, output 위치 타일 생성
         }
 
         private int currentChapter = -1;

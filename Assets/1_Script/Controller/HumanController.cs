@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace HumanFactory.Controller
 {
-	public class HumanController : MonoBehaviour
+	public partial class HumanController : MonoBehaviour
 	{
 
 		[Header("Debug")]

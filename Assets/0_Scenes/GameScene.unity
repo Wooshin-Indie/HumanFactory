@@ -6723,7 +6723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.52, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.501375, y: 0}
+  m_AnchoredPosition: {x: -7.501451, y: 0}
   m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &573258331
@@ -12186,7 +12186,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0046081543}
+  m_AnchoredPosition: {x: 0, y: 0.008544922}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &870290299
@@ -15187,6 +15187,7 @@ GameObject:
   - component: {fileID: 1056581397}
   - component: {fileID: 1056581398}
   - component: {fileID: 1056581399}
+  - component: {fileID: 1056581400}
   m_Layer: 0
   m_Name: '@MapManager'
   m_TagString: Untagged
@@ -15238,6 +15239,8 @@ MonoBehaviour:
   belowTile: {fileID: 11400000, guid: 4e546f1d191b7964db66ad0a644a3052, type: 2}
   leftBelowTile: {fileID: 11400000, guid: 021878c2e8686394aae5c03515773af8, type: 2}
   rightBelowTile: {fileID: 11400000, guid: d4ddcb0cfc03b7b42a412a8ce1d59ec1, type: 2}
+  inputTile: {fileID: 11400000, guid: 56737a036f5ddd9468b1481d890d02bf, type: 2}
+  outputTile: {fileID: 11400000, guid: e366ad5be3c1cfb40b18924bea4b4116, type: 2}
   tilemapMargin: 0
 --- !u!114 &1056581399
 MonoBehaviour:
@@ -15254,6 +15257,26 @@ MonoBehaviour:
   gunnerPrefab: {fileID: 6814348511074643581, guid: dd8454d099b82414e8ff49c13b98ec42, type: 3}
   expandPos: []
   originPos: []
+--- !u!114 &1056581400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056581396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505489865cb542446a8655f369be2091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  awaiterPrefab: {fileID: 2168950355481842388, guid: f715f6ae4198d514b80eb565c5da1393, type: 3}
+  waitLength: {x: 5, y: 0.6}
+  waitCount: 35
+  waitRandom: 0.2
+  waitStart:
+  - {x: -8, y: -3.4}
+  - {x: -8, y: 0.8}
+  - {x: -8, y: 5}
 --- !u!1 &1087904389
 GameObject:
   m_ObjectHideFlags: 0
@@ -17687,7 +17710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0019836426}
+  m_AnchoredPosition: {x: 0, y: -0.004333496}
   m_SizeDelta: {x: -530.98, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1256118437
