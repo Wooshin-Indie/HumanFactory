@@ -17,6 +17,7 @@ namespace HumanFactory.UI
         [SerializeField] private Transform challengesParent;
         [SerializeField] private List<TextMeshProUGUI> itemNameTexts = new List<TextMeshProUGUI>();
         [SerializeField] private List<TextMeshProUGUI> itemScoreTexts = new List<TextMeshProUGUI>();
+        [SerializeField] private List<TextMeshProUGUI> itemMaxTexts = new List<TextMeshProUGUI>();
 		[SerializeField] private List<TextMeshProUGUI> graphNameTexts = new List<TextMeshProUGUI>();
 		[SerializeField] private List<Image> scoreGraphs = new List<Image>();
         [SerializeField] private List<Image> maxGraphs = new List<Image>();
@@ -55,23 +56,33 @@ namespace HumanFactory.UI
             if (!Managers.Data.IsAbleToAccessStage(index))   // 접근불가
             {
                 SetActiveChallengeUIs(false);
+                SetActivePrerequisiteUIs(true);
+
+                LocalizedString localizedString = new UnityEngine.Localization.LocalizedString
+                {
+                    TableReference = Constants.TABLE_MENUUI,
+                    TableEntryReference = "Challenge_AccessDenied"
+                };
+                localizedString.Arguments = new object[]
+                {
+                    new { StageKey =
+                    LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Stage_"+ Managers.Resource.GetStageInfo(index).prerequisite) }
+                };
+
+                preText.GetComponent<LocalizeStringEvent>().StringReference = localizedString;
+
+                return;
+            }
+            else if (Managers.Data.GetClientResultData(index).CycleCount < 0)
+			{
+				SetActiveChallengeUIs(false);
 				SetActivePrerequisiteUIs(true);
 
-				LocalizedString localizedString = new UnityEngine.Localization.LocalizedString
-				{
-					TableReference = Constants.TABLE_MENUUI,
-					TableEntryReference = "Challenge_AccessDenied"
-				};
-				localizedString.Arguments = new object[]
-				{
-					new { StageKey =
-					LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Stage_"+ Managers.Resource.GetStageInfo(index).prerequisite) }
-				};
-
-				preText.GetComponent<LocalizeStringEvent>().StringReference = localizedString;
+                preText.SetLocalizedString(Constants.TABLE_MENUUI, "Challenge_Unlock");
 
 				return;
-            }
+			}
+
 
 			this.gameObject.SetActive(true);
             SetActiveChallengeUIs(true);
@@ -85,8 +96,10 @@ namespace HumanFactory.UI
             };
             for (int i = 0; i < itemScoreTexts.Count; i++)
 			{
-				itemScoreTexts[i].text = $"{counts[i]}/{info.challenges[i]}";
-			}
+				itemScoreTexts[i].text = $"{counts[i]}";
+                itemMaxTexts[i].text = $"{info.challenges[i]}";
+
+            }
 
             float maxHeight = GetComponent<RectTransform>().rect.height;
             float originWidth = maxGraphs[0].GetComponent<RectTransform>().sizeDelta.x;

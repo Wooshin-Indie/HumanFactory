@@ -136,9 +136,10 @@ namespace HumanFactory.Manager
 			if (isToggled)
 			{
 				isPressed = false;
-				isExecuted = false;
 				buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, false, isActive, buttonInfo.dirType);
 			}
+
+			isExecuted = false;
 
 			if (!isActive) return;
 			switch (buildingType)
@@ -159,7 +160,6 @@ namespace HumanFactory.Manager
 		public void OnPressed(bool isToggled = true)
 		{
 			if (buildingType == BuildingType.None) return;
-			if (isPressed) return;
 			if (isExecuted) return;
 
 			Managers.Sound.PlaySfx(SFXType.ButtonPress);
@@ -169,6 +169,7 @@ namespace HumanFactory.Manager
 				isPressed = true;
 				buildingSprite.sprite = Managers.Resource.GetBuildingSprite(buildingType, true, isActive, buttonInfo.dirType);
 			}
+
 			if (!isActive) return;
 			switch (buildingType)
 			{
@@ -247,7 +248,7 @@ namespace HumanFactory.Manager
 		public void ToggleActive(bool isIngame)
 		{
 			if (buildingType == BuildingType.None || buildingType == BuildingType.Toggle) return;
-			
+
 			// Toggle 할 버튼이 눌려있음 -> 켜면 누르는걸 해줘야됨, 끄면 Release를 해줘야됨
 			// 하지만 sprite 및 상태는 변경하면 안됨
 

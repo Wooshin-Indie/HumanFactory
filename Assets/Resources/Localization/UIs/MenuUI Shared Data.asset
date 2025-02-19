@@ -135,6 +135,18 @@ MonoBehaviour:
     m_Key: Statistics
     m_Metadata:
       m_Items: []
+  - m_Id: 9604845563404288
+    m_Key: Challenge_Unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9606633351929856
+    m_Key: Record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9607641348038656
+    m_Key: Limit
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

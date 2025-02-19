@@ -41,6 +41,7 @@ namespace HumanFactory.Manager
 
 		private IEnumerator ProgramCycleCoroutine()
 		{
+			cycleCount++;
 			InitPerCycle();
 			while (cycleElapsedTime < CycleTime)
 			{
