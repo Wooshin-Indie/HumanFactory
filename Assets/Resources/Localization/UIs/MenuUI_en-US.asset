@@ -126,7 +126,7 @@ MonoBehaviour:
   - m_Id: 4348261983707136
     m_Localized: 'Access Denied
 
-      
+
 
       Requirement : {StageKey}'
     m_Metadata:
@@ -134,6 +134,18 @@ MonoBehaviour:
       - rid: 1752275295744032779
   - m_Id: 7229285646327808
     m_Localized: Statistics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9604845563404288
+    m_Localized: You can check the challenges after clearing this stage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9606633351929856
+    m_Localized: my record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9607641348038656
+    m_Localized: Limit
     m_Metadata:
       m_Items: []
   references:

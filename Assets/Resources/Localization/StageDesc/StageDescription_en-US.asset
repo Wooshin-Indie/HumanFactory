@@ -23,23 +23,23 @@ MonoBehaviour:
 
       
 
-      You do not have the required permissions
-      to access this CCTV.'
+      
+
+      You do not have the required
+      permissions to access this CCTV.'
     m_Metadata:
       m_Items: []
   - m_Id: 8883291166728192
-    m_Localized: "Stage #1 - Mov\r\nThis is your first task. \r\nIt's very simple,
-      but you must not take it lightly. \r\nThe people you see on the screen will
-      obey your commands without question. \r\nIf you tell them to go, they will
-      go... and if you tell them to die, they will die\r\n"
+    m_Localized: Move a laborer from the entrance to the exit. Laborers will follow
+      the platforms you place. Ensure that they do not stray beyond the map boundaries.
     m_Metadata:
       m_Items: []
   - m_Id: 8883291212865562
-    m_Localized: Input and Output
+    m_Localized: Command to move
     m_Metadata:
       m_Items: []
   - m_Id: 8883291212865563
-    m_Localized: New Input
+    m_Localized: Group control
     m_Metadata:
       m_Items: []
   - m_Id: 8883291212865564
@@ -47,35 +47,133 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8883291212865565
-    m_Localized: Faster
+    m_Localized: Fill the gaps
     m_Metadata:
       m_Items: []
   - m_Id: 8883291212865566
-    m_Localized: Except 0
+    m_Localized: Add 1 alternately
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059840
-    m_Localized: Even Numbers
+    m_Localized: Laborers duplication
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059841
-    m_Localized: Odd Numbers
+    m_Localized: First and last
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059842
-    m_Localized: Merge
+    m_Localized: Line up one by one
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059843
-    m_Localized: Add 1 even numbers
+    m_Localized: Eliminate even numbers
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059844
-    m_Localized: Double
+    m_Localized: Eliminate odd numbers
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059845
-    m_Localized: Fill the gaps
+    m_Localized: Pair up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865536
+    m_Localized: A single laborer alone is incapable of accomplishing any task. Effective
+      management of multiple workers is required. Begin by safely guiding several
+      workers to the exit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865537
+    m_Localized: Pressing the green + button increases the value by 1. Ensure that
+      1 is added equally to all.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865538
+    m_Localized: Some laborers have died during operation. Generate and deploy replacement
+      personnel as quickly as possible.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865539
+    m_Localized: Rewarding only certain laborers can efficiently enhance productivity.
+      The sense of competition will contribute to maximizing performance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865540
+    m_Localized: Laborers can be infinitely duplicated, but duplication must be limited
+      to the specified number. Handling them is also part of the job.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865541
+    m_Localized: The first and last always hold significant roles. The one at the
+      front leads the group, while the one at the back must protect everyone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865542
+    m_Localized: Arrange the workers in an orderly manner. A disorganized structure
+      may incite rebellion among them.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865543
+    m_Localized: Sometimes, punishing workers can enhance productivity. Is there
+      anyone you have found undesirable?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865544
+    m_Localized: Proceed in the opposite manner this time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865545
+    m_Localized: At times, a single skilled worker is more valuable than two laborers.
+      Pair them up and have them meet accordingly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865546
+    m_Localized: Sometimes, a single skilled worker is more needed than three laborers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865547
+    m_Localized: Correct the incorrect order. Pair them in threes and arrange them
+      in the proper sequence.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865548
+    m_Localized: Apply the Fibonacci sequence to the laborers. The Fibonacci sequence
+      is defined by each number being the sum of the two preceding ones.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865549
+    m_Localized: This is an order from higher-ups. Minimize wasted time. All resources,
+      including time, must be managed efficiently.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865550
+    m_Localized: Eliminate the worthless laborers. All of this is a measure to maximize
+      the efficiency of the organization.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059846
+    m_Localized: Merge 3 numbers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059847
+    m_Localized: Restore disrupted order
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059848
+    m_Localized: Fibonacci
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059849
+    m_Localized: Raise the pace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059850
+    m_Localized: Remove the useless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059855
+    m_Localized: N x M
     m_Metadata:
       m_Items: []
   references:

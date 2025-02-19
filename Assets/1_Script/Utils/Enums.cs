@@ -21,13 +21,13 @@ namespace HumanFactory
     {
         None = -1,
         Add = 0,
-        Sub,
+        Sub,        
 		Double,
-		NewInput,
+		NewInput,   // 3
 		Jump,
 		Jump0,
         Toggle,
-        Rotate
+        Rotate      // 8
     }
 
     public enum CameraType

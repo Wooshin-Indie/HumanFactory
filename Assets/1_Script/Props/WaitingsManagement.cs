@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEditor;
+using System.Drawing;
 
 namespace HumanFactory.Manager
 {
@@ -15,7 +17,6 @@ namespace HumanFactory.Manager
             new List<Awaiter>(), 
             new List<Awaiter>()
         };
-
         private List<List<Vector2>> waitPoints = new List<List<Vector2>>()
         {
             new List<Vector2>(),
@@ -23,18 +24,25 @@ namespace HumanFactory.Manager
             new List<Vector2>()
         };
 
+        private List<Awaiter> inputWaitings = new List<Awaiter>();
+        private List<Vector2> inputWaitPoints = new List<Vector2>(); //인풋 아랫줄 대기자들
+
         [SerializeField] private GameObject awaiterPrefab;
         [SerializeField] private Vector2 waitLength;
-        [SerializeField] private int waitCount;
+        [SerializeField] private float inputWaitLength;
+        [SerializeField] private int waitsCount;
+        [SerializeField] private int inputWaitsCount;
         [SerializeField] private float waitRandom;
         [SerializeField] private List<Vector2> waitStart = new List<Vector2>();
+        [SerializeField] private Vector2 inputWaitStart;
 
         public void InitWaitings()
         {
-            GetPointsFromSineLines();
+            InstantiateWaitingsFromSineLines();
+            InstantiateWaitingsFromInputLines();
         }
 
-        private void GetPointsFromSineLines()
+        private void InstantiateWaitingsFromSineLines()
         {
             Vector3 tmpRandom;
             Awaiter tmpHuman;
@@ -42,7 +50,7 @@ namespace HumanFactory.Manager
 
             for (int i = 0; i < humanWaitings.Count; i++)
             {
-                points = GenerateSinWaveEqualArcLength(waitCount, 0, Mathf.PI, i);
+                points = GenerateSinWaveEqualArcLength(waitsCount, 0, Mathf.PI, i);
 
                 int middle = points.Count/2;
                 points.RemoveAt(middle);
@@ -61,23 +69,47 @@ namespace HumanFactory.Manager
             }
         }
 
-        //List<Vector3> GenerateSinWave(int n, float startX, float endX)
-        //{
-        //    List<Vector3> points = new List<Vector3>();
-        //    float step = (endX - startX) / (n - 1); // X 간격 계산
+        private void InstantiateWaitingsFromInputLines()
+        {
+            Vector3 tmpRandom;
+            Awaiter tmpHuman;
+            List<Vector3> points;
 
-        //    for (int i = 0; i < n; i++)
-        //    {
-        //        float y = startX + i * step;
-        //        float x = Mathf.Sin(y) * waitLength.x;
-        //        y *= waitLength.y;
-        //        points.Add(new Vector3(x + waitStart.x, y + waitStart.y, Constants.HUMAN_POS_Z));
-        //    }
+            points = GenerateInputLinePoints();
 
-        //    return points;
-        //}
+            for (int i = 0; i < points.Count; i++)
+            {
+                inputWaitPoints.Add(new Vector2(points[i].x, points[i].y));
 
-        List<Vector3> GenerateSinWaveEqualArcLength(int n, float start, float end, int idx)
+                tmpRandom = new Vector3(Random.Range(0f, waitRandom), Random.Range(0f, waitRandom), 0);
+                if (i == 0) tmpHuman = Instantiate(awaiterPrefab, points[i], Quaternion.identity).GetComponent<Awaiter>();
+                else tmpHuman = Instantiate(awaiterPrefab, points[i] + tmpRandom, Quaternion.identity).GetComponent<Awaiter>();
+                tmpHuman.GetComponent<Animator>().speed = Random.Range(0.75f, 1.25f);
+                inputWaitings.Add(tmpHuman);
+            }
+        }
+
+        private List<Vector3> GenerateInputLinePoints()
+        {
+            Vector3 startPoint = new Vector3 (inputWaitStart.x, inputWaitStart.y, Constants.HUMAN_POS_Z);
+            Vector3 endPoint = new Vector3 (inputWaitStart.x, inputWaitStart.y - inputWaitLength, Constants.HUMAN_POS_Z);
+            List<Vector3> points = new List<Vector3>();
+
+            Debug.Log($"StartPoint : {startPoint}");
+            Debug.Log($"EndPoint : {endPoint}");
+
+            for (int i = 0; i < inputWaitsCount; i++)
+            {
+                float step = (float)i / (inputWaitsCount - 1);
+                Vector3 point = Vector3.Lerp(startPoint, endPoint, step);
+                points.Add(point);
+                Debug.Log($"InputWaitPoint[{i}] : {point}");
+            }
+
+            return points;
+        }
+
+        private List<Vector3> GenerateSinWaveEqualArcLength(int n, float start, float end, int idx)
         {
             // n이 2 미만이면 점을 만들 수 없음
             if (n < 2)
@@ -142,12 +174,13 @@ namespace HumanFactory.Manager
             return points;
         }
 
-        private float duration = 0f;
         private float intervalTime = 0.2f;
-        private bool isWalking = false;
 
         private void Update()
         {
+            for (int i = 0; i < inputWaitings.Count; i++) {
+                inputWaitings[i].OnUpdate();
+            }
             for (int i = 0; i < humanWaitings.Count; i++)
             {
                 for (int j = 0; j < humanWaitings[i].Count; j++)
@@ -168,8 +201,23 @@ namespace HumanFactory.Manager
                 for (int j = 0; j < humanWaitings[i].Count - 1; j++)
                 {
                     yield return new WaitForSeconds(intervalTime * MapManager.Instance.CycleTime);
-                    humanWaitings[i][j].WalkNextStep(waitPoints[i][j]);
+                    humanWaitings[i][j].WalkNextStep(waitPoints[i][j], true);
                 }
+            }
+        }
+
+        public IEnumerator InputWaitingsCoroutine()
+        {
+            inputWaitings[0].HeadToEnd(inputWaitPoints[inputWaitings.Count - 1]); // 맨 앞에 Awaiter는 맨 뒤의 Awiater의 위치로 이동
+            Awaiter tmpAwaiter = inputWaitings[0];
+            inputWaitings.RemoveAt(0);
+            inputWaitings.Add(tmpAwaiter);
+
+            inputWaitings[0].WalkNextStep(inputWaitPoints[0], false);
+            for (int i = 1; i < inputWaitings.Count - 1; i++)
+            {
+                yield return new WaitForSeconds(intervalTime * MapManager.Instance.CycleTime);
+                inputWaitings[i].WalkNextStep(inputWaitPoints[i], true);
             }
         }
     }

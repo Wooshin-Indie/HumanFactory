@@ -24,7 +24,6 @@ namespace HumanFactory.UI
 		[SerializeField] private TextMeshProUGUI chapterText;
 		[SerializeField] private TextMeshProUGUI stageText;
 		[SerializeField] private TextMeshProUGUI cctvText;
-		[SerializeField] private TextMeshProUGUI inputText;
 		[SerializeField] private TextMeshProUGUI outputText;
 
 		private void OnLoadStage(int idx)
@@ -32,7 +31,6 @@ namespace HumanFactory.UI
 			chapterText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Chapter")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, $"Chapter_{MapManager.Instance.CurrentChapter}")}";
 			stageText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Stage")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{idx}")}";
 			cctvText.text = $"CCTV: 00{MapManager.Instance.CurrentSaveIdx+1}";
-			inputText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, "Input")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, $"Input_{idx}")}";
 			outputText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, "Output")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, $"Output_{idx}")}";
 		}
 	}
