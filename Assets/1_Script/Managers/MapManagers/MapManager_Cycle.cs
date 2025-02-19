@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using HumanFactory.Util;
 
 namespace HumanFactory.Manager
 {
@@ -266,12 +267,34 @@ namespace HumanFactory.Manager
 				idxOut++;
 			}
 
-			Destroy(humanControllers[idx].gameObject);
+			HumanController tmpController = humanControllers[idx];
+			StartCoroutine(HumanExitCoroutine(tmpController));
 			humanControllers.Remove(humanControllers[idx]);
 		}
 
+        private float tmpClipLength = 0;
+        private IEnumerator HumanExitCoroutine(HumanController tmpController)
+		{
+            tmpController.GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_JUMP);
+            tmpController.SetAnimSpeed(cycleTime);
+            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), PressedJumpTile);
+            Managers.Sound.PlaySfx(SFXType.ButtonPress);
+            RuntimeAnimatorController tmpAni = tmpController.GetComponent<Animator>().runtimeAnimatorController;
+            for (int i = 0; i < tmpAni.animationClips.Length; i++)
+            {
+                if (tmpAni.animationClips[i].name == "Human_Jump_Clip")
+                {
+                    tmpClipLength = tmpAni.animationClips[i].length;
+                }
+            }
+			yield return new WaitForSeconds(tmpClipLength * cycleTime);
 
-		private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
+            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), ReleasedJumpTile);
+
+            Destroy(tmpController.gameObject);
+        }
+
+        private void CheckIsStageEnded() // 스테이지 끝났는지 여부 및 정답 체크하는 함수
 		{
 			if (GameManagerEx.Instance.ExeType == ExecuteType.None) return;
 
@@ -298,6 +321,7 @@ namespace HumanFactory.Manager
 				HumanController tmpController = Instantiate(humanPrefab, new Vector3(0f, -1f, Constants.HUMAN_POS_Z), Quaternion.identity)
 					.GetComponent<HumanController>();
 				humanControllers.Add(tmpController);
+				StartCoroutine(GetComponent<WaitingsManagement>().InputWaitingsCoroutine());
 				StartCoroutine(GetComponent<WaitingsManagement>().WaitingsCoroutine());
 
 				tmpController.HumanNum = currentStageInfo.inputs[idxIn];

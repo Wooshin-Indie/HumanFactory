@@ -382,8 +382,8 @@ namespace HumanFactory.Manager
         [SerializeField] private Tile belowTile;
         [SerializeField] private Tile leftBelowTile;
         [SerializeField] private Tile rightBelowTile;
-        [SerializeField] private Tile inputTile;
-        [SerializeField] private Tile outputTile;
+        [SerializeField] private Tile ReleasedJumpTile;
+        [SerializeField] private Tile PressedJumpTile;
         [SerializeField] private int tilemapMargin;
 
 
@@ -461,8 +461,7 @@ namespace HumanFactory.Manager
 					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), (t == 0) ? rightBelowTile : null);
 				}
             }
-            gameTilemap.SetTile(new Vector3Int(0, -1, 0), inputTile);
-            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), outputTile); // input, output 위치 타일 생성
+            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), ReleasedJumpTile); // input, output 위치 타일 생성
         }
 
         private int currentChapter = -1;
