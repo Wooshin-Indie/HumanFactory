@@ -36,11 +36,12 @@ public class Awaiter : MonoBehaviour
     }
 
     private bool isLeft = false;
-    public void WalkNextStep(Vector2 nextPos)
+    public void WalkNextStep(Vector2 nextPos, bool isRandom = false)
     {
         isWalking = true;
         Vector2 tmpRandom = new Vector2(Random.Range(0f, 0.2f), Random.Range(0f, 0.2f));
-        targetPos = nextPos + tmpRandom;
+        if (isRandom) targetPos = nextPos + tmpRandom;
+        else targetPos = nextPos;
         checkDot = 1f;
 
         GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_WALK);
