@@ -27,7 +27,7 @@ namespace HumanFactory
 		Jump,
 		Jump0,
         Toggle,
-        Rotate      // 8
+        Rotate      // 7
     }
 
     public enum CameraType

@@ -300,11 +300,18 @@ namespace HumanFactory.Manager
 			if (GameManagerEx.Instance.ExeType == ExecuteType.None) return;
 
 			// BatchMode일 때, 사람들의 전의 상태와 똑같다면 실패로 판단하고 싸이클 끊기
-
-			if (Application.isBatchMode && IsSameWithPrevHumanPos())
+			if (IsSameWithPrevHumanPos())
 			{
-				OnFailure();
-				return;
+				if (idxOut == currentStageInfo.outputs.Length && isOutputCorrect)
+				{
+					killCount += humanControllers.Count;
+					OnSuccess();
+				}
+				else if (Application.isBatchMode)
+				{
+					OnFailure();
+					return;
+				}
 			}
 
 

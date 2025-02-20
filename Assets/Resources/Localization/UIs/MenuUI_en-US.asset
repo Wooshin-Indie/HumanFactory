@@ -36,7 +36,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3091079984177152
-    m_Localized: Area no.17
+    m_Localized: Area no.79
     m_Metadata:
       m_Items: []
   - m_Id: 3091080030314496
@@ -126,7 +126,9 @@ MonoBehaviour:
   - m_Id: 4348261983707136
     m_Localized: 'Access Denied
 
+      
 
+      
 
       Requirement : {StageKey}'
     m_Metadata:
@@ -146,6 +148,42 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9607641348038656
     m_Localized: Limit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899200
+    m_Localized: Stage 13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899201
+    m_Localized: Stage 14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899202
+    m_Localized: Stage 15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899203
+    m_Localized: Stage 16
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899204
+    m_Localized: Stage 17
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899205
+    m_Localized: Stage 18
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899206
+    m_Localized: Stage 19
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899207
+    m_Localized: Stage 20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9959538990899208
+    m_Localized: Stage 21
     m_Metadata:
       m_Items: []
   references:
