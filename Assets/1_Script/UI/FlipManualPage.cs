@@ -113,7 +113,7 @@ namespace HumanFactory.UI
 
 			if (prevPage == pages.Count() - 2)
 			{
-				nextPageButton.gameObject.SetActive(false);
+				nextPageButton.gameObject.SetActive(true);
 			}
 			if (prevPage == 0)
 			{
