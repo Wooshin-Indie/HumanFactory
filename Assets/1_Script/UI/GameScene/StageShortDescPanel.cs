@@ -31,7 +31,7 @@ namespace HumanFactory.UI
 			chapterText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Chapter")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, $"Chapter_{MapManager.Instance.CurrentChapter}")}";
 			stageText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, "Stage")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{idx}")}";
 			cctvText.text = $"CCTV: 00{MapManager.Instance.CurrentSaveIdx+1}";
-			outputText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, "Output")}: {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, $"Output_{idx}")}";
+			outputText.text = $"{LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, "Output")}:\n {LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_INOUT, $"Output_{idx}")}";
 		}
 	}
 }

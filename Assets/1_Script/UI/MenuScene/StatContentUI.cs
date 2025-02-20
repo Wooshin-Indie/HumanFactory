@@ -37,9 +37,9 @@ namespace HumanFactory.UI
 				}
 
 				// Set Graphs
-				items[0].SetGraph(stageIdx, 0, serverData.cycleGraphs, clientData.CycleCount);
-				items[1].SetGraph(stageIdx, 1, serverData.buttonGraphs, clientData.ButtonCount);
-				items[2].SetGraph(stageIdx, 2, serverData.killGraphs, clientData.KillCount);
+				items[0].SetGraph(stageIdx, 0, serverData.cycleGraphs, clientData.cycleCount);
+				items[1].SetGraph(stageIdx, 1, serverData.buttonGraphs, clientData.buttonCount);
+				items[2].SetGraph(stageIdx, 2, serverData.killGraphs, clientData.killCount);
 			}
 		}
     }

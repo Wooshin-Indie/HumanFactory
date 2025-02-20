@@ -73,7 +73,7 @@ namespace HumanFactory.UI
 
                 return;
             }
-            else if (Managers.Data.GetClientResultData(index).CycleCount < 0)
+            else if (Managers.Data.GetClientResultData(index).cycleCount < 0)
 			{
 				SetActiveChallengeUIs(false);
 				SetActivePrerequisiteUIs(true);
@@ -87,12 +87,12 @@ namespace HumanFactory.UI
 			this.gameObject.SetActive(true);
             SetActiveChallengeUIs(true);
             SetActivePrerequisiteUIs(false);
-            StageResultData resultData = Managers.Data.GamePlayData.stageGridDatas[index].resultDatas;
+            StageResultData resultData = Managers.Data.GetClientResultData(index);
             StageInfo info = Managers.Resource.GetStageInfo(index);
             int[] counts = {
-                resultData.CycleCount,
-                resultData.ButtonCount,
-                resultData.KillCount
+                resultData.cycleCount,
+                resultData.buttonCount,
+                resultData.killCount
             };
             for (int i = 0; i < itemScoreTexts.Count; i++)
 			{

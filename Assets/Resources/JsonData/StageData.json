@@ -139,6 +139,76 @@
             "isExpanded": 0,
             "prerequisite": 12,
             "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 14,
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+            "enableBuildings": [ 3, 4 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 13,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 15,
+            "inputs": [ 1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 13, 0, 14, 15, 16, 0, 17, 18, 19, 20 ],
+            "outputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+            "enableBuildings": [ 3, 5 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 14,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 16,
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
+            "outputs": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+            "enableBuildings": [ 1, 3, 4, 5],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 14,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 17,
+            "inputs": [ 2, 3, 4, 0, 5, 6, 7, 8, 1, 9, 10, 11, 12, 0, 13, 14, 15, 1 ],
+            "outputs": [ 10, 25, 43, 41 ],
+            "enableBuildings": [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 14,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 18,
+            "inputs": [ 14, 3, 18, 13, 8, 1, 9, 6 ],
+            "outputs": [ 11, 5, 7, 3 ],
+            "enableBuildings": [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 14,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 19,
+            "inputs": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+            "outputs": [ 2, 12, 30, 56, 90 ],
+            "enableBuildings": [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 0,
+            "prerequisite": 14,
+            "maxCounts": [ 100, 25, 50 ]
+        },
+        {
+            "stageId": 20,
+            "inputs": [ 5, 2, 3, 8, 7, 1, 2, 9 ],
+            "outputs": [ 5, 8, 7, 9 ],
+            "enableBuildings": [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+            "challenges": [ 30, 3, 1 ],
+            "isExpanded": 1,
+            "prerequisite": 19,
+            "maxCounts": [ 100, 25, 50 ]
         }
     ],
     "chapterInfo": [
@@ -149,6 +219,10 @@
         {
             "chapterId": 1,
             "stageIndexes": [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
+        },
+        {
+            "chapterId": 2,
+            "stageIndexes": [ 14, 15, 16, 17, 18, 19, 20 ]
         }
     ]
 }

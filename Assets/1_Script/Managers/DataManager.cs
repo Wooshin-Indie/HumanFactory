@@ -20,11 +20,13 @@ namespace HumanFactory.Manager
         /** Paths **/
         private string settingDataPath;
         private string playDataPath;
+        private string resultDataPath;
         private string serverResultPath;
 
         /** Datas **/
         private SettingData settingData = null;
         private GameplayData gameplayData = null;
+        private PlayerResultData playerResultData = null;
 
         /** Properties (for outer uses) **/
         public SettingData BasicSettingData { get { return settingData; } }
@@ -37,6 +39,7 @@ namespace HumanFactory.Manager
         {
             settingDataPath = Application.persistentDataPath + "/SettingData.json";
             playDataPath = Application.persistentDataPath + "/PlayData.json";
+            resultDataPath = Application.persistentDataPath + "/ResultData.json";
             serverResultPath = Application.persistentDataPath + "/ServerResultData.json";
 
             LoadAll();
@@ -48,17 +51,30 @@ namespace HumanFactory.Manager
         {
             LoadData<SettingData>(ref settingData, settingDataPath);
             LoadData<GameplayData>(ref gameplayData, playDataPath);
+            LoadData<PlayerResultData>(ref playerResultData, resultDataPath);
 
             InitSettingData();
 
             if (gameplayData.stageGridDatas == null ||
-				gameplayData.stageGridDatas.Length != Managers.Resource.GetStageCount() + 1)
+				gameplayData.stageGridDatas.Length != Managers.Resource.GetStageCount())
             {
-                Array.Resize(ref gameplayData.stageGridDatas, Managers.Resource.GetStageCount() + 1);
+                Array.Resize(ref gameplayData.stageGridDatas, Managers.Resource.GetStageCount());
 
                 for (int i = 0; i < gameplayData.stageGridDatas.Length; i++){
                     if (gameplayData.stageGridDatas[i] == null)
                         gameplayData.stageGridDatas[i] = new StageGridDatas();
+                }
+            }
+
+            if (playerResultData.resultDatas == null ||
+                playerResultData.resultDatas.Length != Managers.Resource.GetStageCount())
+            {
+                Array.Resize(ref playerResultData.resultDatas, Managers.Resource.GetStageCount());
+
+                for (int i = 0; i < playerResultData.resultDatas.Length; i++)
+                {
+                    if (playerResultData.resultDatas[i] == null)
+                        playerResultData.resultDatas[i] = new StageResultData(-1, -1, -1);
                 }
             }
         }
@@ -103,7 +119,7 @@ namespace HumanFactory.Manager
         }
         public StageResultData GetClientResultData(int stageId)
         {
-            return gameplayData.stageGridDatas[stageId].resultDatas;
+            return playerResultData.resultDatas[stageId];
         }
 
         public void AddStageGridData(int stageId, int saveIdx, StageSaveData datas)
@@ -115,7 +131,8 @@ namespace HumanFactory.Manager
 		public void SaveClearStage(int stageId, StageResultData data)
         {
             Debug.Log($"Stage: {stageId} Clear! {data.ToString()}");
-            gameplayData.stageGridDatas[stageId].resultDatas.UpdateData(data);
+            playerResultData.resultDatas[stageId].UpdateData(data);
+            SaveData<PlayerResultData>(ref playerResultData, resultDataPath);
             OnSaveClearStage.Invoke();
         }
 
@@ -193,7 +210,7 @@ namespace HumanFactory.Manager
 
 			int preIdx = Managers.Resource.GetStageInfo(idx).prerequisite;
             return preIdx < 0 ? 
-                true : gameplayData.stageGridDatas[preIdx].resultDatas.CycleCount >= 0;
+                true : playerResultData.resultDatas[preIdx].cycleCount >= 0;
         }
 
 #if UNITY_EDITOR

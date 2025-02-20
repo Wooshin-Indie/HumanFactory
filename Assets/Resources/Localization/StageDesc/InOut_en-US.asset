@@ -18,16 +18,8 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 9645711360
-    m_Localized: 1
-    m_Metadata:
-      m_Items: []
   - m_Id: 45163077632
-    m_Localized: 1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 139291648000
-    m_Localized: x
+    m_Localized: IN
     m_Metadata:
       m_Items: []
   - m_Id: 1246755676160
@@ -39,7 +31,64 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 142034722816
-    m_Localized: x
+    m_Localized: IN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856412106754
+    m_Localized: IN + 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856412106755
+    m_Localized: "IN.1, IN.1 + 1, IN.2, IN.2 + 1, \u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301056
+    m_Localized: "IN.1, IN.2 + 1, IN.3, IN.4 + 1, \u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301057
+    m_Localized: IN.1 ( x 10 )
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301058
+    m_Localized: "IN.1+1, IN.2, IN.3, \u2026 , IN.N+1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301059
+    m_Localized: "IN.1, IN.2+1, IN.3+2, IN.4, IN.5+1, IN.6+2, \u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301060
+    m_Localized: "IN.1, IN.3, IN.5, \u2026 , IN.25"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301061
+    m_Localized: "IN.2, IN.4, IN.6, \u2026 , IN.24"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301062
+    m_Localized: "IN.1 + IN.2, IN.3 + IN.4, \u2026 , IN.[2N-1] + IN.[2N]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301063
+    m_Localized: "IN.1 + IN.2 + IN.3, \u2026 , IN.[3N-2] + IN.[3N-1] + IN.[3N]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301064
+    m_Localized: "IN.3, IN.2, IN.1, IN.6, IN.5, IN.4, \u2026, IN.[3N], IN.[3N-1],
+      IN.[3N-2]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301065
+    m_Localized: Print the Fibonacci sequence.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301066
+    m_Localized: IN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301067
+    m_Localized: "IN \u2260 0"
     m_Metadata:
       m_Items: []
   references:

@@ -173,7 +173,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059855
-    m_Localized: N x M
+    m_Localized: Bigger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059851
+    m_Localized: Make 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059852
+    m_Localized: Wait 0, 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059853
+    m_Localized: Sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291217059854
+    m_Localized: NxM
     m_Metadata:
       m_Items: []
   references:
