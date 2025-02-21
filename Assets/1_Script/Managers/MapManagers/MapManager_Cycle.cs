@@ -299,6 +299,13 @@ namespace HumanFactory.Manager
 		{
 			if (GameManagerEx.Instance.ExeType == ExecuteType.None) return;
 
+			// 일정 사이클 넘으면 실패처리
+			if (Application.isBatchMode && Managers.Resource.GetStageInfo(currentStage).maxCounts[0] < cycleCount)
+			{
+				// TODO - 값 제대로 설정해야됨
+				//OnFailure();
+			}
+
 			// BatchMode일 때, 사람들의 전의 상태와 똑같다면 실패로 판단하고 싸이클 끊기
 			if (IsSameWithPrevHumanPos())
 			{
@@ -443,31 +450,27 @@ namespace HumanFactory.Manager
 			}
 		}
 
-		private HashSet<Vector2Int> prevHumansPos = new HashSet<Vector2Int>();
+		private HashSet<Vector3Int> prevHumansPos = new HashSet<Vector3Int>();
 
 		private bool IsSameWithPrevHumanPos()
 		{
-			HashSet<Vector2Int> currentPosSet = new HashSet<Vector2Int>();
+			HashSet<Vector3Int> currentPosSet = new HashSet<Vector3Int>();
 
 			foreach (var human in humanControllers)
 			{
-				currentPosSet.Add(human.CurrentPos);
+				currentPosSet.Add(new Vector3Int(human.CurrentPos.x, human.CurrentPos.y,
+					(int)programMap[human.CurrentPos.x, human.CurrentPos.y].PadType));
 			}
 
 			if (prevHumansPos.Count == 0)
 			{
-				prevHumansPos = new HashSet<Vector2Int>(currentPosSet);
+				prevHumansPos = new HashSet<Vector3Int>(currentPosSet);
 				return false;
-			}
-
-			foreach (var pos in prevHumansPos)
-			{
-				Debug.Log(cycleCount + " : " + pos.ToString());
 			}
 
 			bool isSame = prevHumansPos.SetEquals(currentPosSet);
 
-			prevHumansPos = new HashSet<Vector2Int>(currentPosSet);
+			prevHumansPos = new HashSet<Vector3Int>(currentPosSet);
 			return isSame;
 		}
 

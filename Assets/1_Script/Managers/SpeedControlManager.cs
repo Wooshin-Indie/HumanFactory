@@ -51,7 +51,7 @@ namespace HumanFactory
 		private void TripleGame() // 게임 2배속
 		{
 			MapManager.Instance.IsOneCycling = false;
-			MapManager.Instance.AddPersonWith1x(.1f);
+			MapManager.Instance.AddPersonWith1x(0.01f);
 			GameManagerEx.Instance.SetExeType(ExecuteType.Play);
 		}
 

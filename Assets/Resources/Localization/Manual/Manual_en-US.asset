@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1026022039552
-    m_Localized: How to command workers
+    m_Localized: How to command laborers
     m_Metadata:
       m_Items: []
   - m_Id: 1762537627648
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11560549212160
-    m_Localized: '   Buttons control the complex actions of workers. You can also
+    m_Localized: '   Buttons control the complex actions of laborers. You can also
       control the numbers or logical flow displayed in the boxes. Learn more through
       the tutorial practice materials.'
     m_Metadata:
@@ -61,7 +61,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12262398877696
-    m_Localized: '   By pressing this button, a new worker will be hired and added
+    m_Localized: '   By pressing this button, a new laborer will be hired and added
       to your workforce.'
     m_Metadata:
       m_Items: []
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12694517047296
-    m_Localized: '   Workers who step on the button will cause the number displayed
+    m_Localized: '   Laborers who step on the button will cause the number displayed
       in the box to increase or decrease by 1.'
     m_Metadata:
       m_Items: []
@@ -79,7 +79,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13056992993280
-    m_Localized: '   Pressing this button will generate an identical worker at the
+    m_Localized: '   Pressing this button will generate an identical laborer at the
       designated location. If the direction is the same, they will immediately merge.'
     m_Metadata:
       m_Items: []
@@ -88,8 +88,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 187738622910464
-    m_Localized: '   Pressing this button moves workers to the connected location.
-      The symbol on the button may restrict movement to specific workers.'
+    m_Localized: '   Pressing this button moves laborers to the connected location.
+      The symbol on the button may restrict movement to specific laborers.'
     m_Metadata:
       m_Items: []
   - m_Id: 187938716377088
@@ -111,7 +111,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1267114085048320
-    m_Localized: '   Workers determine their movement direction by following the
+    m_Localized: '   Laborers determine their movement direction by following the
       arrows on the floor. If there are none, they stop in place.'
     m_Metadata:
       m_Items: []
