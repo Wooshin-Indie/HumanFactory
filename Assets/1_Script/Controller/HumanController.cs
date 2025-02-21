@@ -259,13 +259,13 @@ namespace HumanFactory.Controller
 		public void AddByButton()
 		{
 			HumanNum++;
-			EffectTestFunc(EffectType.Addi);
+			//EffectTestFunc(EffectType.Addi);
 		}
 
 		public void SubByButton()
 		{
 			HumanNum--;
-			EffectTestFunc(EffectType.Subi);
+			//EffectTestFunc(EffectType.Subi);
 		}
 	}
 }

@@ -12,14 +12,10 @@ namespace HumanFactory.Manager
 		private SpriteRenderer arrowSprite;
 		private SpriteRenderer buildingSprite;
 		private PadType padType = PadType.DirNone;
-        private PadType doubleButtonDir = PadType.DirNone;
         private BuildingType buildingType = BuildingType.None;
 		private ButtonInfos buttonInfo = new ButtonInfos(new Vector2Int(-1, -1));
 
-		public int PosX { get => posX; }
-		public int PosY { get => posY; }
 		public PadType PadType { get => padType; set => padType = value; }
-		public PadType DoubleButtonDir { get => DoubleButtonDir; set => doubleButtonDir = value; }
 		public BuildingType BuildingType { get => buildingType; set => buildingType = value; }
 		public ButtonInfos ButtonInfo { get => buttonInfo; set => buttonInfo = value; }
 
