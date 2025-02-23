@@ -85,7 +85,6 @@ namespace HumanFactory.Controller
 
 		public void OnInitPerCycle()
 		{
-			if (isTeleport) return;
 			if (prevPos == targetPos)
 			{
 				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_IDLE);
@@ -94,7 +93,6 @@ namespace HumanFactory.Controller
 			{
 				GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_WALK);
 			}
-
 		}
 
 		public void OnFinPerCycle()
@@ -169,17 +167,13 @@ namespace HumanFactory.Controller
 			prevPos = controller.PrevPos;
 			HumanNum = controller.HumanNum;
 			MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].GetPadParameter(out currentDir);
-
-			UpdateTargetPosWithDoubleButtonDir();
 		}
 
-		public void UpdateTargetPosWithDoubleButtonDir()
+		public void UpdateTargetPosWithDoubleButtonDir(PadType doublePad)
 		{
-			PadType buttonDir = MapManager.Instance.ProgramMap[currentPos.x, currentPos.y].ButtonInfo.dirType; // doubleButton에 설정된 방향 받아오기
-			Vector2Int dir = new Vector2Int(Constants.DIR_X[(int)buttonDir], Constants.DIR_Y[(int)buttonDir]);
+			Vector2Int dir = new Vector2Int(Constants.DIR_X[(int)doublePad], Constants.DIR_Y[(int)doublePad]);
 			targetPos = currentPos + dir;
 			prevPos = currentPos;
-
 			isDoubled = true;
 		}
 
@@ -241,12 +235,10 @@ namespace HumanFactory.Controller
 		[SerializeField]
 		private bool isTeleport = false;
 		public bool IsTeleport { get => isTeleport; }
-		public void OnTeleport()
+		public void OnTeleport(Vector2Int target)
 		{
 			isTeleport = true;
-			targetPos = currentPos;
-			GetComponent<Animator>().Play("Human_Idle_Clip");
-			GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_JUMP);
+			targetPos = target;
 		}
 		public void OffTeleport(Vector2Int vec)
 		{

@@ -6,12 +6,14 @@ using UnityEngine.Localization.Settings;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using DG.Tweening;
 
 namespace HumanFactory.UI
 {
     public class SuccessPopupUI : PopUpUIBase
-    {
-        [Header("Buttons")]
+	{
+		[SerializeField] private float delayDuration;
+		[Header("Buttons")]
         [SerializeField] private List<Button> buttons = new List<Button>();
         [Header("PopupScripts")]
         [SerializeField] TextMeshProUGUI titleText;
@@ -33,13 +35,15 @@ namespace HumanFactory.UI
             buttons[0].onClick.AddListener(() => // Continue Button
             {
                 Managers.Input.ReleaseMouseInput();
-                CloseWindow();
+				MapManager.Instance.ClearParameters();
+				CloseWindow();
             });
             buttons[1].onClick.AddListener(() => // Main Menu Button
             {
                 Managers.Input.ReleaseMouseInput();
                 CloseWindow();
-                Managers.Input.OnEscape();
+                MapManager.Instance.ClearParameters();
+				Managers.Input.OnEscape();
             });
         }
 
@@ -76,11 +80,12 @@ namespace HumanFactory.UI
                 GetComponent<Button>().enabled = false;
             });
         }
-
         public override void PopupWindow()
-        {
-            base.PopupWindow();
-            Managers.Input.LockMouseInput();    // 풀어주는건 OK버튼에서
+		{
+            GetComponent<RectTransform>().DOAnchorPos(inScreenPos, duration)
+                .SetDelay(2f)
+                .SetEase(easeType);
+			Managers.Input.LockMouseInput();
         }
 
 

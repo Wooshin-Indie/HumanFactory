@@ -125,15 +125,9 @@ namespace HumanFactory.UI
             CurrentSelectedIndex = -1;
 
 			scrollviewHeight = GetComponent<RectTransform>().rect.height;
-			Managers.Data.OnSaveClearStage -= OnSaveClearStage;
-            Managers.Data.OnSaveClearStage += OnSaveClearStage;
 
 		}
 
-        private void OnSaveClearStage()
-        {
-            CurrentSelectedIndex = CurrentSelectedIndex;
-        }
 
         private void Update()
         {

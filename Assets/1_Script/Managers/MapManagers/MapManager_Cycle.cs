@@ -5,6 +5,9 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using HumanFactory.Util;
+using HumanFactory.Buttons;
+using UnityEditor.Animations;
+using Unity.VisualScripting;
 
 namespace HumanFactory.Manager
 {
@@ -155,7 +158,7 @@ namespace HumanFactory.Manager
 			{
 				if (controller.TargetPos == controller.PrevPos) continue;
 				if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y, isMapExpanded)) continue;
-				programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnRelease();
+				programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnReleased();
 			}
 
 			return true;
@@ -185,7 +188,8 @@ namespace HumanFactory.Manager
 			foreach (var controller in humanControllers)
 			{
 				if (!CheckBoundary(controller.TargetPos.x, controller.TargetPos.y, isMapExpanded)) continue;
-				programMap[controller.TargetPos.x, controller.TargetPos.y].OnPressed();
+				ButtonBase buttonBase = programMap[controller.TargetPos.x, controller.TargetPos.y].ButtonBase;
+				buttonBase?.OnPressed(true);
 			}
 			return true;
 		}
@@ -200,8 +204,6 @@ namespace HumanFactory.Manager
 		/// </summary>
 		private void FinPerCycle()
 		{
-
-			DoTeleport();
 			CalcDuplicatedPos();
 
 			foreach (var controller in humanControllers)
@@ -246,7 +248,7 @@ namespace HumanFactory.Manager
 				{
 					int mapIdx = GetMapIdxFromPos(humanControllers[idx].PrevPos.x, humanControllers[idx].PrevPos.y, isMapExpanded);
 					gunnersManagement.DetectEscaped(humanControllers[idx].CurrentPos - humanControllers[idx].PrevPos, mapIdx, isMapExpanded);
-					programMap[humanControllers[idx].CurrentPos.x, humanControllers[idx].CurrentPos.y].OnRelease();
+					programMap[humanControllers[idx].CurrentPos.x, humanControllers[idx].CurrentPos.y].OnReleased();
 					humanControllers[idx].HumanDyingProcessWithBox();
 					humanControllers.Remove(humanControllers[idx]);
 					killCount++;
@@ -352,12 +354,12 @@ namespace HumanFactory.Manager
 			foreach (HumanController controller in humanControllers)
 			{
 				if (!CheckBoundary(controller.CurrentPos.x, controller.CurrentPos.y, isMapExpanded)) return;
-				if ((programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump||
-					(programMap[controller.CurrentPos.x, controller.CurrentPos.y].BuildingType == BuildingType.Jump0 && controller.HumanNum == 0))
-					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].IsActive
-					&& programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos.x >= 0)
+				
+				var jumpable = programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonBase as IJumpable;
+
+				if (jumpable != null && jumpable.IsAbleToJump(controller.HumanNum))
 				{
-					controller.OnTeleport();
+					controller.OnTeleport(programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonBase.buttonInfo.linkedGridPos); ;
 				}
 			}
 		}
@@ -393,61 +395,28 @@ namespace HumanFactory.Manager
 
 		}
 
-		private void DoTeleport()
-		{
-			foreach (var controller in humanControllers)
-			{
-				if (!controller.IsTeleport) continue;
-				programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnRelease();
-				controller.OffTeleport(programMap[controller.CurrentPos.x, controller.CurrentPos.y].ButtonInfo.linkedGridPos);
-				programMap[controller.CurrentPos.x, controller.CurrentPos.y].OnPressed();
-			}
-		}
-
 		private void DoButtonExecution()
 		{
 			int size = humanControllers.Count;
-			// Button 연산
+
 			for (int i = 0; i < size; i++)
 			{
 				Vector2Int tmpV = humanControllers[i].CurrentPos;
 				if (!CheckBoundary(tmpV.x, tmpV.y, isMapExpanded)) continue;
-				if (programMap[tmpV.x, tmpV.y].BuildingType != BuildingType.None && programMap[tmpV.x, tmpV.y].IsPressed)
-				{
-					if (!programMap[tmpV.x, tmpV.y].IsActive || programMap[tmpV.x, tmpV.y].IsExcuted) continue;
-					switch (programMap[tmpV.x, tmpV.y].BuildingType)
-					{
-						case BuildingType.Add:
-							humanControllers[i].AddByButton();
-							programMap[tmpV.x, tmpV.y].IsExcuted = true;
-							break;
-						case BuildingType.Sub:
-							humanControllers[i].SubByButton();
-							programMap[tmpV.x, tmpV.y].IsExcuted = true;
-							break;
-						case BuildingType.Double:
-							programMap[tmpV.x, tmpV.y].IsExcuted = true;
-							if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone || programMap[tmpV.x, tmpV.y].ButtonInfo.dirType == PadType.DirNone ||
-								(programMap[tmpV.x, tmpV.y].PadType == programMap[tmpV.x, tmpV.y].ButtonInfo.dirType))
-							{  // 경로가 겹치는 경우, Pad의 방향이 없는 경우, DoubleButton의 방향이 없는 경우 -> 바로 두배
-								humanControllers[i].HumanNum *= 2;
 
-                                // Pad방향 없고 DoubleButton방향 있는 경우에는 DoubleButton방향으로 이동
-                                if (programMap[tmpV.x, tmpV.y].PadType == PadType.DirNone &&
-									programMap[tmpV.x, tmpV.y].ButtonInfo.dirType != PadType.DirNone)
-									humanControllers[i].UpdateTargetPosWithDoubleButtonDir();
-                            }
-							else
-							{
-								HumanController tmpController = Instantiate(humanPrefab, new Vector3(tmpV.x, tmpV.y, Constants.HUMAN_POS_Z), Quaternion.identity)
-									.GetComponent<HumanController>();
-								tmpController.SetAsDoubled(humanControllers[i]);
-								humanControllers.Add(tmpController);
-							}
-							break;
-					}
-				}
+				var nontargetableButton = programMap[tmpV.x, tmpV.y].ButtonBase as NontargetableButton;
+				nontargetableButton?.DoButtonExecution(humanControllers[i]);
 			}
+		}
+
+		public void AddPersonByDouble(HumanController controller, PadType padType)
+		{
+			HumanController tmpController = Instantiate(humanPrefab, new Vector3(controller.transform.position.x, controller.transform.position.y, Constants.HUMAN_POS_Z), Quaternion.identity)
+				.GetComponent<HumanController>();
+			tmpController.SetAsDoubled(controller);
+			tmpController.UpdateTargetPosWithDoubleButtonDir(padType);
+			humanControllers.Add(tmpController);
+
 		}
 
 		private HashSet<Vector3Int> prevHumansPos = new HashSet<Vector3Int>();

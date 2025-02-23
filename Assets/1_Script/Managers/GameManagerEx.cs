@@ -156,7 +156,7 @@ namespace HumanFactory
 		{
             if (!Application.isBatchMode)
 			{
-				GameManagerEx.Instance.BlockAllUIs();
+				BlockAllUIs();
 				successUI.gameObject.SetActive(true);
 				successUI.SetSuccessPopupInfos(info);
 				Managers.Data.SaveClearStage(info.StageIdx, info.ResultData);

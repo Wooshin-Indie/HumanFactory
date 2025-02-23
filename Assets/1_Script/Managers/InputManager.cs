@@ -2,6 +2,7 @@ using HumanFactory.Props;
 using System;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -122,8 +123,9 @@ namespace HumanFactory.Manager
         // UI 켜지는 함수 넣어둬야됨
         public Action<Vector2Int> OnClickMapGridInNoneModeAction { get; set; }
         public Action<bool, BuildingType> OnHoverInNoneModeAction { get; set; }
+		Vector2Int prevMousePos = new Vector2Int(-1, -1);
 
-        private void OnGameSceneNoneMode()
+		private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
 
@@ -131,10 +133,30 @@ namespace HumanFactory.Manager
 			OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting, type);
 
             if (!IsMouseInputEnabled()) return;
+
+
             if (Input.GetMouseButtonDown(0))
             {
-                MapManager.Instance.OnClickMapGridInNoneMode(curMousePos.x, curMousePos.y, !MapManager.Instance.IsCircuiting);
+                prevMousePos = new Vector2Int(curMousePos.x, curMousePos.y);
+                MapManager.Instance.OnDragStart(prevMousePos);
             }
+            else if (Input.GetMouseButton(0))
+			{
+                MapManager.Instance.OnDrag(new Vector2(worldPos.x, worldPos.y));
+			}
+            else if (Input.GetMouseButtonUp(0))
+			{
+                if (MapManager.Instance.IsDragging)
+                {
+					MapManager.Instance.OnDragEnd(prevMousePos, curMousePos);
+				}
+                else
+				{
+					MapManager.Instance.OnLeftClickMapGridInNoneMode(curMousePos.x, curMousePos.y, !MapManager.Instance.IsCircuiting);
+				}
+                MapManager.Instance.OnClearDrag();
+				prevMousePos = new Vector2Int(-1, -1);
+			}
 
             if (Input.GetMouseButtonDown(1))
             {
@@ -265,11 +287,11 @@ namespace HumanFactory.Manager
             if (Input.GetMouseButtonDown(0))
             {
                 if (currentSelectedBuilding == BuildingType.None) return;
-                MapManager.Instance.OnClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
+                MapManager.Instance.OnLeftClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                MapManager.Instance.OnRightClickMapGridInBuildingMode(curMousePos.x, curMousePos.y);
+                OnInputModeChanged(InputMode.None);
             }
 
         }
@@ -321,7 +343,7 @@ namespace HumanFactory.Manager
 
             if (MapManager.Instance.IsCircuiting)
             {
-                MapManager.Instance.OnClickMapGridInNoneMode(-1, -1, false);
+                MapManager.Instance.OnLeftClickMapGridInNoneMode(-1, -1, false);
             }
         }
 

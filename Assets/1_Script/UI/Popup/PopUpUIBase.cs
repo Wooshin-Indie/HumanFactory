@@ -17,10 +17,10 @@ namespace HumanFactory.UI
         }
 
         [Header("Popup Info")]
-        [SerializeField] private Vector2 outScreenPos;
-        [SerializeField] private Vector2 inScreenPos;
-        [SerializeField] private float duration;
-        [SerializeField] private Ease easeType;
+        [SerializeField] protected Vector2 outScreenPos;
+        [SerializeField] protected Vector2 inScreenPos;
+        [SerializeField] protected float duration;
+        [SerializeField] protected Ease easeType;
 
         /** virtual functions **/
 

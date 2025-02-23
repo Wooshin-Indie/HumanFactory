@@ -58,8 +58,7 @@ namespace HumanFactory
 		private void StopGame() // 게임 리셋
         {
             MapManager.Instance.ClearHumans();
-            MapManager.Instance.IdxIn = 0;
-            MapManager.Instance.IdxOut = 0;
+            MapManager.Instance.ClearParameters();
 
 			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
 				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
