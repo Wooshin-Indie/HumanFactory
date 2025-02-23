@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.WindowsRuntime;
+using HumanFactory.Buttons;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -10,44 +10,36 @@ namespace HumanFactory.Manager
 	{
 		public BuildingType OnHoverMapGridInNoneMode(int x, int y)
 		{
-			if (isCircuiting)
+			if (!CheckBoundary(x, y, isMapExpanded) || isDragging)
 			{
-				buttonRect.transform.position = new Vector3(circuitingButtonPos.x,
-					circuitingButtonPos.y, Constants.HUMAN_POS_Z);
+				tileRect.gameObject.SetActive(false);
+				buttonRect.gameObject.SetActive(false);
+				return BuildingType.None;
+			}
+
+			if (IsCircuiting)
+			{
+				buttonRect.transform.position = new Vector3(circuitingButtonPos.x, circuitingButtonPos.y, Constants.HUMAN_POS_Z);
 				tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
 				tileRect.gameObject.SetActive(true);
 
 				return BuildingType.None;
 			}
 
-			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx) || programMap[x, y].BuildingType == BuildingType.None)
+			buttonRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+			buttonRect.sprite = programMap[x, y].ButtonBase?.GetComponent<SpriteRenderer>().sprite;
+			buttonRect.gameObject.SetActive(true);
+
+			if (programMap[x, y].ButtonBase is TargetableButton)
 			{
-				buttonRect.gameObject.SetActive(false);
-				tileRect.gameObject.SetActive(false);
-				return BuildingType.None;
+				tileRect.transform.position = new Vector3(programMap[x, y].ButtonBase.buttonInfo.linkedGridPos.x, programMap[x, y].ButtonBase.buttonInfo.linkedGridPos.y, Constants.HUMAN_POS_Z);
+				tileRect.gameObject.SetActive(true);
 			}
 			else
 			{
-				buttonRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
-				buttonRect.sprite = programMap[x, y].BuildingSprite;
-				buttonRect.gameObject.SetActive(true);
-
-				if (programMap[x, y].BuildingType == BuildingType.Jump
-				|| programMap[x, y].BuildingType == BuildingType.Jump0
-				|| programMap[x, y].BuildingType == BuildingType.Rotate
-				|| programMap[x, y].BuildingType == BuildingType.Toggle)
-				{
-					tileRect.transform.position = new Vector3(programMap[x, y].ButtonInfo.linkedGridPos.x,
-						programMap[x, y].ButtonInfo.linkedGridPos.y,
-						Constants.HUMAN_POS_Z);
-					tileRect.gameObject.SetActive(true);
-				}
-				else
-				{
-					tileRect.gameObject.SetActive(false);
-				}
-				return programMap[x, y].BuildingType;
+				tileRect.gameObject.SetActive(false);
 			}
+			return programMap[x, y].ButtonType;
 		}
 
 		// 연결 가능한 조합 (order sensitive)
@@ -70,16 +62,8 @@ namespace HumanFactory.Manager
 			int quad1 = GetMapIdxFromPos(start.x, start.y, IsMapExpanded);
 			int quad2 = GetMapIdxFromPos(end.x, end.y, IsMapExpanded);
 
-			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump 
-				&& programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType != BuildingType.Jump0)
+			if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonBase is not IJumpable or null)
 			{
-				if (programMap[circuitingButtonPos.x, circuitingButtonPos.y].BuildingType == BuildingType.Rotate
-					&& IsDestToPosExist(end.x, end.y, BuildingType.Rotate, IsMapExpanded))
-				{
-					GameManagerEx.Instance.DisplayLogByKey("Link_1");
-					return false;
-				}
-
 				return quad1 == quad2;
 			}
 
@@ -95,111 +79,40 @@ namespace HumanFactory.Manager
 			return false;
 		}
 
-		private bool IsDestToPosExist(int x, int y, BuildingType type, bool isExpanded)
-		{
-			if (isExpanded)
-			{
-				for (int i = 0; i < 2 * mapSize.x + mapInterval.x; i++)
-				{
-					for (int j = 0; j < 2 * mapSize.y + mapInterval.y; j++)
-					{
-						if (programMap[i, j].BuildingType == type 
-							&& programMap[i, j].ButtonInfo.linkedGridPos.x == x 
-							&& programMap[i, j].ButtonInfo.linkedGridPos.y == y)
-						{
-							return true;
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < mapSize.x; i++)
-				{
-					for (int j = 0; j < mapSize.y; j++)
-					{
-						if (programMap[i, j].BuildingType == type
-							&& programMap[i, j].ButtonInfo.linkedGridPos.x == x
-							&& programMap[i, j].ButtonInfo.linkedGridPos.y == y)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		public void OnClickMapGridInNoneMode(int x, int y, bool isSet)
+		public void OnLeftClickMapGridInNoneMode(int x, int y, bool isSet)
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx))
 			{
-				isCircuiting = false;
+				circuitingButtonPos = new Vector2Int(-1, -1);
 				return;
 			}
+			if (IsCircuiting == isSet) return;
 
-			if (isCircuiting == isSet) return;
-
-			if (isCircuiting)   // 회로작업 중이면 -> 클릭했을 때 전에 클릭했던 버튼과 연결 
+			if (IsCircuiting)   // 회로작업 중이면 -> 클릭했을 때 전에 클릭했던 버튼과 연결 
 			{
 				if (IsAbleToLink(circuitingButtonPos, new Vector2Int(x, y)))
 				{
-					programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonInfo.linkedGridPos
-						= new Vector2Int(x, y);
+					var targetable = programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonBase as TargetableButton;
+					targetable?.SetLinkedPos(x, y);
 				}
-				isCircuiting = false;
+				circuitingButtonPos = new Vector2Int(-1, -1);
 			}
 			else
 			{
-				if (programMap[x, y].BuildingType == BuildingType.Double)
-				{
-                    programMap[x, y].OnButtonRotate();
-                    Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
-                    return;
-                }
-
-                if (programMap[x, y].BuildingType != BuildingType.Jump
-					&& programMap[x, y].BuildingType != BuildingType.Jump0
-					&& programMap[x, y].BuildingType != BuildingType.Toggle
-					&& programMap[x, y].BuildingType != BuildingType.Rotate) return;
-
-				Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
-				isCircuiting = true;
-				circuitingButtonPos = new Vector2Int(x, y);
+				programMap[x, y].ButtonBase?.OnButtonLeftClick(ref circuitingButtonPos);
 			}
 		}
 
 		public void OnRightClickMapGridInNoneMode(int x, int y)
 		{
-			if (isCircuiting)       // circuiting 중이면 취소
+			if (IsCircuiting)       // circuiting 중이면 취소
 			{
-				isCircuiting = false;
+				circuitingButtonPos = new Vector2Int(-1, -1);
 				return;
 			}
 
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
-
-			if (programMap[x, y].BuildingType == BuildingType.Toggle) return;
-
-			switch (programMap[x, y].BuildingType)
-			{
-				case BuildingType.Rotate:
-					programMap[x, y].OnButtonRotate();
-					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
-					break;
-				case BuildingType.Add:
-				case BuildingType.Sub:
-				case BuildingType.Jump:
-				case BuildingType.Jump0:
-				case BuildingType.Double:
-				case BuildingType.NewInput:
-					programMap[x, y].ToggleActive(false);
-					Managers.Sound.PlaySfx(SFXType.UI_Hover, 1.0f, 0.8f);
-					break;
-				case BuildingType.Toggle:
-					break;
-			}
+			programMap[x, y].ButtonBase?.OnButtonRightClick();
 		}
 
 		private Vector2Int prevDirPad = new Vector2Int(-1, -1);
@@ -263,44 +176,107 @@ namespace HumanFactory.Manager
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx))
 			{
-				if (CheckBoundary(prevHoverPos.x, prevHoverPos.y, isMapExpanded, currentMapIdx))
-					programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
-				prevHoverPos.Set(x, y);
-				return;
+				ShowDisablePreview(x, y, type);
 			}
-			if (prevHoverPos.x == x && prevHoverPos.y == y) return;
-
-			if (CheckBoundary(prevHoverPos.x, prevHoverPos.y, isMapExpanded, currentMapIdx))
-				programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
-			if (programMap[x, y].BuildingType == BuildingType.None)
-				programMap[x, y].PreviewBuilding(type);
-			prevHoverPos.Set(x, y);
+			else
+			{
+				ShowEnablePreview(x, y, type);
+			}
 		}
 
-		public void OnClickMapGridInBuildingMode(int x, int y, BuildingType type)
+		public void OnLeftClickMapGridInBuildingMode(int x, int y, BuildingType type)
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
 			Managers.Sound.PlaySfx(SFXType.Button_Put);
-			programMap[x, y].SetBuilding(type);
+			programMap[x, y].SetButton(type);
 			Managers.Input.OnInputModeChanged(InputMode.None);
 		}
-		public void OnRightClickMapGridInBuildingMode(int x, int y)
-		{
-			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
-			Managers.Sound.PlaySfx(SFXType.Button_Remove, .8f);
-			programMap[x, y].SetBuilding(BuildingType.None);
-			programMap[x, y].ButtonInfo = new ButtonInfos(new Vector2Int(x, y));
-		}
-
 
 		public void OnInputModeChanged(InputMode mode)
 		{
-			if (CheckBoundary(prevHoverPos.x, prevHoverPos.y, isMapExpanded, currentMapIdx))
-				programMap[prevHoverPos.x, prevHoverPos.y].UnpreviewBuilding();
+			HidePreview();
 			buttonRect.gameObject.SetActive(false);
 			tileRect.gameObject.SetActive(false);
 			prevDirPad.Set(-1, -1);
 			ChangeMapVisibility(mode);
+		}
+
+		private void ShowEnablePreview(int x, int y, BuildingType type)
+		{
+			previewSprite.gameObject.SetActive(true);
+			previewSprite.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+			previewSprite.sprite = Managers.Resource.GetBuildingSprite(type, false, true);
+			previewSprite.color = Constants.COLOR_INVISIBLE;
+		}
+		private void ShowDisablePreview(int x, int y, BuildingType type)
+		{
+			previewSprite.gameObject.SetActive(true);
+			previewSprite.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+			previewSprite.sprite = Managers.Resource.GetBuildingSprite(type, false, true);
+			previewSprite.color = Color.black;
+		}
+
+		private void HidePreview()
+		{
+			previewSprite.gameObject.SetActive(false);
+		}
+
+		private bool isDragging = false;
+		public bool IsDragging { get => isDragging; }
+
+		[Header("Input")]
+		[SerializeField] private float dragDelay;
+		private float elapsedDragTime = 0f;
+		private ButtonBase draggingButtonBase;
+
+		public void OnDragStart(Vector2Int mousePos)
+		{
+			if (!CheckBoundary(mousePos.x, mousePos.y, isMapExpanded)) return;
+			if (programMap[mousePos.x, mousePos.y].ButtonBase == null) return;
+
+			draggingButtonBase = programMap[mousePos.x, mousePos.y].ButtonBase;
+			draggingButtonBase.OnBeginDrag(mousePos);
+		}
+
+		public void OnDrag(Vector2 mouseRowPos)
+		{
+			if (draggingButtonBase == null) return;
+
+			if (!isDragging)
+			{
+				elapsedDragTime += Time.deltaTime;
+				if (elapsedDragTime > dragDelay)
+				{
+					elapsedDragTime = 0f;
+					isDragging = true;
+				}
+				return;
+			}
+			draggingButtonBase?.OnDrag(mouseRowPos);
+		}
+
+		// prevPos 와 mousePos 는 항상 다름		
+		public void OnDragEnd(Vector2Int prevPos, Vector2Int mousePos)
+		{
+			if (draggingButtonBase == null) return;
+
+			programMap[prevPos.x, prevPos.y].ButtonBase = null;
+			if (!CheckBoundary(mousePos.x, mousePos.y, isMapExpanded))
+			{
+				Managers.Sound.PlaySfx(SFXType.Button_Remove, .8f);
+				Destroy(draggingButtonBase.gameObject);
+				return;
+			}
+
+			programMap[mousePos.x, mousePos.y].ButtonBase = draggingButtonBase;
+			draggingButtonBase.OnEndDrag(mousePos);
+		}
+
+		public void OnClearDrag()
+		{
+			elapsedDragTime = 0f;
+			isDragging = false;
+			draggingButtonBase = null;
 		}
 	}
 }

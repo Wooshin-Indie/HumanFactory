@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 namespace HumanFactory.UI
 {
-    public class FlipManualPage : MonoBehaviour
+    public class FlipManualPage : PopUpUIBase
     {
-
+		[Header("Flip Params")]
 		[SerializeField] private Button nextPageButton;
 		[SerializeField] private Button prevPageButton;
 		[SerializeField] private float moveDistance;
@@ -20,8 +20,9 @@ namespace HumanFactory.UI
 
 		private bool isPaging = false;
 
-		private void Awake()
+		public override void Awake()
 		{
+			base.Awake();
 			// 시작하자마자 자식에 있는 (정렬된)페이지들을 pages에 저장
 
 			foreach (Transform child in transform)
@@ -41,9 +42,15 @@ namespace HumanFactory.UI
 			prevPageButton.onClick.AddListener(OnPrevPage);
 		}
 
-		private void OnEnable()
+		public override void PopupWindow()
 		{
+			base.PopupWindow();
 			Managers.Sound.PlaySfx(SFXType.UI_Paper);
+		}
+
+		public override void OnEnable()
+		{
+			base.OnEnable();
 			curPage = 0;
 			ResetChildOrder();
 			isPaging = false;

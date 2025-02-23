@@ -129,6 +129,7 @@ namespace HumanFactory.Manager
         [Header("Circuit")]
         [SerializeField] private SpriteRenderer buttonRect;
         [SerializeField] private SpriteRenderer tileRect;
+        [SerializeField] private SpriteRenderer previewSprite;
 
         private void Start()
         {
@@ -144,8 +145,7 @@ namespace HumanFactory.Manager
                 for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
                 {
                     programMap[i, j] = new MapGrid(i, j, 
-                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>(),
-                        Instantiate(spritePrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
+                        Instantiate(arrowPrefab, new Vector3(i, j, 0f), Quaternion.identity).GetComponent<SpriteRenderer>()
                         );
                 }
             }
@@ -156,11 +156,9 @@ namespace HumanFactory.Manager
         }
 
         private bool isCycleRunning = false;
-        private bool isCircuiting = false;
-        private Vector2Int circuitingButtonPos;
-        public Vector2Int prevHoverPos = new Vector2Int(0, 0);
+        private Vector2Int circuitingButtonPos = new Vector2Int(-1, -1);
         private bool isOneCycling = false; //1사이클씩 실행되고있는지
-        public bool IsCircuiting { get => isCircuiting; }
+        public bool IsCircuiting { get => circuitingButtonPos.x >= 0; }
         public bool IsOneCycling { get => isOneCycling; set => isOneCycling = value; }
 
 		#region CycleLock
@@ -203,10 +201,9 @@ namespace HumanFactory.Manager
 					}
 					return;
                 }
-                StartCoroutine(ProgramCycleCoroutine());
+                OnClearDrag();
+				StartCoroutine(ProgramCycleCoroutine());
             }
-
-
 		}
 
 		public MapGrid GetMapGrid(int x, int y)
@@ -262,7 +259,7 @@ namespace HumanFactory.Manager
             {
                 for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
                 {
-                    btnCount += (programMap[i, j].BuildingType == BuildingType.None ? 0 : 1);
+                    btnCount += (programMap[i, j].ButtonType == BuildingType.None ? 0 : 1);
                 }
             }
 
@@ -271,7 +268,7 @@ namespace HumanFactory.Manager
             GameManagerEx.Instance.OnStageSuccess(info);
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
 
-            // Init Values
+			// Init Values
 
 			ClearHumans();
 			isOutputCorrect = true;
@@ -289,6 +286,7 @@ namespace HumanFactory.Manager
 			GameManagerEx.Instance.SetExeType(ExecuteType.None);
 
 			ClearHumans();
+            ClearParameters();
 			isOutputCorrect = true;
 			isPersonAdd = false;
 			isOneCycling = false;
@@ -305,7 +303,7 @@ namespace HumanFactory.Manager
 		}
         public void ToggleButtonInGame(int x, int y)
         {
-            programMap[x, y].ToggleActive(true);
+            programMap[x, y].ButtonBase?.ToggleActive(true);
         }
 		private void ChangeMapVisibility(InputMode mode)
         {
@@ -350,8 +348,6 @@ namespace HumanFactory.Manager
 			gunnersManagement.LoadGunners(isMapExpanded);
 			CurrentMapIdx = 0;
 
-            Debug.Log("LOAD STAGE");
-
 			for (int i = 0; i < mapSize.x * 2 + mapInterval.x; i++)
 			{
 				for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
@@ -359,9 +355,6 @@ namespace HumanFactory.Manager
 					programMap[i, j].ClearGrid();
 				}
 			}
-
-            // 여기에 inTile (0, -1), outTile (exitPos) 넣기
-            
 
 			if (saveData == null) return;
 
@@ -371,6 +364,7 @@ namespace HumanFactory.Manager
 			}
 
 			ClearHumans();
+            ClearParameters();
 		}
 
 
@@ -488,7 +482,7 @@ namespace HumanFactory.Manager
                 for (int j = 0; j < mapSize.y *2  + mapInterval.y; j++)
                 {
                     if (programMap[i, j].PadType == PadType.DirNone &&
-                        programMap[i, j].BuildingType == BuildingType.None) continue;
+                        programMap[i, j].ButtonType == BuildingType.None) continue;
                     gridDatas.gridDatas.Add(programMap[i, j].GetStageGridData());
                 }
             }
@@ -516,13 +510,17 @@ namespace HumanFactory.Manager
             {
                 for (int j = 0; j < mapSize.y * 2 + mapInterval.y; j++)
                 {
-                    programMap[i, j].OnRelease();
+                    programMap[i, j].OnReleased();
                 }
 			}
 
+		}
+
+        public void ClearParameters()
+        {
 			GameManagerEx.Instance.Cameras[(int)GameManagerEx.Instance.CurrentCamType]
 				.GetComponent<CameraBase>().CctvUI?.InOut.OnClear();
-            isOutputCorrect = true;
+			isOutputCorrect = true;
 			cycleCount = 0;
 			killCount = 0;
 			idxIn = 0;

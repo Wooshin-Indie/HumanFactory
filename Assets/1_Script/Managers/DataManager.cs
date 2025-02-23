@@ -133,7 +133,7 @@ namespace HumanFactory.Manager
             Debug.Log($"Stage: {stageId} Clear! {data.ToString()}");
             playerResultData.resultDatas[stageId].UpdateData(data);
             SaveData<PlayerResultData>(ref playerResultData, resultDataPath);
-            OnSaveClearStage.Invoke();
+            OnSaveClearStage?.Invoke();
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 using HumanFactory.Manager;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace HumanFactory.UI
 {
