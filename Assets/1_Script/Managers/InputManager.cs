@@ -23,67 +23,67 @@ namespace HumanFactory.Manager
             OnGameScene();
             OnSettingScene();
 
-		}
+        }
 
         #region MouseInputLock
         private int mouseInputLock = 0;
         public void LockMouseInput()
-		{
-			Debug.Log("MOUSE LOCK");
-			mouseInputLock++;
+        {
+            Debug.Log("MOUSE LOCK");
+            mouseInputLock++;
         }
         public void ReleaseMouseInput()
-		{
-			Debug.Log("MOUSE RELEASE");
-			if (mouseInputLock > 0)
+        {
+            Debug.Log("MOUSE RELEASE");
+            if (mouseInputLock > 0)
                 mouseInputLock--;
             else
                 Debug.LogError("Error : Release Mouse Input dosen't expected!");
         }
         private bool IsMouseInputEnabled()
-		{
-			// 게임 실행중이라 락걸림
-			if (mouseInputLock > 0 && GameManagerEx.Instance.ExeType != ExecuteType.None)
-			{
-				for (int i = (int)ShortcutActionEnum.Add_Button; i <= (int)ShortcutActionEnum.Back; i++)
-				{
-					if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[i]))
-					{
-						GameManagerEx.Instance.DisplayLogByKey("Lock_1");
-					}
-				}
-				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            // 게임 실행중이라 락걸림
+            if (mouseInputLock > 0 && GameManagerEx.Instance.ExeType != ExecuteType.None)
+            {
+                for (int i = (int)ShortcutActionEnum.Add_Button; i <= (int)ShortcutActionEnum.Back; i++)
                 {
-                    if(MapManager.Instance.CheckBoundary(curMousePos.x, curMousePos.y, MapManager.Instance.IsMapExpanded))
-					{
-						GameManagerEx.Instance.DisplayLogByKey("Lock_1");
-					}
-				}
+                    if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[i]))
+                    {
+                        GameManagerEx.Instance.DisplayLogByKey("Lock_1");
+                    }
+                }
+                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                {
+                    if (MapManager.Instance.CheckBoundary(curMousePos.x, curMousePos.y, MapManager.Instance.IsMapExpanded))
+                    {
+                        GameManagerEx.Instance.DisplayLogByKey("Lock_1");
+                    }
+                }
             }
 
             return mouseInputLock <= 0;
         }
 
-		private int menuInputLock = 0;
-		public void LockMenuInput()
-		{
-			menuInputLock++;
-		}
-		public void ReleaseMenuInput()
-		{
-			if (menuInputLock > 0)
-				menuInputLock--;
-			else
-				Debug.LogError("Error : Release Mouse Input dosen't expected!");
-		}
+        private int menuInputLock = 0;
+        public void LockMenuInput()
+        {
+            menuInputLock++;
+        }
+        public void ReleaseMenuInput()
+        {
+            if (menuInputLock > 0)
+                menuInputLock--;
+            else
+                Debug.LogError("Error : Release Mouse Input dosen't expected!");
+        }
 
-		private bool IsMenuInputEnabled()
-		{
-			return menuInputLock <= 0;
-		}
-		#endregion
+        private bool IsMenuInputEnabled()
+        {
+            return menuInputLock <= 0;
+        }
+        #endregion
 
-		private Vector3 worldPos;
+        private Vector3 worldPos;
         private Vector2Int curMousePos;
         private void OnMenuScene()
         {
@@ -123,14 +123,14 @@ namespace HumanFactory.Manager
         // UI 켜지는 함수 넣어둬야됨
         public Action<Vector2Int> OnClickMapGridInNoneModeAction { get; set; }
         public Action<bool, BuildingType> OnHoverInNoneModeAction { get; set; }
-		Vector2Int prevMousePos = new Vector2Int(-1, -1);
+        Vector2Int prevMousePos = new Vector2Int(-1, -1);
 
-		private void OnGameSceneNoneMode()
+        private void OnGameSceneNoneMode()
         {
             if (inputMode != InputMode.None) return;
 
             BuildingType type = MapManager.Instance.OnHoverMapGridInNoneMode(curMousePos.x, curMousePos.y);
-			OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting, type);
+            OnHoverInNoneModeAction?.Invoke(MapManager.Instance.IsCircuiting, type);
 
             if (!IsMouseInputEnabled()) return;
 
@@ -141,22 +141,22 @@ namespace HumanFactory.Manager
                 MapManager.Instance.OnDragStart(prevMousePos);
             }
             else if (Input.GetMouseButton(0))
-			{
+            {
                 MapManager.Instance.OnDrag(new Vector2(worldPos.x, worldPos.y));
-			}
+            }
             else if (Input.GetMouseButtonUp(0))
-			{
+            {
                 if (MapManager.Instance.IsDragging)
                 {
-					MapManager.Instance.OnDragEnd(prevMousePos, curMousePos);
-				}
+                    MapManager.Instance.OnDragEnd(prevMousePos, curMousePos);
+                }
                 else
-				{
-					MapManager.Instance.OnLeftClickMapGridInNoneMode(curMousePos.x, curMousePos.y, !MapManager.Instance.IsCircuiting);
-				}
+                {
+                    MapManager.Instance.OnLeftClickMapGridInNoneMode(curMousePos.x, curMousePos.y, !MapManager.Instance.IsCircuiting);
+                }
                 MapManager.Instance.OnClearDrag();
-				prevMousePos = new Vector2Int(-1, -1);
-			}
+                prevMousePos = new Vector2Int(-1, -1);
+            }
 
             if (Input.GetMouseButtonDown(1))
             {
@@ -200,11 +200,11 @@ namespace HumanFactory.Manager
             {
                 prevScreen = hit.transform.GetComponent<ClickableBase>();
 
-				if (lastScreen == null)
-				{
-					prevScreen?.OnPointerEnter();
-					lastScreen = prevScreen;
-				}
+                if (lastScreen == null)
+                {
+                    prevScreen?.OnPointerEnter();
+                    lastScreen = prevScreen;
+                }
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -214,8 +214,8 @@ namespace HumanFactory.Manager
             else
             {
                 prevScreen?.OnPointerExit();
-				lastScreen = prevScreen = null;
-			}
+                lastScreen = prevScreen = null;
+            }
         }
 
         private void ClickOutScene()
@@ -223,24 +223,24 @@ namespace HumanFactory.Manager
             if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[(int)ShortcutActionEnum.Back]))
             {
                 OnEscape();
-			}
+            }
         }
 
         public void OnEscape()
-		{
-			if (!IsMouseInputEnabled()) return;
-			Managers.Sound.PlaySfx(SFXType.Back, 0.8f, 1.7f);
-			LockMouseInput();
+        {
+            if (!IsMouseInputEnabled()) return;
+            Managers.Sound.PlaySfx(SFXType.Back, 0.8f, 1.7f);
+            LockMouseInput();
 
             /** SAVE SETTINGS **/
             if (GameManagerEx.Instance.CurrentCamType == CameraType.Game) MapManager.Instance.SaveStage();
-			else if(GameManagerEx.Instance.CurrentCamType == CameraType.Main || 
+            else if (GameManagerEx.Instance.CurrentCamType == CameraType.Main ||
                 GameManagerEx.Instance.CurrentCamType == CameraType.Setting) Managers.Data.SaveSettingData();
-			
+
             Camera.main.GetComponent<CameraBase>().ConvertSceneBackward();
-			inputMode = InputMode.None;
-			OnInputModeChanged(inputMode);
-		}
+            inputMode = InputMode.None;
+            OnInputModeChanged(inputMode);
+        }
 
         /// <summary>
         /// GameScene - Layer 1 일떄만 입력을 받아야됨
@@ -254,14 +254,14 @@ namespace HumanFactory.Manager
             }
             else
             {
-				MapManager.Instance.OnReleaseMapGridInPadMode();
-			}
+                MapManager.Instance.OnReleaseMapGridInPadMode();
+            }
 
             if (Input.GetMouseButton(1))
             {
                 MapManager.Instance.OnRightClickMapGridInPadMode(curMousePos.x, curMousePos.y);
-			}
-            
+            }
+
         }
 
         private BuildingType currentSelectedBuilding = BuildingType.None;
@@ -270,11 +270,14 @@ namespace HumanFactory.Manager
         public void ChangeCurSelectedBuilding(BuildingType type)
         {
             if (MapManager.Instance.CurrentStageInfo == null) return;
-            if (!MapManager.Instance.CurrentStageInfo.enableBuildings.Contains((int)type)) return;
+            if (!MapManager.Instance.CurrentStageInfo.enableBuildings.Contains((int)type)
+                && type != BuildingType.None) return;
 
             OnInputModeChanged(InputMode.Building);
             currentSelectedBuilding = type;
             OnBuildingTypeChanged?.Invoke(type);
+
+            Debug.Log($"CurSelectedBuilding: {currentSelectedBuilding}");
         }
 
         /// <summary>
@@ -286,7 +289,7 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
             if (Input.GetMouseButtonDown(0))
             {
-                if (currentSelectedBuilding == BuildingType.None) return;
+                //if (currentSelectedBuilding == BuildingType.None) return;
                 MapManager.Instance.OnLeftClickMapGridInBuildingMode(curMousePos.x, curMousePos.y, currentSelectedBuilding);
             }
             else if (Input.GetMouseButtonDown(1))

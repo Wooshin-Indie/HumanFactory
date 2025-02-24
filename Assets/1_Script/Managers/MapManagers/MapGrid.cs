@@ -175,14 +175,24 @@ namespace HumanFactory.Manager
 					if (padType != PadType.DirNone) arrowSprite.color = Constants.COLOR_ARROW;
 					buttonBase?.SetSpriteColor(Constants.COLOR_INVISIBLE);
 					break;
-				case InputMode.Building:
+                case InputMode.Building:
 					if (padType != PadType.DirNone) arrowSprite.color = Constants.COLOR_INVISIBLE;
 					buttonBase?.SetSpriteColor(Constants.COLOR_WHITE);
 					break;
 			}
 		}
 
-		public StageGridData GetStageGridData()
+		public void SetInvisibleInRemoveMode()
+		{
+            buttonBase?.SetSpriteColor(Constants.COLOR_INVISIBLE);
+        }
+
+        public void SetVisibleInRemoveMode()
+        {
+            buttonBase?.SetSpriteColor(Constants.COLOR_WHITE);
+        }
+
+        public StageGridData GetStageGridData()
 		{
 			StageGridData data = new StageGridData();
 			data.posX = posX;

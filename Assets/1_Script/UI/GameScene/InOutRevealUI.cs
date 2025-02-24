@@ -7,7 +7,9 @@ namespace HumanFactory.UI
 	public class InOutRevealUI : MonoBehaviour
 	{
 		[SerializeField] private StackRevealUI inStack;
+		[SerializeField] private StackRevealUI inIdxStack;
 		[SerializeField] private StackRevealUI outStack;
+		[SerializeField] private StackRevealUI outIdxStack;
 
 		private void OnEnable()
 		{
@@ -15,9 +17,15 @@ namespace HumanFactory.UI
 			outStack.Clear();
 
 			for (int i = 0; i < MapManager.Instance.CurrentStageInfo.inputs.Count(); i++)
+			{
 				inStack.PushValue(MapManager.Instance.CurrentStageInfo.inputs[i]);
+				inIdxStack.PushValueToInoutIndex(i + 1);
+			}
 			for (int i = 0; i < MapManager.Instance.CurrentStageInfo.outputs.Count(); i++)
+			{
 				outStack.PushValue(MapManager.Instance.CurrentStageInfo.outputs[i]);
+                outIdxStack.PushValueToInoutIndex(i + 1);
+            }
 		}
 
 

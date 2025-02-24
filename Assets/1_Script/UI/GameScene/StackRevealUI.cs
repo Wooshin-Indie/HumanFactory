@@ -20,8 +20,16 @@ namespace HumanFactory.UI
 			go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = value.ToString();
 			values.Add(go);
 		}
+        public void PushValueToInoutIndex(int value)
+        {
+            GameObject go = Instantiate(itemPrefab, transform);
+            go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = value.ToString();
+			go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = 13f;
+			go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Color32(77, 89, 113, 255);
+            values.Add(go);
+        }
 
-		public void Clear()
+        public void Clear()
 		{
 			for (int i = values.Count - 1; i >= 0; i--)
 			{

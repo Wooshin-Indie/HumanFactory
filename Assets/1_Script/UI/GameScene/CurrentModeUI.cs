@@ -15,14 +15,14 @@ namespace HumanFactory.UI
             Managers.Input.OnModeChangedAction -= SetMode;
             Managers.Input.OnModeChangedAction += SetMode;
 
-            for(int i=0; i < modes.Count; i++)
-			{
+            for (int i = 0; i < modes.Count; i++)
+            {
                 int t = i;
-				modes[t].GetComponent<Button>().onClick.AddListener(() =>
-				{
-					Managers.Input.OnInputModeChanged((InputMode)t);
-				});
-			}
+                modes[t].GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    Managers.Input.OnInputModeChanged((InputMode)t);
+                });
+            }
 
 			SetMode(InputMode.None);
         }
@@ -36,6 +36,8 @@ namespace HumanFactory.UI
                 ChangeMode(i, (int)mode == i);
             }
         }
+
+       
 
 
         private void ChangeMode(int index, bool isActive)
