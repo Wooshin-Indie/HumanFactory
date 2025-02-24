@@ -3,7 +3,6 @@ using HumanFactory.Server;
 using HumanFactory.UI;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -238,10 +237,10 @@ namespace HumanFactory
         [Header("LOGs")]
         [SerializeField] private LogPanelUI logUI;
 
-        HashSet<string> logKeys = new HashSet<string>();
-		public void DisplayLogByKey(string key)
+        HashSet<KeyValuePair<string, Color>> logKeys = new HashSet<KeyValuePair<string, Color>>();
+		public void DisplayLogByKey(string key, Color color)
 		{
-            logKeys.Add(key);
+            logKeys.Add(new KeyValuePair<string, Color>(key, color));
 		}
 
         private void OnUpdateLog()
@@ -250,7 +249,7 @@ namespace HumanFactory
 
             foreach(var logkey in  logKeys)
             {
-				logUI.DisplayLog(LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_LOG, logkey), Color.black);
+				logUI.DisplayLog(LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_LOG, logkey.Key), logkey.Value);
 			}
             logKeys.Clear();
         }

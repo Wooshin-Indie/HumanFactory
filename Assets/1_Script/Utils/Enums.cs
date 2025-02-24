@@ -61,6 +61,7 @@ namespace HumanFactory
     { 
         Bgm = 0,
         Sfx = 1,
+        Noise = 2,
     }
 
     public enum BGMType
@@ -95,7 +96,9 @@ namespace HumanFactory
         Wind,
         Zoom,
         Button_Put,
-        Button_Remove
+        Button_Remove,
+        LinkSuccess,
+        Fanfare
     }
 
     public enum InputMode   // InputMode in GameScene

@@ -40,25 +40,25 @@ namespace HumanFactory.Manager
             else
                 Debug.LogError("Error : Release Mouse Input dosen't expected!");
         }
-        private bool IsMouseInputEnabled()
-        {
-            // 게임 실행중이라 락걸림
-            if (mouseInputLock > 0 && GameManagerEx.Instance.ExeType != ExecuteType.None)
-            {
-                for (int i = (int)ShortcutActionEnum.Add_Button; i <= (int)ShortcutActionEnum.Back; i++)
+        public bool IsMouseInputEnabled()
+		{
+			// 게임 실행중이라 락걸림
+			if (mouseInputLock > 0 && GameManagerEx.Instance.ExeType != ExecuteType.None)
+			{
+				for (int i = (int)ShortcutActionEnum.Add_Button; i <= (int)ShortcutActionEnum.Back; i++)
+				{
+					if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[i]))
+					{
+						GameManagerEx.Instance.DisplayLogByKey("Lock_1", Color.red);
+					}
+				}
+				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 {
-                    if (Input.GetKeyDown((KeyCode)Managers.Data.BasicSettingData.keyBindings[i]))
-                    {
-                        GameManagerEx.Instance.DisplayLogByKey("Lock_1");
-                    }
-                }
-                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-                {
-                    if (MapManager.Instance.CheckBoundary(curMousePos.x, curMousePos.y, MapManager.Instance.IsMapExpanded))
-                    {
-                        GameManagerEx.Instance.DisplayLogByKey("Lock_1");
-                    }
-                }
+                    if(MapManager.Instance.CheckBoundary(curMousePos.x, curMousePos.y, MapManager.Instance.IsMapExpanded))
+					{
+						GameManagerEx.Instance.DisplayLogByKey("Lock_1", Color.red);
+					}
+				}
             }
 
             return mouseInputLock <= 0;

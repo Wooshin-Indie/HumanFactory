@@ -58,6 +58,10 @@ MonoBehaviour:
     m_Localized: Cancel
     m_Metadata:
       m_Items: []
+  - m_Id: 9793296392904704
+    m_Localized: Manual
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -215,7 +215,7 @@ namespace HumanFactory
                 saveDatas[i] = new StageSaveData();
             }
         }
-		public List<StageSaveData> saveDatas = new List<StageSaveData>(new StageSaveData[5]);
+		public List<StageSaveData> saveDatas = new List<StageSaveData>(new StageSaveData[1]);
 	}
 
     [Serializable]

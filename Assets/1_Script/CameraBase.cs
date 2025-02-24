@@ -90,7 +90,10 @@ namespace HumanFactory
             }
         }
 
-
+        public void SetOriginPos(Vector3 pos)
+        {
+            originPos = pos;
+        }
 
 
 

@@ -58,34 +58,41 @@ namespace HumanFactory.UI
         }
 
 		private Coroutine typeCoroutine = null;
-        /// <summary>
-        /// 여러가지 정보들을 전달해서 UI에 띄웁니다.
-        /// </summary>
-        public void SetSuccessPopupInfos(GameResultInfo resultInfo)
+        GameResultInfo prevResultInfo = null;
+
+		/// <summary>
+		/// 여러가지 정보들을 전달해서 UI에 띄웁니다.
+		/// </summary>
+		public void SetSuccessPopupInfos(GameResultInfo resultInfo)
         {
+            prevResultInfo = resultInfo;
             RemoveContents();
             InactivateButtons();
+		}
+		public void StartSuccessPopupInfos()
+		{
+			if (typeCoroutine != null) StopCoroutine(typeCoroutine);
+			typeCoroutine = StartCoroutine(ContentsWritingEffect(prevResultInfo, 0.03f));
 
-            if (typeCoroutine != null) StopCoroutine(typeCoroutine);
-            typeCoroutine = StartCoroutine(ContentsWritingEffect(resultInfo, 0.03f));
+			GetComponent<Button>().enabled = true;
+			GetComponent<Button>().onClick.AddListener(() =>
+			{
+				StopCoroutine(typeCoroutine);
+				typewritingSource?.Stop();
+				handwritingSource?.Stop();
 
-            GetComponent<Button>().enabled = true;
-            GetComponent<Button>().onClick.AddListener(() =>
-            {
-                StopCoroutine(typeCoroutine);
-                typewritingSource?.Stop();
-                handwritingSource?.Stop();
-
-                SetContentsAnOnce(resultInfo);
-                GetComponent<Button>().enabled = false;
-            });
-        }
-        public override void PopupWindow()
+				SetContentsAnOnce(prevResultInfo);
+				GetComponent<Button>().enabled = false;
+			});
+		}
+		public override void PopupWindow()
 		{
             GetComponent<RectTransform>().DOAnchorPos(inScreenPos, duration)
-                .SetDelay(2f)
-                .SetEase(easeType);
+                .SetDelay(delayDuration)
+                .SetEase(easeType)
+                .OnComplete(() => StartSuccessPopupInfos());
 			Managers.Input.LockMouseInput();
+            Managers.Sound.PlaySfx(SFXType.Fanfare);
         }
 
 

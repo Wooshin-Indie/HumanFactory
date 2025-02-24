@@ -40,25 +40,21 @@ namespace HumanFactory.UI
 
 			nextPageButton.onClick.AddListener(OnNextPage);
 			prevPageButton.onClick.AddListener(OnPrevPage);
-		}
 
-		public override void PopupWindow()
-		{
-			base.PopupWindow();
-			Managers.Sound.PlaySfx(SFXType.UI_Paper);
-		}
 
-		public override void OnEnable()
-		{
-			base.OnEnable();
 			curPage = 0;
-			ResetChildOrder();
 			isPaging = false;
 
 			if (curPage == 0)
 			{
 				prevPageButton.gameObject.SetActive(false);
 			}
+		}
+
+		public override void PopupWindow()
+		{
+			base.PopupWindow();
+			Managers.Sound.PlaySfx(SFXType.UI_Paper);
 		}
 
 		private void OnNextPage()

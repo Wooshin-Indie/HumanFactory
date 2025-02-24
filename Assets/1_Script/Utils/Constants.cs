@@ -15,6 +15,7 @@ namespace HumanFactory
         public static readonly string TAG_PAGES = "Pages";
 
         public static readonly int LAYER_CLICKABLE = 1 << 10;
+        public static readonly int LAYER_INTERACTABLE = 1 << 11;
 
         public static Color COLOR_TRANS = new Color(1f, 1f, 1f, 0f);
         public static Color COLOR_ARROW = new Color(1f, 1f, 1f, 1f);

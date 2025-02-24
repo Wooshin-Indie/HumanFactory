@@ -1,6 +1,5 @@
 using HumanFactory.Manager;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -13,9 +12,16 @@ namespace HumanFactory.UI
 
 		private void Start()
 		{
-			OnClickItem(LocalizationSettings.AvailableLocales.Locales.IndexOf(
+			int startIdx = LocalizationSettings.AvailableLocales.Locales.IndexOf(
 				LocalizationSettings.SelectedLocale
-				));
+				);
+			Managers.Data.BasicSettingData.languageIndex = startIdx;
+			for (int i = 0; i < items.Count; i++)
+			{
+				items[i].OnSelected(i == startIdx);
+			}
+			LocalizationSettings.SelectedLocale =
+				LocalizationSettings.AvailableLocales.Locales[startIdx];
 
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -29,8 +35,8 @@ namespace HumanFactory.UI
 
 		private void OnClickItem(int idx)
 		{
-			Managers.Data.BasicSettingData.languageIndex = idx;
 			Managers.Sound.PlaySfx(SFXType.UI_Click, .3f, .95f);
+			Managers.Data.BasicSettingData.languageIndex = idx;
 			for (int i = 0; i < items.Count; i++)
             {
                 items[i].OnSelected(i == idx);
