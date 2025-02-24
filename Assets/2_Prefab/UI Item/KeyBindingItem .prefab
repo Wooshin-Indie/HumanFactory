@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageName: {fileID: 4636033665299748739}
   selectedSprite: {fileID: 21300000, guid: 95eb5dcea05375e4a8ac9ad62319a554, type: 3}
+  originalSprite: {fileID: 21300000, guid: 184553d1e8d4dde47bde160db8a2dfb8, type: 3}
 --- !u!1 &4127959416741126372
 GameObject:
   m_ObjectHideFlags: 0

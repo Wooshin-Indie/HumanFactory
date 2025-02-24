@@ -10,14 +10,9 @@ namespace HumanFactory.UI
 	{
 		[SerializeField] private TextMeshProUGUI stageName;
 		[SerializeField] private Sprite selectedSprite;
+		[SerializeField] private Sprite originalSprite;
 
 		private bool isSelected = false;
-		private Sprite originalSprite;
-
-		private void Awake()
-		{
-			originalSprite = GetComponent<Image>().sprite;
-		}
 
 		public void OnSelected(bool isSelected)
 		{

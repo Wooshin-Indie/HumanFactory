@@ -38,6 +38,7 @@ namespace HumanFactory.Manager
             {
 				bgmVolume = value;
 				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
+				audioSources[(int)SoundType.Noise].volume = masterVolume * bgmVolume;
                 Managers.Data.BasicSettingData.bgmVolume = value;
             }
         }
@@ -47,6 +48,7 @@ namespace HumanFactory.Manager
 			{
 				masterVolume = value;
 				audioSources[(int)SoundType.Bgm].volume = masterVolume * bgmVolume;
+				audioSources[(int)SoundType.Noise].volume = masterVolume * bgmVolume;
 				Managers.Data.BasicSettingData.masterVolume = value;
 			} 
 		}
@@ -72,6 +74,9 @@ namespace HumanFactory.Manager
             }
 
 			audioSources[(int)SoundType.Bgm].loop = true;
+			audioSources[(int)SoundType.Noise].loop = true;
+			audioSources[(int)SoundType.Noise].clip = Resources.Load<AudioClip>("Sounds/Whitenoise/Humming");
+			audioSources[(int)SoundType.Noise].Play();
             InitPool();
         }
         
@@ -142,7 +147,8 @@ namespace HumanFactory.Manager
 			audioSource.volume = volume * masterVolume * sfxVolume;
 			audioSource.Play();
             PushAfterDelay(audioSource, audioSource.clip.length);
-            return audioSource;
+			Debug.Log("PLAYED : " + sfxType);
+			return audioSource;
 		}
 
         public AudioSource PlaySfx(SFXType sfxType, float volume, float pitch, float duration)

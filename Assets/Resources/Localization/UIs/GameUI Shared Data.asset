@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: MouseCircuitRight
     m_Metadata:
       m_Items: []
+  - m_Id: 9793296392904704
+    m_Key: Manual
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

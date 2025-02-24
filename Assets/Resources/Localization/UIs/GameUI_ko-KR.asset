@@ -58,6 +58,10 @@ MonoBehaviour:
     m_Localized: "\uCDE8\uC18C"
     m_Metadata:
       m_Items: []
+  - m_Id: 9793296392904704
+    m_Localized: "\uB9E4\uB274\uC5BC"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -363,6 +363,7 @@ namespace HumanFactory.Manager
 				programMap[data.posX, data.posY].SetStageGridInfo(data);
 			}
 
+            GameManagerEx.Instance.Cameras[(int)CameraType.Game].GetComponent<CameraBase>().SetOriginPos(GameManagerEx.Instance.Cameras[(int)CameraType.Game].transform.position);
 			ClearHumans();
             ClearParameters();
 		}

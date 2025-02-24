@@ -6,6 +6,7 @@ using HumanFactory.Util;
 using HumanFactory.Util.Effect;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,7 @@ namespace HumanFactory.UI
         [Header("Panel Buttons")]
         [SerializeField] private Button ChapterBackButton;
         [SerializeField] private List<Button> saveButtons = new List<Button>();
+        [SerializeField] private Button addSaveButton;
 
         private Tweener scrollTweener;
         private float scrollviewHeight;
@@ -41,6 +43,7 @@ namespace HumanFactory.UI
         private int currentSaveFileIndex = -1;
 
         private ClickableScreen clickableScreen;
+        private int MAX_SAVECOUNTS = 5;
 
         public int CurrentSelectedIndex { get => currentSelectedIndex;
             set
@@ -52,8 +55,9 @@ namespace HumanFactory.UI
                     for (int i = 0; i < saveButtons.Count; i++)
                     {
                         saveButtons[i].gameObject.SetActive(false);
-                    }
-                    challengeUI.ClearInfo();
+					}
+					addSaveButton.gameObject.SetActive(false);
+					challengeUI.ClearInfo();
                     statisticsUI.ClearInfo();
 
 					if (typeCoroutine != null)
@@ -65,10 +69,13 @@ namespace HumanFactory.UI
 				}
                 else
 				{
+                    int count = Managers.Data.GamePlayData.stageGridDatas[value].saveDatas.Count;
 					for (int i = 0; i < saveButtons.Count; i++)
 					{
-						saveButtons[i].gameObject.SetActive(true);
+						saveButtons[i].gameObject.SetActive(i < count);
 					}
+                    addSaveButton.gameObject.SetActive(count != MAX_SAVECOUNTS);
+                    
 
 					if (Managers.Data.IsAbleToAccessStage(value))
 					{
@@ -122,7 +129,18 @@ namespace HumanFactory.UI
                     CurrentSaveFileIndex = t; 
 				});
             }
-            CurrentSelectedIndex = -1;
+
+            addSaveButton.onClick.AddListener(() =>
+            {
+                if (Managers.Data.GamePlayData.stageGridDatas[currentSelectedIndex].saveDatas.Count < MAX_SAVECOUNTS)
+				{
+					Managers.Data.GamePlayData.stageGridDatas[currentSelectedIndex].saveDatas.Add(new StageSaveData());
+                    Managers.Data.SaveGameplayData();
+                    CurrentSelectedIndex = CurrentSelectedIndex;
+				}
+			});
+
+			CurrentSelectedIndex = -1;
 
 			scrollviewHeight = GetComponent<RectTransform>().rect.height;
 

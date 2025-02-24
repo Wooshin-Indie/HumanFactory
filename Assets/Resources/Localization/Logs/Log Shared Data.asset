@@ -15,16 +15,20 @@ MonoBehaviour:
   m_TableCollectionName: Log
   m_TableCollectionNameGuidString: 2e0d63a824f02dc428d2823c3bf1619e
   m_Entries:
-  - m_Id: 265544283316224
-    m_Key: Link_1
+  - m_Id: 265548095938560
+    m_Key: Link_Fail_0
     m_Metadata:
       m_Items: []
-  - m_Id: 265548095938560
-    m_Key: Link_2
+  - m_Id: 2588055482261504
+    m_Key: Link_Fail_1
     m_Metadata:
       m_Items: []
   - m_Id: 266650178674688
     m_Key: Lock_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2585016843231232
+    m_Key: Link_Success
     m_Metadata:
       m_Items: []
   m_Metadata:

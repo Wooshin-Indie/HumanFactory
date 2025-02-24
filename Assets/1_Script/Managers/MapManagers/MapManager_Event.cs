@@ -1,4 +1,6 @@
 using HumanFactory.Buttons;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -19,13 +21,30 @@ namespace HumanFactory.Manager
 
 			if (IsCircuiting)
 			{
+				buttonRect.gameObject.SetActive(true);
+
 				buttonRect.transform.position = new Vector3(circuitingButtonPos.x, circuitingButtonPos.y, Constants.HUMAN_POS_Z);
 				tileRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
+				if (circuitingButtonPos.x == x && circuitingButtonPos.y == y) buttonRect.transform.GetChild(0).gameObject.SetActive(false);
+				else
+				{
+					buttonRect.transform.GetChild(0).gameObject.SetActive(true);
+					Vector3 direction = tileRect.transform.position - buttonRect.transform.GetChild(0).position;
+					float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+					buttonRect.transform.GetChild(0).rotation = Quaternion.Euler(0, 0, angle - 90f);
+				}
 				tileRect.gameObject.SetActive(true);
 
 				return BuildingType.None;
 			}
 
+			if (programMap[x, y].ButtonBase == null)
+			{
+				tileRect.gameObject.SetActive(false);
+				buttonRect.gameObject.SetActive(false);
+				return BuildingType.None;
+			}
+			
 			buttonRect.transform.position = new Vector3(x, y, Constants.HUMAN_POS_Z);
 			buttonRect.sprite = programMap[x, y].ButtonBase?.GetComponent<SpriteRenderer>().sprite;
 			buttonRect.gameObject.SetActive(true);
@@ -34,10 +53,21 @@ namespace HumanFactory.Manager
 			{
 				tileRect.transform.position = new Vector3(programMap[x, y].ButtonBase.buttonInfo.linkedGridPos.x, programMap[x, y].ButtonBase.buttonInfo.linkedGridPos.y, Constants.HUMAN_POS_Z);
 				tileRect.gameObject.SetActive(true);
+
+				if (circuitingButtonPos.x == x && circuitingButtonPos.y == y) buttonRect.transform.GetChild(0).gameObject.SetActive(false);
+				else
+				{
+					buttonRect.transform.GetChild(0).gameObject.SetActive(true);
+					Vector3 direction = tileRect.transform.position - buttonRect.transform.GetChild(0).position;
+					float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+					buttonRect.transform.GetChild(0).rotation = Quaternion.Euler(0, 0, angle - 90f);
+				}
 			}
 			else
 			{
 				tileRect.gameObject.SetActive(false);
+
+				buttonRect.transform.GetChild(0).gameObject.SetActive(false);
 			}
 			return programMap[x, y].ButtonType;
 		}
@@ -75,7 +105,7 @@ namespace HumanFactory.Manager
 				if (quad1 == linkableIndices[i, 0] && quad2 == linkableIndices[i, 1]) return true;
 			}
 
-			GameManagerEx.Instance.DisplayLogByKey("Link_2");
+			GameManagerEx.Instance.DisplayLogByKey("Link_Fail_0", Color.red);
 			return false;
 		}
 
@@ -83,6 +113,11 @@ namespace HumanFactory.Manager
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx))
 			{
+				if (IsCircuiting)
+				{
+					Managers.Sound.PlaySfx(SFXType.Beep);
+					GameManagerEx.Instance.DisplayLogByKey("Link_Fail_1", Constants.COLOR_RED);
+				}
 				circuitingButtonPos = new Vector2Int(-1, -1);
 				return;
 			}
@@ -94,6 +129,8 @@ namespace HumanFactory.Manager
 				{
 					var targetable = programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonBase as TargetableButton;
 					targetable?.SetLinkedPos(x, y);
+					GameManagerEx.Instance.DisplayLogByKey("Link_Success", Constants.COLOR_CLEARSTAGE);
+					Managers.Sound.PlaySfx(SFXType.LinkSuccess);
 				}
 				circuitingButtonPos = new Vector2Int(-1, -1);
 			}
@@ -265,9 +302,15 @@ namespace HumanFactory.Manager
 			{
 				Managers.Sound.PlaySfx(SFXType.Button_Remove, .8f);
 				Destroy(draggingButtonBase.gameObject);
+				Managers.Sound.PlaySfx(SFXType.Beep);
 				return;
 			}
 
+			if (programMap[mousePos.x, mousePos.y].ButtonBase != null)
+			{
+				programMap[mousePos.x, mousePos.y].SetButton(BuildingType.None);
+			}
+			Managers.Sound.PlaySfx(SFXType.Button_Put);
 			programMap[mousePos.x, mousePos.y].ButtonBase = draggingButtonBase;
 			draggingButtonBase.OnEndDrag(mousePos);
 		}

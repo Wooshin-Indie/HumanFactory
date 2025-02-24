@@ -18,17 +18,20 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 265544283316224
-    m_Localized: 'Enable To Link : The same button from another location is affecting
-      this grid.'
-    m_Metadata:
-      m_Items: []
   - m_Id: 265548095938560
-    m_Localized: 'Enable To Link : Wrong Direction.'
+    m_Localized: 'Button link failed : Wrong direction.'
     m_Metadata:
       m_Items: []
   - m_Id: 266650178674688
     m_Localized: 'Input Lock : Workers are in progress.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2585016843231232
+    m_Localized: Button LinkSuccess!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2588055482261504
+    m_Localized: 'Button link failed: Unused region.'
     m_Metadata:
       m_Items: []
   references:
