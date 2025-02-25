@@ -155,6 +155,14 @@ MonoBehaviour:
     m_Key: LergetContent
     m_Metadata:
       m_Items: []
+  - m_Id: 3852168575578112
+    m_Key: RotateContent_detail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3857166382395392
+    m_Key: ToggleContent_detail
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

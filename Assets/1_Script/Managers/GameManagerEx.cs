@@ -17,6 +17,7 @@ namespace HumanFactory
 
         public void Init()
         {
+            //Managers.Input.LockMouseInput();
             if (s_instance == null)
             {
                 s_instance = this;

@@ -191,24 +191,27 @@ namespace HumanFactory.Manager
 
         private ClickableBase lastScreen = null;
         private ClickableBase prevScreen = null;
+
         private void InteractClickableObject()
         {
             if (Camera.main.GetComponent<CameraBase>().IsZoomed) return;
 
-            if (Physics.Raycast(cameraRay, out RaycastHit hit, 20, Constants.LAYER_CLICKABLE)
-                && IsMouseInputEnabled())
+            if (Physics.Raycast(cameraRay, out RaycastHit hit, 20, Constants.LAYER_CLICKABLE) && IsMouseInputEnabled())
             {
-                prevScreen = hit.transform.GetComponent<ClickableBase>();
-
-                if (lastScreen == null)
+                if (Managers.Data.GamePlayData.isLetterOpened || hit.transform.gameObject.CompareTag("Letter"))
                 {
-                    prevScreen?.OnPointerEnter();
-                    lastScreen = prevScreen;
-                }
+                    prevScreen = hit.transform.GetComponent<ClickableBase>();
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    prevScreen?.OnPointerClick();
+                    if (lastScreen == null)
+                    {
+                        prevScreen?.OnPointerEnter();
+                        lastScreen = prevScreen;
+                    }
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        prevScreen?.OnPointerClick();
+                    }
                 }
             }
             else

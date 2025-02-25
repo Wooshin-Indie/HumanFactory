@@ -59,6 +59,14 @@ MonoBehaviour:
     m_Key: Manual
     m_Metadata:
       m_Items: []
+  - m_Id: 10418501266173952
+    m_Key: MouseNoneDrag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10420676579028992
+    m_Key: MousePadDrag
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

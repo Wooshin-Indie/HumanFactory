@@ -176,6 +176,15 @@ MonoBehaviour:
       affect beyond the 5x5 grid.'
     m_Metadata:
       m_Items: []
+  - m_Id: 3852168575578112
+    m_Localized: '   If two or more rotation buttons with different directions target
+      the same tile and are pressed, the tile''s direction will be cleared.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3857166382395392
+    m_Localized: 'Caution: Toggle buttons cannot interact with other toggle buttons.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

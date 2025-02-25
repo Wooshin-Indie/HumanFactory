@@ -222,6 +222,7 @@ namespace HumanFactory
     public class GameplayData 
     {
         public StageGridDatas[] stageGridDatas;
+        public bool isLetterOpened = false;
 	}
 
     [Serializable]
