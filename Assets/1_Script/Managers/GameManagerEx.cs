@@ -259,6 +259,13 @@ namespace HumanFactory
             OnUpdateLog();
         }
 
+        [SerializeField] private ESCPanel escPanel;
+        public ESCPanel ESCPanel { get => escPanel; }
+        public void OpenESCPanel()
+        {
+            escPanel.gameObject.SetActive(true);
+        }
+
 	}
 }
 

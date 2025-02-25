@@ -191,6 +191,10 @@ MonoBehaviour:
     m_Key: Limit
     m_Metadata:
       m_Items: []
+  - m_Id: 11543617758683136
+    m_Key: Area
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

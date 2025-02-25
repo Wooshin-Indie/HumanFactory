@@ -59,6 +59,18 @@ MonoBehaviour:
     m_Key: Manual
     m_Metadata:
       m_Items: []
+  - m_Id: 10386450154381312
+    m_Key: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10386543804801024
+    m_Key: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10386621646888960
+    m_Key: Exit
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

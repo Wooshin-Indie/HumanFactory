@@ -147,7 +147,6 @@ namespace HumanFactory.Manager
 			audioSource.volume = volume * masterVolume * sfxVolume;
 			audioSource.Play();
             PushAfterDelay(audioSource, audioSource.clip.length);
-			Debug.Log("PLAYED : " + sfxType);
 			return audioSource;
 		}
 

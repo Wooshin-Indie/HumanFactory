@@ -6,8 +6,6 @@ using System.Collections;
 using System.Linq;
 using HumanFactory.Util;
 using HumanFactory.Buttons;
-using UnityEditor.Animations;
-using Unity.VisualScripting;
 
 namespace HumanFactory.Manager
 {
