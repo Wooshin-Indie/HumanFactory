@@ -74,6 +74,13 @@ namespace HumanFactory
                 });
         }
 
+        public void UnlockPanel()
+		{
+			recentlyInteractedUI?.GetComponent<PopUpUIBase>().CloseWindow();
+			recentlyInteractedUI = null;
+			isZoomed = false;
+		}
+
         public void ConvertSceneBackward()
 		{
 			if (isZoomed)
@@ -85,8 +92,18 @@ namespace HumanFactory
             }
             else
 			{
-				GameManagerEx.Instance.BlockAllUIs();
-				StartCoroutine(LerpToOriginCoroutine());
+                if (GameManagerEx.Instance.CurrentCamType != CameraType.Main)
+				{
+					GameManagerEx.Instance.BlockAllUIs();
+					StartCoroutine(LerpToOriginCoroutine());
+				}
+                else
+				{
+					GameManagerEx.Instance.OpenESCPanel();
+                    isZoomed = true;
+                    recentlyInteractedUI = GameManagerEx.Instance.ESCPanel.gameObject;
+                    Managers.Input.ReleaseMouseInput();
+                }
             }
         }
 

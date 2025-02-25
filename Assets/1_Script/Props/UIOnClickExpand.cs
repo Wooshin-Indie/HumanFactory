@@ -4,6 +4,7 @@ using HumanFactory.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -41,9 +42,14 @@ public class UIOnClickExpand : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetStageId(int id)
     {
         this.id = id;
-        stageName.SetLocalizedString(Constants.TABLE_MENUUI, $"Stage_{id}");
+        Managers.Resource.FindStageIdx(id, out int chapIdx, out int stageIdx);
+
+        stageName.SetLocalizedString(Constants.TABLE_STAGE, $"ShortDesc_{id}");
         stageName.color = GetStageColor(id);
-        shortDesc.SetLocalizedString(Constants.TABLE_STAGE, $"ShortDesc_{id}");
+        shortDesc.SetLocalizedString(Constants.TABLE_MENUUI, $"Area");
+        shortDesc.GetComponent<LocalizeStringEvent>().StringReference.Arguments =
+            new object[] { chapIdx, stageIdx };
+        shortDesc.GetComponent<LocalizeStringEvent>().RefreshString();
         
     }
 

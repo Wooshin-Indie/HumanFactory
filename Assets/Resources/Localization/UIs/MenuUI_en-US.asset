@@ -126,9 +126,9 @@ MonoBehaviour:
   - m_Id: 4348261983707136
     m_Localized: 'Access Denied
 
-      
 
-      
+
+
 
       Requirement : {StageKey}'
     m_Metadata:
@@ -184,6 +184,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9959538990899208
     m_Localized: Stage 21
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11543617758683136
+    m_Localized: Area {0} - {1}
     m_Metadata:
       m_Items: []
   references:

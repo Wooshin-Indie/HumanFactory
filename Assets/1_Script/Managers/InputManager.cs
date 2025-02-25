@@ -2,7 +2,6 @@ using HumanFactory.Props;
 using System;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace HumanFactory.Manager
@@ -100,10 +99,7 @@ namespace HumanFactory.Manager
 
             InteractClickableObject();
 
-            if (Camera.main.GetComponent<CameraBase>().IsZoomed)
-            {
-                ClickOutScene();
-            }
+            ClickOutScene();
         }
 
         private void OnGameScene()

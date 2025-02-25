@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -118,6 +119,26 @@ namespace HumanFactory.Manager
         {
             return chapterInfos.chapterInfo.Length;
         }
+
+        public void FindStageIdx(int idx, out int chapIdx, out int stageIdx)
+        {
+
+            for (int i = 0; i < chapterInfos.chapterInfo.Length; i++)
+            {
+                var fIndex = Array.FindIndex(chapterInfos.chapterInfo[i].stageIndexes, (item => item == idx));
+                if (fIndex >= 0)
+                {
+                    chapIdx = i;
+                    stageIdx = fIndex+1;
+                    return;
+                }
+			}
+
+			chapIdx = 0;
+			stageIdx = 0;
+			return;
+
+		}
 
         public AudioClip GetBGM(BGMType type)
         {

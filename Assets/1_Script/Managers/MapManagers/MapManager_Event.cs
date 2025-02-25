@@ -127,7 +127,14 @@ namespace HumanFactory.Manager
 				{
 					var targetable = programMap[circuitingButtonPos.x, circuitingButtonPos.y].ButtonBase as TargetableButton;
 					targetable?.SetLinkedPos(x, y);
-					GameManagerEx.Instance.DisplayLogByKey("Link_Success", Constants.COLOR_CLEARSTAGE);
+					if(targetable is ToggleButton && programMap[x, y].ButtonBase is ToggleButton)
+					{
+						GameManagerEx.Instance.DisplayLogByKey("Warning_Toggle", Constants.COLOR_WARNING);
+					}
+					else
+					{
+						GameManagerEx.Instance.DisplayLogByKey("Link_Success", Constants.COLOR_CLEARSTAGE);
+					}
 					Managers.Sound.PlaySfx(SFXType.LinkSuccess);
 				}
 				circuitingButtonPos = new Vector2Int(-1, -1);

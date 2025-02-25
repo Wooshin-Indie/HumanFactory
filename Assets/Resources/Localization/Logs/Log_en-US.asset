@@ -31,7 +31,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2588055482261504
-    m_Localized: 'Button link failed: Unused region.'
+    m_Localized: 'Button link failed : Unused region.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2871583864381440
+    m_Localized: 'Warning : The toggle button cannot affect another toggle button.'
     m_Metadata:
       m_Items: []
   references:

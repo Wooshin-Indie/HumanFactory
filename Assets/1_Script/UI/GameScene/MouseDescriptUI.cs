@@ -23,7 +23,7 @@ namespace HumanFactory.UI
             Managers.Input.OnHoverInNoneModeAction -= OnHoverInNoneMode;
             Managers.Input.OnHoverInNoneModeAction += OnHoverInNoneMode;
 
-            MouseDescripts[1].gameObject.SetActive(false);
+            //MouseDescripts[1].gameObject.SetActive(false);
         }
 
         private string prevLeftKey = "";
@@ -47,8 +47,8 @@ namespace HumanFactory.UI
 				{
 					case BuildingType.None:
 						leftKey = "Clear Button";
-						if (MouseDescripts[1].gameObject.activeSelf)
-							MouseDescripts[1].gameObject.SetActive(false);
+						//if (MouseDescripts[1].gameObject.activeSelf)
+							//MouseDescripts[1].gameObject.SetActive(false);
                         break;
 					case BuildingType.Toggle:
 						leftKey = "MouseNoneLeft";
