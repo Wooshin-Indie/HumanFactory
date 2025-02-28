@@ -7,6 +7,7 @@ using HumanFactory.Util.Effect;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 namespace HumanFactory.UI
@@ -169,6 +170,7 @@ namespace HumanFactory.UI
         private void LoadChaptersOnPanel()
 		{
 			titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, "Chapter");
+
 			for (int i = 0; i < Managers.Resource.GetChapterCount(); i++)
             {
                 int idx = i;
@@ -218,6 +220,10 @@ namespace HumanFactory.UI
             LoadStagesOnPanel(); // 챕터에 해당되는 stage들 인스턴시에이트
 
             titleBanner.SetLocalizedString(Constants.TABLE_MENUUI, $"Chapter_{index}");
+			titleBanner.GetComponent<LocalizeStringEvent>().StringReference.Arguments =
+				new object[] { Constants.AREA_NUMBER[index] };
+			titleBanner.GetComponent<LocalizeStringEvent>().RefreshString();
+
 			ChapterBackButton.interactable = true;
             // 뒤로가기 버튼 활성화, 뒤로가기 버튼 누르면 stages 전부 destroy 및 remove, 그리고 LoadChapters, 그리고 BackButton 비활성화
         }

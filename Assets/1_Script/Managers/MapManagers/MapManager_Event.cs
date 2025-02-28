@@ -230,8 +230,11 @@ namespace HumanFactory.Manager
 		{
 			if (!CheckBoundary(x, y, isMapExpanded, currentMapIdx)) return;
 			Managers.Sound.PlaySfx(SFXType.Button_Put);
+			programMap[x, y].EraseBuilding();
 			programMap[x, y].SetButton(type);
-			Managers.Input.OnInputModeChanged(InputMode.None);
+
+			if (type != BuildingType.None)
+				Managers.Input.OnInputModeChanged(InputMode.None);
 		}
 
 		public void OnInputModeChanged(InputMode mode)

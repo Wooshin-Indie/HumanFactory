@@ -72,6 +72,16 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10751446367596544
     m_Localized: Clear Button
+  - m_Id: 10747338669547520
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10747546954489856
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10747602604515328
+    m_Localized: Exit
     m_Metadata:
       m_Items: []
   references:

@@ -148,7 +148,7 @@ namespace HumanFactory.Manager
 			SetButton(data.buildingType, data.isActive);
 			buttonBase.SetButtonInfo(new ButtonInfos(data.buttonInfos));
 		}
-		private void EraseBuilding()
+		public void EraseBuilding()
 		{
 			if (buttonBase != null)
 			{
