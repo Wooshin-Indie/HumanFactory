@@ -9,6 +9,7 @@ namespace HumanFactory.Manager
     public class InputManager
     {
         private InputMode inputMode = InputMode.None;
+        public InputMode InputMode { get { return inputMode; } }
         private Ray cameraRay;
 
         public void OnUpdate()

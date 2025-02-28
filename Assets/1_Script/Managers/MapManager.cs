@@ -371,7 +371,7 @@ namespace HumanFactory.Manager
 
         [Header("Tilemap")]
         [SerializeField] private Tilemap gameTilemap;
-        [SerializeField] private Tile inTile;
+        [SerializeField] private Tile insideTile;
         [SerializeField] private Tile leftTile;
         [SerializeField] private Tile rightTile;
         [SerializeField] private Tile belowTile;
@@ -379,7 +379,10 @@ namespace HumanFactory.Manager
         [SerializeField] private Tile rightBelowTile;
         [SerializeField] private Tile ReleasedJumpTile;
         [SerializeField] private Tile PressedJumpTile;
+        [SerializeField] private Tile inputTile;
+        [SerializeField] private Tile outputTile;
         [SerializeField] private int tilemapMargin;
+        [SerializeField] private Transform outFlag;
 
 
         private void InitTilemap()
@@ -405,6 +408,9 @@ namespace HumanFactory.Manager
             };
 
             gameTilemap.SetTile(new Vector3Int(4, 5, 0), null);
+
+            gameTilemap.SetTile(new Vector3Int(mapOffsets[0, 0] + mapSize.x - 1, mapOffsets[0, 1] + mapSize.y, 0), null);
+            gameTilemap.SetTile(new Vector3Int(mapOffsets[3, 0] + mapSize.x - 1, mapOffsets[3, 1] + mapSize.y, 0), null);
             if (isExpanded)
             {
                 for (int t = 0; t < mapOffsets.GetLength(0); t++)
@@ -413,7 +419,7 @@ namespace HumanFactory.Manager
 					{
 						for (int j = 0; j < mapSize.y; j++)
 						{
-							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0), inTile);
+							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0), insideTile);
 						}
 					}
                     for (int i = 0; i < mapSize.y; i++)
@@ -427,7 +433,7 @@ namespace HumanFactory.Manager
 					}
                     gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), leftBelowTile);
                     gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), rightBelowTile);
-				}
+                }
             }
             else
 			{
@@ -438,7 +444,7 @@ namespace HumanFactory.Manager
 						for (int j = 0; j < mapSize.y; j++)
 						{
 							gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + i, mapOffsets[t, 1] + j, 0),
-								(t == 0) ? inTile : null);
+								(t == 0) ? insideTile : null);
 						}
 
 					}
@@ -454,9 +460,11 @@ namespace HumanFactory.Manager
 					}
 					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] - 1, mapOffsets[t, 1] - 1, 0), (t == 0) ? leftBelowTile : null);
 					gameTilemap.SetTile(new Vector3Int(mapOffsets[t, 0] + mapSize.x, mapOffsets[t, 1] - 1, 0), (t == 0) ? rightBelowTile : null);
-				}
+                }
             }
-            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), ReleasedJumpTile); // input, output 위치 타일 생성
+            gameTilemap.SetTile(new Vector3Int(0, -1, 0), inputTile);
+            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), outputTile); // input, output 위치 타일 생성
+            outFlag.localPosition = new Vector3(exitPos.x + 0.5f, exitPos.y, 0);
         }
 
         private int currentChapter = -1;

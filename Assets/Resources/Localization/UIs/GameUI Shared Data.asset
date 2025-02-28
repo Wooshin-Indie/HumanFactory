@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: MousePadLeft
     m_Metadata:
       m_Items: []
+  - m_Id: 10420676579028992
+    m_Key: MousePadDrag
+    m_Metadata:
+      m_Items: []
   - m_Id: 2549674270720
     m_Key: MousePadRight
     m_Metadata:
@@ -63,22 +67,8 @@ MonoBehaviour:
     m_Key: MouseNoneDrag
     m_Metadata:
       m_Items: []
-  - m_Id: 10420676579028992
-    m_Key: MousePadDrag
-    m_Metadata:
-      m_Items: []
-  m_Metadata:
-    m_Items: []
-  - m_Id: 10386450154381312
-    m_Key: Continue
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10386543804801024
-    m_Key: Settings
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10386621646888960
-    m_Key: Exit
+  - m_Id: 10751446367596544
+    m_Key: MouseBuildingLeft_None
     m_Metadata:
       m_Items: []
   m_Metadata:

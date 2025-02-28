@@ -6,6 +6,7 @@ using System.Collections;
 using System.Linq;
 using HumanFactory.Util;
 using HumanFactory.Buttons;
+using DG.Tweening;
 
 namespace HumanFactory.Manager
 {
@@ -33,7 +34,8 @@ namespace HumanFactory.Manager
 			{
 				OnCycleTimeChanged?.Invoke(value);
 				gunnersManagement.SetCycleTime(value);
-				foreach (var controller in humanControllers)
+				outFlag.GetComponent<Animator>().speed = 1 / value;
+                foreach (var controller in humanControllers)
 				{
 					controller.SetAnimSpeed(value);
 				}
@@ -273,24 +275,16 @@ namespace HumanFactory.Manager
 			humanControllers.Remove(humanControllers[idx]);
 		}
 
-        private float tmpClipLength = 0;
+		private Vector3 exitTo = new Vector3(0f, 3f, 0f);
         private IEnumerator HumanExitCoroutine(HumanController tmpController)
 		{
-            tmpController.GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_JUMP);
+            tmpController.GetComponent<Animator>().TurnState(Constants.ANIM_PARAM_WALK);
             tmpController.SetAnimSpeed(cycleTime);
-            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), PressedJumpTile);
-            Managers.Sound.PlaySfx(SFXType.ButtonPress);
-            RuntimeAnimatorController tmpAni = tmpController.GetComponent<Animator>().runtimeAnimatorController;
-            for (int i = 0; i < tmpAni.animationClips.Length; i++)
-            {
-                if (tmpAni.animationClips[i].name == "Human_Jump_Clip")
-                {
-                    tmpClipLength = tmpAni.animationClips[i].length;
-                }
-            }
-			yield return new WaitForSeconds(tmpClipLength * cycleTime);
+			
+			tmpController.transform.DOMove(tmpController.transform.localPosition + exitTo, 3 * cycleTime);
 
-            gameTilemap.SetTile(new Vector3Int(exitPos.x, exitPos.y, 0), ReleasedJumpTile);
+			yield return new WaitForSeconds(3 * cycleTime);
+
 
             Destroy(tmpController.gameObject);
         }

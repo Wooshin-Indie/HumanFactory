@@ -8,8 +8,7 @@ namespace HumanFactory.UI
 {
     public class MouseDescriptUI : MonoBehaviour
     {
-        //										left, drag, right
-        [SerializeField] private List<GameObject> MouseDescripts = new List<GameObject>();
+        [SerializeField] private GameObject DragDescript;
 
         [SerializeField] private TextMeshProUGUI LeftMouseText;
         [SerializeField] private TextMeshProUGUI DragMouseText;
@@ -23,14 +22,17 @@ namespace HumanFactory.UI
             Managers.Input.OnHoverInNoneModeAction -= OnHoverInNoneMode;
             Managers.Input.OnHoverInNoneModeAction += OnHoverInNoneMode;
 
-            //MouseDescripts[1].gameObject.SetActive(false);
+            Managers.Input.OnBuildingTypeChanged -= OnBuildingTypeChanged;
+            Managers.Input.OnBuildingTypeChanged += OnBuildingTypeChanged;
+
+            DragDescript.gameObject.SetActive(true);
         }
 
         private string prevLeftKey = "";
         private string prevDragKey = "";
         private string prevRightKey = "";
         private void OnHoverInNoneMode(bool isCircuiting, BuildingType type)
-		{
+        {
             string leftKey = "Empty";
             string dragKey = "Empty";
             string rightKey = "Empty";
@@ -43,102 +45,172 @@ namespace HumanFactory.UI
             }
             else
             {
-				switch (type)
-				{
-					case BuildingType.None:
-						leftKey = "Clear Button";
-						//if (MouseDescripts[1].gameObject.activeSelf)
-							//MouseDescripts[1].gameObject.SetActive(false);
+                switch (type)
+                {
+                    case BuildingType.None:
+                        leftKey = "MouseNoneLeft";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "Empty";
                         break;
-					case BuildingType.Toggle:
-						leftKey = "MouseNoneLeft";
-						rightKey = "Empty";
-						break;
-					case BuildingType.Rotate:
-						leftKey = "MouseNoneLeft";
-						rightKey = "MouseNoneRight0";
-						break;
-					case BuildingType.Jump:
-					case BuildingType.Sub:
-					case BuildingType.Add:
-					case BuildingType.NewInput:
-						leftKey = "Empty";
-						rightKey = "MouseNoneRight1";
-						break;
-					case BuildingType.Double:
-						leftKey = "MouseNoneRight0";
-						rightKey = "MouseNoneRight1";
-						break;
-					default:
-						leftKey = "MouseNoneLeft";
-						rightKey = "Empty";
-						break;
-				}
-			}
+                    case BuildingType.Toggle:
+                        leftKey = "MouseNoneLeft";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "Empty";
+                        break;
+                    case BuildingType.Rotate:
+                        leftKey = "MouseNoneLeft";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "MouseNoneRight0";
+                        break;
+                    case BuildingType.Jump:
+                    case BuildingType.Sub:
+                    case BuildingType.Add:
+                    case BuildingType.NewInput:
+                        leftKey = "Empty";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "MouseNoneRight1";
+                        break;
+                    case BuildingType.Double:
+                        leftKey = "MouseNoneRight0";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "MouseNoneRight1";
+                        break;
+                    default:
+                        leftKey = "MouseNoneLeft";
+                        if (!DragDescript.gameObject.activeSelf)
+                            DragDescript.gameObject.SetActive(true);
+                        dragKey = "MouseNoneDrag";
+                        rightKey = "Empty";
+                        break;
+                }
+            }
 
-			if (leftKey != prevLeftKey)
-			{
-				LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
-				{
-					TableReference = Constants.TABLE_GAMEUI,
-					TableEntryReference = leftKey
-				};
-
-				prevLeftKey = leftKey;
-			}
-
-			if (rightKey != prevRightKey)
+            if (leftKey != prevLeftKey)
             {
-				RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
-				{
-					TableReference = Constants.TABLE_GAMEUI,
-					TableEntryReference = rightKey
-				};
-				prevRightKey = rightKey;
-			}
-		}
+                LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+                {
+                    TableReference = Constants.TABLE_GAMEUI,
+                    TableEntryReference = leftKey
+                };
+
+                prevLeftKey = leftKey;
+            }
+
+                DragMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+                {
+                    TableReference = Constants.TABLE_GAMEUI,
+                    TableEntryReference = dragKey
+                };
+                prevDragKey = dragKey;
+
+            if (rightKey != prevRightKey)
+            {
+                RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+                {
+                    TableReference = Constants.TABLE_GAMEUI,
+                    TableEntryReference = rightKey
+                };
+                prevRightKey = rightKey;
+            }
+        }
 
         private void OnModeChanged(InputMode mode)
         {
-			string leftKey = "Empty";
-			string dragKey = "Empty";
-			string rightKey = "Empty";
+            string leftKey = "Empty";
+            string dragKey = "Empty";
+            string rightKey = "Empty";
 
-			switch (mode)
+            switch (mode)
             {
                 case InputMode.None:
-					leftKey = "MouseNoneLeft";
-                    if (!MouseDescripts[1].gameObject.activeSelf)
-                        MouseDescripts[1].gameObject.SetActive(true);
+                    leftKey = "MouseNoneLeft";
+                    if (!DragDescript.gameObject.activeSelf)
+                        DragDescript.gameObject.SetActive(true);
                     dragKey = "MouseNoneDrag";
                     rightKey = "Empty";
                     break;
                 case InputMode.Pad:
-					leftKey = "MousePadLeft";
-					if (!MouseDescripts[1].gameObject.activeSelf)
-                        MouseDescripts[1].gameObject.SetActive(true);
-                    dragKey = "MouseNoneDrag";
+                    leftKey = "MousePadLeft";
+                    if (!DragDescript.gameObject.activeSelf)
+                        DragDescript.gameObject.SetActive(true);
+                    dragKey = "MousePadDrag";
                     rightKey = "MousePadRight";
                     break;
                 case InputMode.Building:
-					leftKey = "MouseBuildingLeft";
-					rightKey = "MouseBuildingRight";
+                    leftKey = "MouseBuildingLeft";
+                    if (DragDescript.gameObject.activeSelf)
+                        DragDescript.gameObject.SetActive(false);
+                    rightKey = "MouseBuildingRight";
                     break;
             }
 
 
-			LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
-			{
-				TableReference = Constants.TABLE_GAMEUI,
-				TableEntryReference = leftKey
-			};
-			RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
-			{
-				TableReference = Constants.TABLE_GAMEUI,
-				TableEntryReference = rightKey
-			};
-			return;
+            LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = leftKey
+            };
+            DragMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = dragKey
+            };
+            RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = rightKey
+            };
+            return;
         }
 
+        private void OnBuildingTypeChanged(BuildingType type)
+        {
+            string leftKey = "Empty";
+            string dragKey = "Empty";
+            string rightKey = "Empty";
+
+            if (Managers.Input.InputMode != InputMode.Building) return;
+            switch (type)
+            {
+                case BuildingType.None:
+                    leftKey = "MouseBuildingLeft_None";
+                    if (DragDescript.gameObject.activeSelf)
+                        DragDescript.gameObject.SetActive(false);
+                    rightKey = "Empty";
+                    break;
+                default:
+                    leftKey = "MouseBuildingLeft";
+                    if (DragDescript.gameObject.activeSelf)
+                        DragDescript.gameObject.SetActive(false);
+                    rightKey = "MouseBuildingRight";
+                    break;
+            }
+
+            LeftMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = leftKey
+            };
+            DragMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = dragKey
+            };
+            RightMouseText.GetComponent<LocalizeStringEvent>().StringReference = new UnityEngine.Localization.LocalizedString
+            {
+                TableReference = Constants.TABLE_GAMEUI,
+                TableEntryReference = rightKey
+            };
+        }
     }
 }

@@ -70,19 +70,8 @@ MonoBehaviour:
     m_Localized: Set Direction
     m_Metadata:
       m_Items: []
-  references:
-    version: 2
-    RefIds: []
-  - m_Id: 10386450154381312
-    m_Localized: Continue
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10386543804801024
-    m_Localized: Settings
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10386621646888960
-    m_Localized: Exit
+  - m_Id: 10751446367596544
+    m_Localized: Clear Button
     m_Metadata:
       m_Items: []
   references:

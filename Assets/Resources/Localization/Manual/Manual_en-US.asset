@@ -185,6 +185,62 @@ MonoBehaviour:
     m_Localized: 'Caution: Toggle buttons cannot interact with other toggle buttons.'
     m_Metadata:
       m_Items: []
+  - m_Id: 4601875329445888
+    m_Localized: 1.Control Bar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4606536094576640
+    m_Localized: "\u2460 Pause"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607124123414528
+    m_Localized: "\u2461 Play"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607305690640384
+    m_Localized: "\u2462 Stop"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607309339684864
+    m_Localized: "\u2463 Fast"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607309998190592
+    m_Localized: "\u2464 Very Fast"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607310715416576
+    m_Localized: "\u2465 One Cycle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4609680060968960
+    m_Localized: 2.Mode Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611184134189056
+    m_Localized: a. Button Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611263607861248
+    m_Localized: b. PadMode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611265302360064
+    m_Localized: c. Erase Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611647004995584
+    m_Localized: In Button Mode, you can set the options for the button.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611677032017920
+    m_Localized: In Pad Mode, you can set the direction of the floor tiles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611784263593984
+    m_Localized: In Erase Mode, you can delete the buttons on the tile.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

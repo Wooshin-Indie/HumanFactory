@@ -163,6 +163,62 @@ MonoBehaviour:
     m_Key: ToggleContent_detail
     m_Metadata:
       m_Items: []
+  - m_Id: 4601875329445888
+    m_Key: UI_ControlBar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4606536094576640
+    m_Key: UI_ControlBar_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607124123414528
+    m_Key: UI_ControlBar_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607305690640384
+    m_Key: UI_ControlBar_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607309339684864
+    m_Key: UI_ControlBar_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607309998190592
+    m_Key: UI_ControlBar_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4607310715416576
+    m_Key: UI_ControlBar_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4609680060968960
+    m_Key: UI_ModeSelect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611184134189056
+    m_Key: UI_ModeSelect_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611263607861248
+    m_Key: UI_ModeSelect_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611265302360064
+    m_Key: UI_ModeSelect_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611647004995584
+    m_Key: UI_ModeSelect_1Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611677032017920
+    m_Key: UI_ModeSelect_2Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4611784263593984
+    m_Key: UI_ModeSelect_3Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
