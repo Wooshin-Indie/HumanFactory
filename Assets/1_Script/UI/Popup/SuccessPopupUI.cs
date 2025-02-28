@@ -146,8 +146,9 @@ namespace HumanFactory.UI
             typewritingSource = Managers.Sound.PlaySfx(SFXType.Typewriting, 1.3f, 1.0f);
 
             titleText.text = "";
-            string tmpDescript = resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString()
-                + LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_TitleText");
+            Managers.Resource.FindStageIdx(resultInfo.StageIdx, out int chapIdx, out int stageIdx);
+            string tmpDescript = Constants.AREA_NUMBER[chapIdx] + " - " + stageIdx
+				+ LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_TitleText");
             foreach (char letter in tmpDescript.ToCharArray()) // 타이틀 출력
             {
                 titleText.text += letter;
@@ -245,16 +246,17 @@ namespace HumanFactory.UI
 
         private void SetContentsAnOnce(GameResultInfo resultInfo)
         {
-            // 타이틀 출력
-            titleText.text = resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString() 
-                + LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_TitleText");
+			// 타이틀 출력
+			Managers.Resource.FindStageIdx(resultInfo.StageIdx, out int chapIdx, out int stageIdx);
+			titleText.text = Constants.AREA_NUMBER[chapIdx] + " - " + stageIdx
+				+ LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_TitleText");
 
             // Area 항목 머리말 출력
             areaText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_AreaText")
-                + resultInfo.ChapterIdx.ToString() + " - " + resultInfo.StageIdx.ToString();
+                + Constants.AREA_NUMBER[chapIdx] + " - " + stageIdx;
 
-            // Records 항목 머리말 출력
-            recordsText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_RecordsText");
+			// Records 항목 머리말 출력
+			recordsText.text = LocalizationSettings.StringDatabase.GetLocalizedString(Constants.TABLE_SUCCESSPOPUPUI, "Success_RecordsText");
 
             // 각 challenge 머리말 출력
             string[] chalTextKeys =

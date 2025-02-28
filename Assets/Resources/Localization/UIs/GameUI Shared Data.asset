@@ -67,17 +67,15 @@ MonoBehaviour:
     m_Key: MousePadDrag
     m_Metadata:
       m_Items: []
-  m_Metadata:
-    m_Items: []
-  - m_Id: 10386450154381312
+  - m_Id: 10747338669547520
     m_Key: Continue
     m_Metadata:
       m_Items: []
-  - m_Id: 10386543804801024
+  - m_Id: 10747546954489856
     m_Key: Settings
     m_Metadata:
       m_Items: []
-  - m_Id: 10386621646888960
+  - m_Id: 10747602604515328
     m_Key: Exit
     m_Metadata:
       m_Items: []

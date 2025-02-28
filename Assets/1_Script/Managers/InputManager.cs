@@ -131,12 +131,12 @@ namespace HumanFactory.Manager
             if (!IsMouseInputEnabled()) return;
 
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !MapManager.Instance.IsCircuiting)
             {
                 prevMousePos = new Vector2Int(curMousePos.x, curMousePos.y);
                 MapManager.Instance.OnDragStart(prevMousePos);
             }
-            else if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButton(0) && !MapManager.Instance.IsCircuiting)
             {
                 MapManager.Instance.OnDrag(new Vector2(worldPos.x, worldPos.y));
             }
@@ -275,8 +275,6 @@ namespace HumanFactory.Manager
             OnInputModeChanged(InputMode.Building);
             currentSelectedBuilding = type;
             OnBuildingTypeChanged?.Invoke(type);
-
-            Debug.Log($"CurSelectedBuilding: {currentSelectedBuilding}");
         }
 
         /// <summary>

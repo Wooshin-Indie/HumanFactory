@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace HumanFactory
@@ -45,6 +46,14 @@ namespace HumanFactory
             KeyCode.Alpha2,
             KeyCode.Z
 		};
+
+        public static readonly int[] AREA_NUMBER =
+        {
+            0,
+            79,
+            81,
+            27,
+        };
 
         public static readonly string TABLE_STAGE = "StageDescription";
         public static readonly string TABLE_SETTINGUI = "SettingUI";

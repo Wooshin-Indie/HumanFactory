@@ -108,15 +108,15 @@ namespace HumanFactory.UI
             {
                 case InputMode.None:
 					leftKey = "MouseNoneLeft";
-                    if (!MouseDescripts[1].gameObject.activeSelf)
-                        MouseDescripts[1].gameObject.SetActive(true);
+                    //if (!MouseDescripts[1].gameObject.activeSelf)
+                       // MouseDescripts[1].gameObject.SetActive(true);
                     dragKey = "MouseNoneDrag";
                     rightKey = "Empty";
                     break;
                 case InputMode.Pad:
 					leftKey = "MousePadLeft";
-					if (!MouseDescripts[1].gameObject.activeSelf)
-                        MouseDescripts[1].gameObject.SetActive(true);
+					//if (!MouseDescripts[1].gameObject.activeSelf)
+                        //MouseDescripts[1].gameObject.SetActive(true);
                     dragKey = "MouseNoneDrag";
                     rightKey = "MousePadRight";
                     break;
