@@ -22,17 +22,11 @@ namespace HumanFactory.Manager
 
 		private async void SendMessageAsync(byte[] buff)
 		{
-			TcpClient client = new TcpClient(Constants.IP_ADDR_INHO, Constants.PORT_VM_TCP);
+			TcpClient client = new TcpClient(Constants.IP_ADDR, Constants.PORT_VM_TCP);
 			NetworkStream stream = client.GetStream();
 
 			await stream.WriteAsync(buff, 0, buff.Length);
 			await stream.FlushAsync();
-
-			byte[] buffer = new byte[1024];
-			int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-			
-			// 데이터를 Json으로 저장
-			Managers.Data.SaveServerResults(Serializer.ByteArrayToObject<ServerResultData>(buffer));
 
 			client.Close();
 		}

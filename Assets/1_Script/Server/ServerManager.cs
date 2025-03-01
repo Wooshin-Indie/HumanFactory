@@ -74,11 +74,7 @@ namespace HumanFactory.Server
 				// Read Simul Data, Simulate
 				bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 				ClientSimulationData data = Serializer.ByteArrayToObject<ClientSimulationData>(buffer);
-				//simulator.PushDatas(data);
-
-				// Read DB, Response
-				byte[] sendBuff = Serializer.JsonToByteArray<ServerResultData>(GetServerResultData());
-				await stream.WriteAsync(sendBuff, 0, sendBuff.Length);
+				simulator.PushDatas(data);
 			}
 			catch(Exception ex)
 			{

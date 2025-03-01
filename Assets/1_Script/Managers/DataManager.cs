@@ -22,9 +22,10 @@ namespace HumanFactory.Manager
         private string playDataPath;
         private string resultDataPath;
         private string serverResultPath;
+        private string serverResultPathFromResources = "JsonData/TmpServerResult";
 
-        /** Datas **/
-        private SettingData settingData = null;
+		/** Datas **/
+		private SettingData settingData = null;
         private GameplayData gameplayData = null;
         private PlayerResultData playerResultData = null;
 
@@ -151,7 +152,12 @@ namespace HumanFactory.Manager
         /// </summary>
         public CountResultData GetServerResults(int stageIdx)
         {
-            string json = File.ReadAllText(serverResultPath);
+            string json = "";
+            if (!File.Exists(serverResultPath))
+				json = Resources.Load<TextAsset>(serverResultPathFromResources).text;
+			else
+				json = File.ReadAllText(serverResultPath);
+
 			ServerResultData data = JsonUtility.FromJson<ServerResultData>(json);
             if (data.datas.Length <= stageIdx)
             {
