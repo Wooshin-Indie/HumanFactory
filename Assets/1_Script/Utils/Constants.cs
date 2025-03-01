@@ -26,9 +26,9 @@ namespace HumanFactory
         public static Color COLOR_WARNING = new Color(1f, .1f, .1f, 1f);
 
 
-		public static Color COLOR_LOCKSTAGE = new Color(1f, .1f, .1f, 1f);
+		public static Color COLOR_LOCKSTAGE = new Color(0.45f, 0.45f, 0.45f, 1f);
         public static Color COLOR_UNLOCKSTAGE = new Color(1f, 1f, 1f, 1f);
-        public static Color COLOR_CLEARSTAGE = new Color(0f, 1f, 0f, 1f);
+        public static Color COLOR_CLEARSTAGE = new Color(142f/255f, 225f/255f, 58f/255f, 1f);
 
         public static readonly string PATH_SFX = "Sounds/SFX/";
 

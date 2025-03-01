@@ -15,8 +15,10 @@ namespace HumanFactory.UI
 		{
 			inStack.Clear();
 			outStack.Clear();
+            inIdxStack.Clear();
+            outIdxStack.Clear();
 
-			for (int i = 0; i < MapManager.Instance.CurrentStageInfo.inputs.Count(); i++)
+            for (int i = 0; i < MapManager.Instance.CurrentStageInfo.inputs.Count(); i++)
 			{
 				inStack.PushValue(MapManager.Instance.CurrentStageInfo.inputs[i]);
 				inIdxStack.PushValueToInoutIndex(i + 1);
