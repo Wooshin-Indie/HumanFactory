@@ -296,8 +296,7 @@ namespace HumanFactory.Manager
 			// 일정 사이클 넘으면 실패처리
 			if (Application.isBatchMode && Managers.Resource.GetStageInfo(currentStage).maxCounts[0] < cycleCount)
 			{
-				// TODO - 값 제대로 설정해야됨
-				//OnFailure();
+				OnFailure();
 			}
 
 			// BatchMode일 때, 사람들의 전의 상태와 똑같다면 실패로 판단하고 싸이클 끊기

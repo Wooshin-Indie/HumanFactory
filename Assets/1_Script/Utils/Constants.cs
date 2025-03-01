@@ -77,7 +77,7 @@ namespace HumanFactory
         public static readonly int PORT_VM_TCP = 61392;
         public static readonly int PORT_LAP_TCP = 61393;
         // TODO - Ip Addr Crypto needed
-        public static readonly string IP_ADDR_INHO = "122.35.235.70";
+        public static readonly string IP_ADDR = "122.35.235.70";
 
 
 		public static string DB_CONN_STR = "Server=localhost; Database=human_results; User ID=root; Password=;";
