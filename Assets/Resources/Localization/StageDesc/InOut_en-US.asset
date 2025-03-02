@@ -84,11 +84,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 691856416301066
-    m_Localized: IN
+    m_Localized: 'IN '
     m_Metadata:
       m_Items: []
   - m_Id: 691856416301067
     m_Localized: "IN \u2260 0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301068
+    m_Localized: IN = 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301069
+    m_Localized: Add the inputs, and if input is 0, add 1 to sum. If input is 1,
+      sub 1 to sum.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301070
+    m_Localized: IN.1 - IN.2, IN.3 - IN.4, ... , IN.(2N-1) - IN.(2N)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301071
+    m_Localized: IN.1 x IN.2, IN.3 x IN.4, ... , IN.(2N-1) x IN.(2N)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301072
+    m_Localized: Compare a pair of inputs. Output the larger one.
     m_Metadata:
       m_Items: []
   references:
