@@ -24,9 +24,10 @@ namespace HumanFactory
         public static Color COLOR_INVISIBLE = new Color(1f, 1f, 1f, 0.4f);
         public static Color COLOR_REDINVISIBLE = new Color(1f, 0.1f, 0.1f, 0.4f);
         public static Color COLOR_WARNING = new Color(1f, .1f, .1f, 1f);
+        public static Color COLOR_UNCLEARED = new Color(169f / 255f, 54f / 255f, 54f / 255f, 1f);
 
 
-		public static Color COLOR_LOCKSTAGE = new Color(0.45f, 0.45f, 0.45f, 1f);
+        public static Color COLOR_LOCKSTAGE = new Color(0.45f, 0.45f, 0.45f, 1f);
         public static Color COLOR_UNLOCKSTAGE = new Color(1f, 1f, 1f, 1f);
         public static Color COLOR_CLEARSTAGE = new Color(142f/255f, 225f/255f, 58f/255f, 1f);
 

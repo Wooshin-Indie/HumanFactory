@@ -91,6 +91,30 @@ MonoBehaviour:
     m_Localized: "IN \u2260 0"
     m_Metadata:
       m_Items: []
+  - m_Id: 691856416301068
+    m_Localized: IN = 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301070
+    m_Localized: IN.1 - IN.2, IN.3 - IN.4,,, IN.(2N-1) - IN.(2N)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301071
+    m_Localized: IN.1 x IN.2, IN.3 x IN.4, ... , IN.(2N-1) x IN.(2N)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301069
+    m_Localized: "\uC785\uB825\uAC12\uC744 \uB354\uD558\uC2ED\uC2DC\uC624. \uB9CC\uC57D
+      \uC785\uB825\uAC12\uC774 0\uC774\uBA74 \uD569\uC5D0 1\uC744 \uB354\uD558\uC2ED\uC2DC\uC624.
+      \uB9CC\uC57D \uC785\uB825\uAC12\uC774 1\uC774\uBA74 \uD569\uC5D0\uC11C 1\uC744
+      \uBE7C\uC2ED\uC2DC\uC624."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691856416301072
+    m_Localized: "\uC785\uB825 \uD55C \uC30D\uC744 \uBE44\uAD50\uD558\uC2ED\uC2DC\uC624.
+      \uB354 \uD070 \uAC83\uC744 \uCD9C\uB825\uD558\uC2ED\uC2DC\uC624."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

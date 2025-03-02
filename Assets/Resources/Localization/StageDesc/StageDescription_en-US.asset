@@ -21,12 +21,12 @@ MonoBehaviour:
   - m_Id: 5434196641046531
     m_Localized: 'Access Denied
 
-      
 
-      
 
-      You do not have the required
-      permissions to access this CCTV.'
+
+
+      You do not have the required permissions
+      to access this CCTV.'
     m_Metadata:
       m_Items: []
   - m_Id: 8883291166728192
@@ -169,19 +169,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059850
-    m_Localized: Remove the useless
+    m_Localized: Remove the worthless
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059855
-    m_Localized: Bigger
+    m_Localized: Find a bigger one
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059851
-    m_Localized: Make 0
+    m_Localized: Even the worthless
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059852
-    m_Localized: Wait 0, 1
+    m_Localized: Sort the cases
     m_Metadata:
       m_Items: []
   - m_Id: 8883291217059853
@@ -190,6 +190,28 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8883291217059854
     m_Localized: NxM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865551
+    m_Localized: Produce the zeros; the higher-ups have determined that they have
+      a use for them.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865552
+    m_Localized: You need to sort the cases. If a 0 appears, add 1 to the numbers
+      that have appeared. If a 1 appears, subtract 1 from the numbers that have appeared.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865553
+    m_Localized: Subtract the number of laborers from each other.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865554
+    m_Localized: Multiply the number of laborers from each other.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8883291212865555
+    m_Localized: Find the worker with the larger number and classify.
     m_Metadata:
       m_Items: []
   references:

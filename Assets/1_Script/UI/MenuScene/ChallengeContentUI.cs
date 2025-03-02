@@ -115,20 +115,20 @@ namespace HumanFactory.UI
                 if (counts[i] == -1)
 				{
                     GrowGraph(i, 0f, maxHeight * 0.6f);
-					scoreGraphs[i].color = Constants.COLOR_RED;
-					scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_RED;
+					scoreGraphs[i].color = Constants.COLOR_UNCLEARED;
+					scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_UNCLEARED;
 				}
                 else if (counts[i] <= info.challenges[i])
 				{
                     GrowGraph(i, maxHeight * 0.6f * counts[i] / info.challenges[i], maxHeight * 0.6f);
-                    scoreGraphs[i].color = Constants.COLOR_GREEN;
-                    scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_GREEN;
+                    scoreGraphs[i].color = Constants.COLOR_CLEARSTAGE;
+                    scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_CLEARSTAGE;
 				}
                 else
 				{
                     GrowGraph(i, maxHeight * 0.6f, maxHeight * 0.6f * info.challenges[i] / counts[i]);
-					scoreGraphs[i].color = Constants.COLOR_RED;
-					scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_RED;
+					scoreGraphs[i].color = Constants.COLOR_UNCLEARED;
+					scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Constants.COLOR_UNCLEARED;
 				}
 				maxGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = info.challenges[i].ToString();
 				scoreGraphs[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = counts[i].ToString();
